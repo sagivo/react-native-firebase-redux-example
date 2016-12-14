@@ -18,10 +18,12 @@ const initialState = {
     {id:3, text: 'so today was my last day at work. took me way too long to do it', online: false, review: 3.1, time: '4 minutes ago'},
     {id:4, text: 'seams like all man in NYC are assholes', online: false, review: 3.1, time: '4 minutes ago'},
     {id:5, text: 'So what if you like kids?', online: false, review: 3.1, time: '4 minutes ago'},
-  ]
+  ],
+  newPostTags: new Set(),
 };
 
 export default function feedReducer(state = initialState, action = {}) {
+    console.log(action);
   switch (action.type) {
     case types.REFRESHING:
       return {
@@ -38,7 +40,16 @@ export default function feedReducer(state = initialState, action = {}) {
       console.log('here');
       return {
         ...state,
-        posts: [...state.posts, action.payload]
+        posts: [...state.posts, action.payload],
+      }
+    case types.TAGGLE_TAG:
+      const newSet = new Set(state.newPostTags);
+      if (newSet.has(action.payload))
+        newSet.delete(action.payload)
+      else newSet.add(action.payload)
+      return {
+        ...state,
+        newPostTags: newSet,
       }
     case types.CALL_PRESS:
       console.log('CALL_PRESS', action.payload);

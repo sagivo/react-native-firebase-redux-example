@@ -6,6 +6,7 @@ export const types = {
   REFRESHING: 'REFRESHING',
   ON_DATA: 'ON_DATA',
   ADD_POST: 'ADD_POST',
+  TAGGLE_TAG: 'TAGGLE_TAG',
 };
 
 
@@ -27,6 +28,13 @@ export function addPost(post) {
   return {
     type: types.ADD_POST,
     payload: post
+  };
+}
+
+export function taggleTag(tag) {
+  return {
+    type: types.TAGGLE_TAG,
+    payload: tag,
   };
 }
 
