@@ -42,15 +42,6 @@ export default function feedReducer(state = initialState, action = {}) {
         ...state,
         posts: [...state.posts, action.payload],
       }
-    case types.TAGGLE_TAG:
-      const newSet = new Set(state.newPostTags);
-      if (newSet.has(action.payload))
-        newSet.delete(action.payload)
-      else newSet.add(action.payload)
-      return {
-        ...state,
-        newPostTags: newSet,
-      }
     case types.CALL_PRESS:
       console.log('CALL_PRESS', action.payload);
       return state;

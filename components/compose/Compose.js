@@ -15,24 +15,34 @@ export default class Feed extends Component {
 
   render() {
     return (
-      <View style={{padding: 10}}>
-        <TextInput
-          style={styles.input}
-          placeholder="What do you want to talk about?"
-          onChangeText={this.onChangeText}
-          multiline={true}
-          maxLength={100}
-          underlineColorAndroid="transparent"
-        />
-        <Tags />
+      <View style={styles.container}>
+        <View style={styles.input}>
+          <TextInput
+            style={styles.text}
+            placeholder="What do you want to talk about?"
+            onChangeText={this.onChangeText}
+            multiline={true}
+            maxLength={100}
+            underlineColorAndroid="transparent"
+          />
+        </View>
+        <View style={styles.tags}>
+          <Tags />
+        </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   input: {
-    marginTop: 60,
+    // flex: 1,
+  },
+  text: {
+    marginTop: 50,
     paddingLeft: 30,
     paddingRight: 30,
     fontSize: 30,
@@ -41,6 +51,9 @@ const styles = StyleSheet.create({
     // backgroundColor: 'yellow',
     alignItems: 'stretch',
     justifyContent: 'center',
-    // flex: 1,
   },
+  tags: {
+    flex: 1,
+    // backgroundColor: 'black'
+  }
 });

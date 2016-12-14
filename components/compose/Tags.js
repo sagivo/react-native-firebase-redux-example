@@ -56,7 +56,7 @@ export default class Tags extends Component {
           name={tag.icon}
           key={i}
           style={styles.tag}
-          backgroundColor={this.selectedTags.has(tag.text) ? '#717A22' : 'blue'}
+          backgroundColor={this.selectedTags.has(tag.text) ? '#4C49FF' : '#736E73'}
         >{tag.text}</Icon.Button>
       </View>
     );
