@@ -10,10 +10,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#C1C1C1',
   },
   input: {
-    height: 30,
+    height: 34,
     flex: 1,
     paddingHorizontal: 8,
-    fontSize: 15,
+    fontSize: 12,
     backgroundColor: '#FFFFFF',
     borderRadius: 2,
   },
@@ -24,7 +24,8 @@ const Header = (props) => (
     <TextInput
       style={styles.input}
       placeholder="Search..."
-      onChangeText={(text) => console.log('searching for ', text)}
+      underlineColorAndroid="transparent"
+      onChangeText={props.onSearch}
     />
   </View>
 );

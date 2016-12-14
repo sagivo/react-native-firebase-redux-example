@@ -1,5 +1,21 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+const Contact = (props) => (
+  <View style={styles.container}>
+    <View style={styles.left}>
+      <Image source={{ uri: props.pic}} style={styles.photo} />
+      <Text style={styles.text}>{props.name}</Text>
+    </View>
+    <View style={styles.right}>
+      { props.online ?
+      <Icon name="phone" size={30} color="#ADD67E" /> :
+      <Icon name="phone" size={30} color="#7F7B9B" />
+      }
+    </View>
+  </View>
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -7,6 +23,14 @@ const styles = StyleSheet.create({
     padding: 12,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  left: {
+    flex: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  right: {
+    flex: 1,
   },
   text: {
     marginLeft: 12,
@@ -19,13 +43,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const Row = (props) => (
-  <View style={styles.container}>
-    <Image source={{ uri: props.picture.large}} style={styles.photo} />
-    <Text style={styles.text}>
-      {`${props.name.first} ${props.name.last}`}
-    </Text>
-  </View>
-);
-
-export default Row;
+export default Contact;
