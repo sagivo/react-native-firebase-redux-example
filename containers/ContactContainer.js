@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import { View, Button, ListView } from 'react-native'
 import {bindActionCreators} from 'redux';
 import ContactList from '../components/contact/ContactList';
-import Loading from '../components/contact/Loading';
+import Loading from '../components/shared/Loading';
 import * as contactActions from '../actions/contactActions';
 import { connect } from 'react-redux';
 
