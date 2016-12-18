@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 import { View, Button, ListView } from 'react-native'
 import {bindActionCreators} from 'redux';
 import ContactList from '../components/contact/ContactList';
+import Loading from '../components/contact/Loading';
 import * as contactActions from '../actions/contactActions';
 import { connect } from 'react-redux';
 
@@ -19,7 +20,7 @@ function mapStateToProps(state) {
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
     onData: contactActions.onData,
-    syncPosts: contactActions.syncPosts,
+    syncContacts: contactActions.syncContacts,
     onCall: contactActions.onContactCallPress,
   }, dispatch);
 }
@@ -27,6 +28,7 @@ function matchDispatchToProps(dispatch) {
 class FeedContainer extends Component {
   constructor(props) {
     super(props);
+    this.props.syncContacts('sagiv');
 
     this.onCall = this.onCall.bind(this);
   }
@@ -37,11 +39,13 @@ class FeedContainer extends Component {
 
   render() {
     return (
+      (!this.props.refreshing > 0) ?
       <ContactList
         contacts={this.props.contacts}
         onCall={this.onCall}
-        refreshing={this.props.refreshing}
         />
+      :
+      <Loading />
     );
   }
 }

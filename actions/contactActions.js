@@ -1,18 +1,17 @@
 import db from './../models/db';
-const contactDB = db.ref('contacts');
 
 export const types = {
   CONTACT_CALL_PRESS: 'CONTACT_CALL_PRESS',
-  REFRESHING: 'REFRESHING',
+  REFRESHING_CONTACTS: 'REFRESHING_CONTACTS',
   REMOVE_CONTACT: 'REMOVE_CONTACT',
-  ON_DATA: 'ON_DATA',
+  ON_CONTACTS_DATA: 'ON_CONTACTS_DATA',
   ADD_CONTACT: 'ADD_CONTACT',
 };
 
 
-export function onData(data) {
+export function onContacts(data) {
   return {
-    type: types.ON_DATA,
+    type: types.ON_CONTACTS_DATA,
     payload: data,
   };
 }
@@ -31,16 +30,17 @@ export function addContact(post) {
   };
 }
 
-export function syncPosts() {
+export function syncContacts(userId) {
   return dispatch => {
-    dispatch({ type: types.REFRESHING });
+    dispatch({ type: types.REFRESHING_CONTACTS });
 
-    contactDB.on('value', (s) => {
-      const posts = [];
-      s.forEach(v=> {
-        posts.push({...v.val(), id: v.key});
+    db.ref(`users/${userId}/contacts`).on('value', (s) => {
+      console.log('===>', s.val());
+      const consts = [];
+      s.forEach(v => {
+        consts.push({...v.val(), id: v.key});
       });
-      dispatch(onData(posts));
+      dispatch(onContacts(consts));
     });
   }
 }

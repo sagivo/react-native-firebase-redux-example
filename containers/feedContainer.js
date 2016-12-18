@@ -18,7 +18,6 @@ function mapStateToProps(state) {
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
-    onData: feedActions.onData,
     addPost: feedActions.addPost,
     syncPosts: feedActions.syncPosts,
     onCallPress: feedActions.onCallPress,
