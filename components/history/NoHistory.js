@@ -7,7 +7,7 @@ import {
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default class NoContacts extends Component {
+export default class NoHistory extends Component {
 
   constructor(props) {
     super(props)
@@ -16,9 +16,9 @@ export default class NoContacts extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Icon name="users" size={40} />
-        <Text style={styles.h1}>No Contacts (yet)</Text>
-        <Text style={styles.p}>You can get new contacts after having a call and getting a mutual match.</Text>
+        <Icon name="history" size={40} />
+        <Text style={styles.h1}>No Calls History (yet)</Text>
+        <Text style={styles.p}>Start talking to get some calls history.</Text>
       </View>
     );
   }

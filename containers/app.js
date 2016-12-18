@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Provider } from 'react-redux';
-import Node from './ContactContainer';
+import Node from './HistoryContainer';
 import store from './../models/store'
 
 export default class App extends Component {

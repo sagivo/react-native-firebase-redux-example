@@ -1,41 +1,36 @@
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   StyleSheet,
   ListView,
   Text,
   View
 } from 'react-native';
 
-import Contact from './Contact'
-import SearchContact from './SearchContact'
-import NoContacts from './NoContacts'
+import CallItem from './CallItem'
+import NoHistory from './NoHistory'
 
 const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
 
 export default class ContactList extends Component {
 
   constructor(props) {
-    super(props)
+    super(props);
 
-    this.state = {
-      dataSource: dataSource.cloneWithRows(this.props.contacts),
-    };
+    this.state = { dataSource: dataSource.cloneWithRows(this.props.calls) };
 
-    this.contactsFromHash = this.contactsFromHash.bind(this);
+    this.HistoryFromHash = this.HistoryFromHash.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.contactsFromHash('', nextProps.contacts);
+    this.HistoryFromHash(nextProps.calls);
   }
 
-  contactsFromHash(filter, data = this.props.contacts) {
+  HistoryFromHash(data) {
     const filterData = Object.keys(data)
-      .map(key => {return {...data[key], id: key}; })
-      .filter(c => c.name.toLowerCase().includes(filter.toLowerCase()))
-      .sort(c => c.name);
+      // .map(key => { return { ...data[key], timestamp: key }; })
+      .map(key => { return { ...data[key] }; })
+      .sort(c => c.timestamp);
 
-    console.log('111', filterData);
     this.setState({
       ...this.state,
       dataSource: dataSource.cloneWithRows(filterData),
@@ -45,17 +40,16 @@ export default class ContactList extends Component {
   render() {
     return (
       <View style={styles.container}>
-        { (Object.keys(this.props.contacts).length > 0) ?
+        { (Object.keys(this.props.calls).length > 0) ?
         <ListView
           style={styles.container}
           dataSource={this.state.dataSource}
-          renderHeader={() => <SearchContact onSearch={this.contactsFromHash} />}
-          renderRow={(data) => <Contact {...data} onCall={this.props.onCall} />}
+          renderRow={(data) => <CallItem {...data} />}
           renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
           enableEmptySections={true}
         />
         :
-        <NoContacts />
+        <NoHistory />
         }
       </View>
     );

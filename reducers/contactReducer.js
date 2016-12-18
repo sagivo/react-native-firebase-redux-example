@@ -1,6 +1,6 @@
 import {types} from '../actions/contactActions';
 const initialState = {
-  contacts: [],
+  contacts: {},
   refreshing: false,
 };
 
@@ -31,7 +31,3 @@ export default function feedReducer(state = initialState, action = {}) {
       return state;
   }
 }
-
-var window = global || window;
-window.aaa = feedReducer;
-console.log(window.aaa);

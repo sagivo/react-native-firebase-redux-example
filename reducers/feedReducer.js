@@ -22,7 +22,7 @@ const initialState = {
   newPostTags: new Set(),
 };
 
-export default function feedReducer(state = initialState, action = {}) {
+export default function FeedReducer(state = initialState, action = {}) {
     console.log(action);
   switch (action.type) {
     case types.REFRESHING:

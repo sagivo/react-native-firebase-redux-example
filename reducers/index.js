@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux'
-import feedReducer from './feedReducer';
-import contactReducer from './contactReducer';
+import FeedReducer from './FeedReducer';
+import ContactReducer from './ContactReducer';
+import HistoryReducer from './HistoryReducer';
 
 export default combineReducers({
-  feedReducer,
-  contactReducer,
+  FeedReducer,
+  ContactReducer,
+  HistoryReducer,
 })

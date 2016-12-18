@@ -11,8 +11,8 @@ const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !==
 
 function mapStateToProps(state) {
   return {
-    dataSource: dataSource.cloneWithRows(state.feedReducer.posts),
-    refreshing: state.feedReducer.refreshing,
+    dataSource: dataSource.cloneWithRows(state.FeedReducer.posts),
+    refreshing: state.FeedReducer.refreshing,
   };
 }
 
