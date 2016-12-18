@@ -40,7 +40,7 @@ export default class ContactList extends Component {
           style={styles.container}
           dataSource={this.state.dataSource}
           renderHeader={() => <SearchContact onSearch={this.onSearch} />}
-          renderRow={(data) => <Contact {...data} />}
+          renderRow={(data) => <Contact {...data} onCall={this.props.onCall} />}
           renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
         />
       </View>

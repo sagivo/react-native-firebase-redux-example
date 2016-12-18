@@ -2,7 +2,7 @@ import db from './../models/db';
 const contactDB = db.ref('contacts');
 
 export const types = {
-  CALL_PRESS: 'CALL_PRESS',
+  CONTACT_CALL_PRESS: 'CONTACT_CALL_PRESS',
   REFRESHING: 'REFRESHING',
   REMOVE_CONTACT: 'REMOVE_CONTACT',
   ON_DATA: 'ON_DATA',
@@ -17,9 +17,9 @@ export function onData(data) {
   };
 }
 
-export function onCallPress(postId) {
+export function onContactCallPress(postId) {
   return {
-    type: types.CALL_PRESS,
+    type: types.CONTACT_CALL_PRESS,
     payload: postId,
   };
 }

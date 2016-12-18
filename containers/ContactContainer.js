@@ -20,7 +20,7 @@ function matchDispatchToProps(dispatch) {
   return bindActionCreators({
     onData: contactActions.onData,
     syncPosts: contactActions.syncPosts,
-    onCallPress: contactActions.onCallPress,
+    onCall: contactActions.onContactCallPress,
   }, dispatch);
 }
 
@@ -28,18 +28,18 @@ class FeedContainer extends Component {
   constructor(props) {
     super(props);
 
-    this.onCallPress = this.onCallPress.bind(this);
+    this.onCall = this.onCall.bind(this);
   }
 
-  onCallPress(postId) {
-    this.props.onCallPress(postId);
+  onCall(userId) {
+    this.props.onCall(userId);
   }
 
   render() {
     return (
       <ContactList
         contacts={this.props.contacts}
-        onCallPress={this.onCallPress}
+        onCall={this.onCall}
         refreshing={this.props.refreshing}
         />
     );

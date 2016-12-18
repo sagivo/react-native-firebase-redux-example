@@ -38,8 +38,8 @@ export default function feedReducer(state = initialState, action = {}) {
         ...state,
         posts: [...state.posts, action.payload],
       }
-    case types.CALL_PRESS:
-      console.log('CALL_PRESS', action.payload);
+    case types.CONTACT_CALL_PRESS:
+      console.log('todo: CONTACT_CALL_PRESS', action.payload);
       return state;
     default:
       return state;

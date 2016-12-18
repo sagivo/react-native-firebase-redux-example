@@ -10,8 +10,8 @@ const Contact = (props) => (
     </View>
     <View style={styles.right}>
       { props.online ?
-      <Icon name="phone" size={30} color="#ADD67E" /> :
-      <Icon name="phone" size={30} color="#7F7B9B" />
+      <Icon name="phone" size={30} color="#ADD67E" onPress={() => props.onCall(props.id)} /> :
+      <Icon name="phone" size={30} color="#6C6B59" />
       }
     </View>
   </View>
