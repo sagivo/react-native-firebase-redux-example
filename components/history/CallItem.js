@@ -38,13 +38,13 @@ export default class CallItem extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 12,
+    padding: 10,
     flexDirection: 'row',
     alignItems: 'center',
   },
   info: {
     flex: 1,
-    padding: 10,
+    marginLeft: 10,
   },
   name: {
     fontWeight: 'bold',
@@ -55,6 +55,5 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   post: {
-
   },
 });
