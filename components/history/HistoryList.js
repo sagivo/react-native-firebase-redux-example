@@ -16,23 +16,21 @@ export default class ContactList extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { dataSource: dataSource.cloneWithRows(this.props.calls) };
     this.HistoryFromHash = this.HistoryFromHash.bind(this);
+    this.state = { dataSource: dataSource.cloneWithRows(this.HistoryFromHash(this.props.calls)) };
   }
 
   componentWillReceiveProps(nextProps) {
-    this.HistoryFromHash(nextProps.calls);
+    this.setState({
+      ...this.state,
+      dataSource: dataSource.cloneWithRows(this.HistoryFromHash(nextProps.calls)),
+    });
   }
 
   HistoryFromHash(data) {
-    const filterData = Object.keys(data)
+    return Object.keys(data)
       .map(key => { return { ...data[key], id: key }; })
       .sort(c => c.timestamp);
-
-    this.setState({
-      ...this.state,
-      dataSource: dataSource.cloneWithRows(filterData),
-    });
   }
 
   render() {

@@ -1,5 +1,5 @@
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import React, {Component} from 'react';
 import {StyleSheet, View, Text, Image, TouchableHighlight} from 'react-native';
@@ -25,7 +25,7 @@ export default class CallItem extends Component {
           <Text style={styles.name}>{this.props.user.name}</Text>
           <Text style={styles.post}>{this.props.post}</Text>
           <Text style={styles.timestamp}>
-            <Ionicons name={this.callStatusIcon()} /> {this.props.timestamp}
+            {this.callStatusIcon()} {this.props.timestamp}
           </Text>
         </View>
       </View>
@@ -35,7 +35,7 @@ export default class CallItem extends Component {
           <Text style={styles.name}>anonymous</Text>
           <Text style={styles.post}>{this.props.post}</Text>
           <Text style={styles.timestamp}>
-            <Ionicons name={this.callStatusIcon()} /> {this.props.timestamp}
+            {this.callStatusIcon()} {this.props.timestamp}
           </Text>
         </View>
       </View>
@@ -45,23 +45,14 @@ export default class CallItem extends Component {
   }
 
   callStatusIcon() {
-    console.log(this.props.method);
-    // return 'ios-redo';
     switch (this.props.method) {
-      case 'out': return 'ios-redo'; break;
-      case 'out-missed': return 'ios-redo-outline'; break;
-      case 'in': return 'ios-undo'; break;
-      case 'in-missed': return 'ios-undo-outline'; break;
+      case 'out': return <MaterialIcons name="call-made" style={styles.call} />
+      case 'out-missed': return <MaterialIcons name="call-missed-outgoing" style={styles.callMissed} />
+      case 'in': return <MaterialIcons name="call-received" style={styles.call} />
+      case 'in-missed': return <MaterialIcons name="phone-missed" style={styles.callMissed} />
     }
   }
 }
-
-const swipeoutBtns = [
-  {
-    text: 'delete',
-    type: 'delete',
-  }
-]
 
 const styles = StyleSheet.create({
   container: {
@@ -97,5 +88,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingLeft: 10,
+  },
+  callMissed: {
+    color: 'red',
+  },
+  call: {
+    color: 'green',
   },
 });

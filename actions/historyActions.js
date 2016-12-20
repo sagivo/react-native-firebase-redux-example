@@ -19,13 +19,14 @@ export function onHistory(data) {
 
 export function removeHistory(historyId) {
   return dispatch => {
+    console.log('historyId', historyId);
     // TODO: get userid here
-    // db.ref(`history/xxx`).child(historyId).remove().then(() => {
-    // dispatch({
-    //   type: types.REMOVE_HISTORY,
-    //   payload: historyId,
+    // db.ref(`history/sagiv`).child(historyId).remove().then(() => {
+    //   dispatch({
+    //     type: types.REMOVE_HISTORY,
+    //     payload: historyId,
+    //   });
     // });
-  // });
     delete calls[historyId];
     dispatch(onHistory({...calls}));
   }
@@ -62,3 +63,7 @@ const calls = {
   5: {method: 'out', post: 'TV is so boring lately. they think that if we will go to reality show we will make it!', timestamp: '12m', userId: 5512, callId: 5341, user: {name: 'Amirah Hecht', pic: "https://randomuser.me/api/portraits/men/2.jpg"}},
   6: {method: 'in', timestamp: '1w', userId: 652, callId: 53441, user: {name: 'Eli Umariano', pic: "https://randomuser.me/api/portraits/men/3.jpg"}},
 }
+
+// for (var i = 10; i < 10000; i++) {
+//   calls[i] = {method: 'in', post: 'will talk about everyhing', timestamp: '12m', userId: 31, callId: 5};
+// }
