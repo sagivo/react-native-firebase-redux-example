@@ -1,4 +1,6 @@
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import React, {Component} from 'react';
 import {StyleSheet, View, Text, Image, TouchableHighlight} from 'react-native';
 import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
@@ -23,17 +25,17 @@ export default class CallItem extends Component {
           <Text style={styles.name}>{this.props.user.name}</Text>
           <Text style={styles.post}>{this.props.post}</Text>
           <Text style={styles.timestamp}>
-            {this.props.method === 'in' ? <Icon name="chevron-down" /> : <Icon name="chevron-up" /> } {this.props.timestamp}
+            <Ionicons name={this.callStatusIcon()} /> {this.props.timestamp}
           </Text>
         </View>
       </View>
       :
       <View style={styles.container}>
         <View style={styles.info}>
-          <Text style={styles.name}>anonymous </Text>
+          <Text style={styles.name}>anonymous</Text>
           <Text style={styles.post}>{this.props.post}</Text>
           <Text style={styles.timestamp}>
-            {this.props.method === 'in' ? <Icon name="chevron-down" /> : <Icon name="chevron-up" /> } {this.props.timestamp}
+            <Ionicons name={this.callStatusIcon()} /> {this.props.timestamp}
           </Text>
         </View>
       </View>
@@ -41,13 +43,23 @@ export default class CallItem extends Component {
     </SwipeRow>
     );
   }
+
+  callStatusIcon() {
+    console.log(this.props.method);
+    // return 'ios-redo';
+    switch (this.props.method) {
+      case 'out': return 'ios-redo'; break;
+      case 'out-missed': return 'ios-redo-outline'; break;
+      case 'in': return 'ios-undo'; break;
+      case 'in-missed': return 'ios-undo-outline'; break;
+    }
+  }
 }
 
 const swipeoutBtns = [
   {
     text: 'delete',
     type: 'delete',
-    onPress: (aa) => console.log(aa),
   }
 ]
 

@@ -47,7 +47,6 @@ export default class Tags extends Component {
   }
 
   renderTag(tag, i) {
-    console.log('?',this.selectedTags);
     return (
       <View style={styles.tagContainer}>
         <Icon.Button

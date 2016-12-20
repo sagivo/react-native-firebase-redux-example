@@ -35,7 +35,6 @@ export default class ContactList extends Component {
       .filter(c => c.name.toLowerCase().includes(filter.toLowerCase()))
       .sort(c => c.name);
 
-    console.log('111', filterData);
     this.setState({
       ...this.state,
       dataSource: dataSource.cloneWithRows(filterData),

@@ -19,14 +19,15 @@ export function onHistory(data) {
 
 export function removeHistory(historyId) {
   return dispatch => {
-    db.ref(`history/sagiv`).child(0).remove().then(() => {
-    dispatch({
-      type: types.REMOVE_HISTORY,
-      payload: historyId,
-    });
-  });
-    // delete calls[historyId];
-    // dispatch(onHistory({...calls}));
+    // TODO: get userid here
+    // db.ref(`history/xxx`).child(historyId).remove().then(() => {
+    // dispatch({
+    //   type: types.REMOVE_HISTORY,
+    //   payload: historyId,
+    // });
+  // });
+    delete calls[historyId];
+    dispatch(onHistory({...calls}));
   }
 }
 
@@ -39,24 +40,25 @@ export function addHistory(post) {
 
 export function syncHistory(userId) {
   return dispatch => {
-    // dispatch({ type: types.REFRESHING_HISTORY });
-    // dispatch(onHistory(calls));
+    dispatch({ type: types.REFRESHING_HISTORY });
 
-    db.ref(`history/${userId}`).on('value', (s) => {
-      const consts = {};
-      s.forEach(v => {
-        consts[v.key] = v.val();
-      });
-      dispatch(onHistory(consts));
-    });
+    dispatch(onHistory(calls));
+    // TODO: get userid here
+    // db.ref(`history/${userId}`).on('value', (s) => {
+    //   const consts = {};
+    //   s.forEach(v => {
+    //     consts[v.key] = v.val();
+    //   });
+    //   dispatch(onHistory(consts));
+    // });
   }
 }
 
 const calls = {
   1: {method: 'in', post: 'will talk about everyhing', timestamp: '12m', userId: 31, callId: 5},
-  2: {method: 'in', post: 'whos up to talk about soccer?', timestamp: '12m', userId: 512, callId: 51, user: {name: 'Eyal Berkovich', pic: "https://randomuser.me/api/portraits/men/6.jpg"}},
+  2: {method: 'in-missed', post: 'whos up to talk about soccer?', timestamp: '12m', userId: 512, callId: 51, user: {name: 'Eyal Berkovich', pic: "https://randomuser.me/api/portraits/men/6.jpg"}},
   3: {method: 'in', post: 'what is the meaning of life?', timestamp: '12m', userId: 12, callId: 51},
-  4: {method: 'out', post: 'i feel blie', timestamp: '12m', userId: 412, callId: 151},
+  4: {method: 'out-missed', post: 'i feel blie', timestamp: '12m', userId: 412, callId: 151},
   5: {method: 'out', post: 'TV is so boring lately. they think that if we will go to reality show we will make it!', timestamp: '12m', userId: 5512, callId: 5341, user: {name: 'Amirah Hecht', pic: "https://randomuser.me/api/portraits/men/2.jpg"}},
   6: {method: 'in', timestamp: '1w', userId: 652, callId: 53441, user: {name: 'Eli Umariano', pic: "https://randomuser.me/api/portraits/men/3.jpg"}},
 }

@@ -5,7 +5,6 @@ const initialState = {
 };
 
 export default function historyReducer(state = initialState, action = {}) {
-  console.log(action);
   switch (action.type) {
     case types.REFRESHING_HISTORY:
       return {

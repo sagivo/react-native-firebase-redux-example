@@ -21,7 +21,6 @@ export default class ContactList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('recived new props??');
     this.HistoryFromHash(nextProps.calls);
   }
 

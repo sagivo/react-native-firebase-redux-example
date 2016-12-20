@@ -23,7 +23,6 @@ const initialState = {
 };
 
 export default function FeedReducer(state = initialState, action = {}) {
-    console.log(action);
   switch (action.type) {
     case types.REFRESHING:
       return {
@@ -37,13 +36,11 @@ export default function FeedReducer(state = initialState, action = {}) {
         posts: action.payload,
       };
     case types.ADD_POST:
-      console.log('here');
       return {
         ...state,
         posts: [...state.posts, action.payload],
       }
     case types.CALL_PRESS:
-      console.log('CALL_PRESS', action.payload);
       return state;
     default:
       return state;
