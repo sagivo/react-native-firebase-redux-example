@@ -8,8 +8,6 @@ import Loading from '../components/shared/Loading';
 import * as historyActions from '../actions/historyActions';
 import { connect } from 'react-redux';
 
-const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
-
 function mapStateToProps(state) {
   return {
     refreshing: state.HistoryReducer.refreshing,
@@ -20,6 +18,7 @@ function mapStateToProps(state) {
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
     syncHistory: historyActions.syncHistory,
+    removeHistory: historyActions.removeHistory,
   }, dispatch);
 }
 
@@ -34,6 +33,7 @@ class FeedContainer extends Component {
       (!this.props.refreshing) ?
       <HistoryList
         calls={this.props.calls}
+        removeHistory={this.props.removeHistory}
         />
       :
       <Loading />

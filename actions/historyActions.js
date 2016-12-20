@@ -1,5 +1,7 @@
 import db from './../models/db';
 
+db.ref(`history/sagiv`).child(0).set({method: 'in', post: 'test that shouldb be deleted all the time', timestamp: '15s', userId: 331, callId: 10})
+
 export const types = {
   REFRESHING_HISTORY: 'REFRESHING_HISTORY',
   REMOVE_HISTORY: 'REMOVE_HISTORY',
@@ -15,6 +17,19 @@ export function onHistory(data) {
   };
 }
 
+export function removeHistory(historyId) {
+  return dispatch => {
+    db.ref(`history/sagiv`).child(0).remove().then(() => {
+    dispatch({
+      type: types.REMOVE_HISTORY,
+      payload: historyId,
+    });
+  });
+    // delete calls[historyId];
+    // dispatch(onHistory({...calls}));
+  }
+}
+
 export function addHistory(post) {
   return {
     type: types.ADD_HISTORY,
@@ -24,16 +39,16 @@ export function addHistory(post) {
 
 export function syncHistory(userId) {
   return dispatch => {
-    dispatch({ type: types.REFRESHING_HISTORY });
-    dispatch(onHistory(calls));
+    // dispatch({ type: types.REFRESHING_HISTORY });
+    // dispatch(onHistory(calls));
 
-    // db.ref(`history/${userId}`).on('value', (s) => {
-    //   const consts = {};
-    //   s.forEach(v => {
-    //     consts[v.key] = v.val();
-    //   });
-    //   dispatch(onHistory(consts));
-    // });
+    db.ref(`history/${userId}`).on('value', (s) => {
+      const consts = {};
+      s.forEach(v => {
+        consts[v.key] = v.val();
+      });
+      dispatch(onHistory(consts));
+    });
   }
 }
 
