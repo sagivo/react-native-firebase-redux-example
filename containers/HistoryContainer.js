@@ -25,7 +25,7 @@ function matchDispatchToProps(dispatch) {
 class FeedContainer extends Component {
   constructor(props) {
     super(props);
-    this.props.syncHistory('sagiv'); //TODO: LOAD USER ID HERE
+    this.props.syncHistory();
   }
 
   render() {

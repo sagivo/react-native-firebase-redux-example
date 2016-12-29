@@ -9,7 +9,7 @@ import {
 import CallItem from './CallItem'
 import NoHistory from './NoHistory'
 
-const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
+const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 export default class ContactList extends Component {
 
@@ -29,7 +29,7 @@ export default class ContactList extends Component {
 
   HistoryFromHash(data) {
     return Object.keys(data)
-      .map(key => { return { ...data[key], id: key }; })
+      .map(id => { return { ...data[id], id }; })
       .sort(c => c.timestamp);
   }
 
@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   separator: {
-    flex: 1,
     height: StyleSheet.hairlineWidth,
     backgroundColor: '#8E8E8E',
   },
