@@ -13,7 +13,7 @@ export default class CallItem extends Component {
   render() {
     console.log('?', this.props.id);
     return (
-    <SwipeRow rightOpenValue={-50} key={this.props.id} style={styles.swipe}>
+    <SwipeRow rightOpenValue={-50} key={this.props.id} style={{flex: 1}}>
       <View style={styles.hiddenRow}>
         <View style={styles.deleteView}>
           <Icon.Button name="remove" backgroundColor={'red'} onPress={() => this.props.removeHistory(this.props.id)} />
@@ -56,9 +56,6 @@ export default class CallItem extends Component {
 }
 
 const styles = StyleSheet.create({
-  swipe: {
-    flex: 1,
-  },
   container: {
     flex: 1,
     padding: 10,

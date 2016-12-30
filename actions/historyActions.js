@@ -1,9 +1,9 @@
 import db from './../models/db';
 
 //TODO: REMOVE INIT DATA
-db.ref(`history/sagiv`).child(0).set({method: 'in', post: 'test0 that shouldb be deleted all the time', timestamp: '15s', userId: 331, callId: 10})
-db.ref(`history/sagiv`).child(1).set({method: 'out', post: 'test1 that shouldb be deleted all the time', timestamp: '15s', userId: 331, callId: 10})
-db.ref(`history/sagiv`).child(2).set({method: 'in-missed', post: 'test2 that shouldb be deleted all the time', timestamp: '15s', userId: 331, callId: 10})
+// db.ref(`history/sagiv`).child(0).set({method: 'in', post: 'test0 that shouldb be deleted all the time', timestamp: '15s', userId: 331, callId: 10})
+// db.ref(`history/sagiv`).child(1).set({method: 'out', post: 'test1 that shouldb be deleted all the time', timestamp: '15s', userId: 331, callId: 10})
+// db.ref(`history/sagiv`).child(2).set({method: 'in-missed', post: 'test2 that shouldb be deleted all the time', timestamp: '15s', userId: 331, callId: 10})
 
 export const types = {
   REFRESHING_HISTORY: 'REFRESHING_HISTORY',
