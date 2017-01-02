@@ -7,7 +7,6 @@ import {
   TextInput,
   View
 } from 'react-native';
-import Profile from '../components/user/Profile';
 import * as userActions from '../actions/userActions';
 import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';

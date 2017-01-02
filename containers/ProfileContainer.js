@@ -1,12 +1,11 @@
 'use strict';
 
 import React, {Component} from 'react';
-import { StyleSheet, View, Text, Image, TextInput, ScrollView, TouchableHighlight } from 'react-native'
+import { Alert, StyleSheet, View, Text, Image, TextInput, ScrollView, TouchableHighlight } from 'react-native'
 import {bindActionCreators} from 'redux';
 import * as userActions from '../actions/userActions';
 import { connect } from 'react-redux';
 import languages from "../models/languages";
-import {logout} from "../models/authMiddleware";
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -21,6 +20,7 @@ function matchDispatchToProps(dispatch) {
   return bindActionCreators({
     syncUser: userActions.syncUser,
     updateUser: userActions.updateUser,
+    logout: userActions.logout,
   }, dispatch);
 }
 
@@ -28,6 +28,7 @@ class ProfileContainer extends Component {
   constructor(props) {
     super(props);
 
+    this.logoutPress = this.logoutPress.bind(this);
     this.props.syncUser();
   }
 
@@ -37,11 +38,23 @@ class ProfileContainer extends Component {
   }
 
   logoutPress() {
-    logout();
+    this.props.logout();
   }
 
   setGender(gender) {
     this.props.updateUser('gender', gender);
+  }
+
+  infoRating() {
+    Alert.alert('Average Score', 'This is your average score. The better your score, the better matching.')
+  }
+
+  setLanguage() {
+    console.log('move to language page'); //TODO: MOVE
+  }
+
+  async infoContacts() {
+    console.log('move to contact page'); //TODO: MOVE
   }
 
   render() {
@@ -53,15 +66,15 @@ class ProfileContainer extends Component {
           </View>
           <View style={styles.stats}>
             <View style={styles.rating}>
-              <Icon name="star-o" style={styles.statsIcon} />
-              <Text style={styles.statsFont}>4.2</Text>
+              <TouchableHighlight onPress={this.infoRating}><Icon name="star-o" style={styles.statsIcon} /></TouchableHighlight>
+              <Text style={styles.statsFont}>{this.props.user.rating || '?'}</Text>
             </View>
             <View style={styles.pic}>
               <Image source={{uri: 'https://randomuser.me/api/portraits/men/6.jpg'}} style={styles.image} />
             </View>
             <View style={styles.rating}>
-              <Icon name="user-o" style={styles.statsIcon} />
-              <Text style={styles.statsFont}>4</Text>
+              <TouchableHighlight onPress={this.infoContacts}><Icon name="user-o" style={styles.statsIcon} /></TouchableHighlight>
+              <Text style={styles.statsFont}>{this.props.user.contacts}</Text>
             </View>
           </View>
         </View>
@@ -78,16 +91,12 @@ class ProfileContainer extends Component {
           </View>
           <View style={styles.hr} />
 
-          <View style={styles.row}>
-            <Icon name="map-o" style={styles.rowIcon} />
-            <Text style={styles.rowInput} placeholder={'address'} underlineColorAndroid={'transparent'}>{this.props.user.address}</Text>
-          </View>
-          <View style={styles.hr} />
-
-          <View style={styles.row}>
-            <Icon name="flag" style={styles.rowIcon} />
-            <Text style={styles.rowInput} placeholder={'language'} underlineColorAndroid={'transparent'}>{this.laguagesText}</Text>
-          </View>
+          <TouchableHighlight onPress={this.setLanguage}>
+            <View style={styles.row}>
+              <Icon name="flag" style={styles.rowIcon} />
+              <Text style={styles.rowInput} placeholder={'language'} underlineColorAndroid={'transparent'}>{this.laguagesText}</Text>
+            </View>
+          </TouchableHighlight>
           <View style={styles.hr} />
 
           <View style={styles.row}>

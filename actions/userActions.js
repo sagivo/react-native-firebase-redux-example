@@ -19,7 +19,7 @@ export function updateUser(key, value) {
   return (dispatch, getState) => {
     const userId = getState().UserReducer.id;
 
-    db.ref(`users/${userId}`).child(key).set(value).catch(e => console.log('error', e));
+    db.ref(`users/${userId}`).child(key).set(value).catch(dbError);
   }
 }
 
@@ -37,4 +37,8 @@ export function syncUser() {
 
 export function logout() {
   return { type: types.LOGOUT };
+}
+
+function dbError(error) {
+  console.error('DB ERROR', error);
 }
