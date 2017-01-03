@@ -34,7 +34,7 @@ export function syncContacts(userId) {
   return dispatch => {
     dispatch({ type: types.REFRESHING_CONTACTS });
 
-    db.ref(`users/${userId}/contacts`).on('value', (s) => {
+    db.ref(`contacts/${userId}`).on('value', (s) => {
       const consts = {};
       s.forEach(v => {
         consts[v.key] = v.val();

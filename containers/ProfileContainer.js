@@ -181,14 +181,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderColor: '#97977D',
     padding: 20,
-    // backgroundColor: 'blue',
   },
   rowInput: {
-    // borderBottomWidth: 1,
     fontSize: 16,
     flex: 1,
     marginLeft: 10,
-    // backgroundColor: 'yellow',
   },
   rowIcon: {
     fontSize: 20,

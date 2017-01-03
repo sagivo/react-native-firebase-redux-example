@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Provider } from 'react-redux';
-import Node from './ProfileContainer';
+import Node from './FeedContainer';
+// import Node from '../components/call/call';
 import store from './../models/store'
 
 export default class App extends Component {

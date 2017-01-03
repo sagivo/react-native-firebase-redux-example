@@ -1,6 +1,26 @@
 import Icon from 'react-native-vector-icons/FontAwesome';
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import moment from 'moment';
+
+moment.updateLocale('en', {
+  relativeTime : {
+    future: "in %s",
+    past:   "%s",
+    s:  "now",
+    m:  "now",
+    mm: "%dm",
+    h:  "h",
+    hh: "%dh",
+    d:  "a day",
+    dd: "%dd",
+    M:  "a month",
+    MM: "%dm",
+    y:  "a year",
+    yy: "%d years"
+  }
+});
+
 
 export default class Post extends Component {
   constructor(props) {
@@ -14,7 +34,7 @@ export default class Post extends Component {
       <View style={this.styles.container}>
         <View style={this.styles.left}>
           <Text style={this.styles.mainText}>{this.props.text}</Text>
-          <Text style={this.styles.time}>{this.props.time}</Text>
+          <Text style={this.styles.time}>{moment(this.props.time).fromNow()}</Text>
         </View>
         <View style={this.styles.right}>
           <View style={this.styles.phone}>
