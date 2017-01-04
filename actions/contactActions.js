@@ -30,8 +30,9 @@ export function addContact(post) {
   };
 }
 
-export function syncContacts(userId) {
-  return dispatch => {
+export function syncContacts() {
+  return (dispatch, getState) => {
+    const userId = getState().UserReducer.id;
     dispatch({ type: types.REFRESHING_CONTACTS });
 
     db.ref(`contacts/${userId}`).on('value', (s) => {

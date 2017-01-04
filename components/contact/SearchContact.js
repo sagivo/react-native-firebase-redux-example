@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Header = (props) => (
+const SearchContact = (props) => (
   <View style={styles.container}>
     <TextInput
       style={styles.input}
@@ -30,4 +30,4 @@ const Header = (props) => (
   </View>
 );
 
-export default Header;
+export default SearchContact;

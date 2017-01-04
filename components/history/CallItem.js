@@ -11,7 +11,6 @@ export default class CallItem extends Component {
   }
 
   render() {
-    console.log('?', this.props.id);
     return (
     <SwipeRow rightOpenValue={-50} key={this.props.id} style={{flex: 1}}>
       <View style={styles.hiddenRow}>

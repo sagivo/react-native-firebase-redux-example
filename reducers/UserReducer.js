@@ -66,8 +66,6 @@ async function setUserLocation() {
 
     res = await fetch(`https://ipapi.co/${ip}/json`);
     const location = await res.json();
-
-    console.log('location', location);
   } catch(error) {
     console.error(error);
   }
