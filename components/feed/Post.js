@@ -15,7 +15,7 @@ export default class Post extends Component {
       <View style={this.styles.container}>
         <View style={this.styles.left}>
           <Text style={this.styles.mainText}>{this.props.text}</Text>
-          <Text style={this.styles.time}>{time(this.props.id).fromNow()} {this.props.id}</Text>
+          <Text style={this.styles.time}>{time(this.props.id).fromNow()}</Text>
         </View>
         <View style={this.styles.right}>
           <View style={this.styles.phone}>
