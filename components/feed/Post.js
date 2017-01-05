@@ -1,26 +1,7 @@
 import Icon from 'react-native-vector-icons/FontAwesome';
 import React, {Component} from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import moment from 'moment';
-
-moment.updateLocale('en', {
-  relativeTime : {
-    future: "in %s",
-    past:   "%s",
-    s:  "now",
-    m:  "now",
-    mm: "%dm",
-    h:  "h",
-    hh: "%dh",
-    d:  "a day",
-    dd: "%dd",
-    M:  "a month",
-    MM: "%dm",
-    y:  "a year",
-    yy: "%d years"
-  }
-});
-
+import time from '../../models/time';
 
 export default class Post extends Component {
   constructor(props) {
@@ -34,7 +15,7 @@ export default class Post extends Component {
       <View style={this.styles.container}>
         <View style={this.styles.left}>
           <Text style={this.styles.mainText}>{this.props.text}</Text>
-          <Text style={this.styles.time}>{moment(this.props.time).fromNow()}</Text>
+          <Text style={this.styles.time}>{time(this.props.id).fromNow()} {this.props.id}</Text>
         </View>
         <View style={this.styles.right}>
           <View style={this.styles.phone}>
@@ -97,10 +78,16 @@ export default class Post extends Component {
 
 
 function getRandomColor() {
-  var letters = '0123456789ABCDEF';
-  var color = '#';
-  for (var i = 0; i < 6; i++ ) {
-      color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
+  const colors = [
+    '#EFD6D2',
+    '#FF8CC6',
+    '#DE369D',
+    '#6F5E76',
+    '#5C6F68',
+    '#8AA39B',
+    '#95D9C3',
+    '#75B8C8',
+    '#506C64'
+  ]
+  return colors[Math.floor(Math.random() * colors.length)];
 }

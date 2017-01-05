@@ -34,7 +34,7 @@ export default class CallInfo extends Component {
 
   renderFlashing() {
     return (
-      <Animatable.Text style={styles.infoText} iterationCount="infinite" duration={2000} animation="flash">
+      <Animatable.Text style={styles.infoText} iterationCount="infinite" duration={3000} animation="flash">
         {this.state.callStatus}
       </Animatable.Text>
     );
@@ -42,7 +42,7 @@ export default class CallInfo extends Component {
 
   renderPic() {
     return (
-      <Animatable.View animation="zoomIn" duration={500} style={styles.pic}>
+      <Animatable.View animation="zoomIn" duration={200} style={styles.pic}>
         <Image source={{uri: this.props.user.pic}} style={styles.image} />
       </Animatable.View>
     )
@@ -60,7 +60,7 @@ export default class CallInfo extends Component {
     if (nextProps.status === callStatus.CONNECTING) this.setState({
       ...this.state,
       text1: nextProps.topic ? nextProps.topic : nextProps.user.name,
-      callStatus: nextProps.method === callMethod.IN ? 'Incoming call...' : 'Connecting...',
+      callStatus: nextProps.method === callMethod.IN ? 'Incoming Call...' : 'Connecting...',
     });
 
     //call started

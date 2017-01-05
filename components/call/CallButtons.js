@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { TouchableHighlight, View, StyleSheet } from 'react-native';
 import { buttonType } from '../../models/call';
-import { callStatus } from '../../models/call';
+import { callStatus, callMethod } from '../../models/call';
 
 import * as Animatable from 'react-native-animatable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -36,11 +36,13 @@ export default class CallButton extends Component {
             <MaterialIcons name="call-end" style={styles.action} />
           </TouchableHighlight>
         </View>
-        <View style={styles.actionContainer}>
-          <TouchableHighlight onPress={this.props.onAnswer} style={[styles.round, styles.answer]}>
-            <MaterialIcons name="call" style={styles.action} />
-          </TouchableHighlight>
-        </View>
+        {this.props.method == callMethod.IN &&
+          <View style={styles.actionContainer}>
+            <TouchableHighlight onPress={this.props.onAnswer} style={[styles.round, styles.answer]}>
+              <MaterialIcons name="call" style={styles.action} />
+            </TouchableHighlight>
+          </View>
+        }
       </View>
     );
   }

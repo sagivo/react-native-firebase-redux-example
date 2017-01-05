@@ -22,7 +22,7 @@ export function onHistory(data) {
 export function removeHistory(historyId) {
   return (dispatch, getState) => {
     const userId = getState().UserReducer.id;
-    db.ref(`history/${userId}`).child(historyId).remove().then(() => {
+    db.ref(`calls/${userId}`).child(historyId).remove().then(() => {
       dispatch({
         type: types.REMOVE_HISTORY,
         payload: historyId,
@@ -46,12 +46,8 @@ export function syncHistory(userId) {
     // dispatch(onHistory(calls));
 
     const userId = getState().UserReducer.id;
-    db.ref(`history/${userId}`).on('value', (s) => {
-      const consts = {};
-      s.forEach(v => {
-        consts[v.key] = v.val();
-      });
-      dispatch(onHistory(consts));
+    db.ref(`calls/${userId}`).on('value', (s) => {
+      dispatch(onHistory(s.val()));
     });
   }
 }

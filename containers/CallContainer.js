@@ -39,11 +39,6 @@ class CallContainer extends Component {
     this.answer = this.answer.bind(this);
     this.hang = this.hang.bind(this);
     this.cancel = this.cancel.bind(this);
-    this.toggleSpeaker = this.toggleSpeaker.bind(this);
-    this.toggleMute = this.toggleMute.bind(this);
-  }
-
-  onChangeText(text) {
   }
 
   hang() {
@@ -56,14 +51,6 @@ class CallContainer extends Component {
 
   answer() {
     this.props.answer();
-  }
-
-  toggleSpeaker() {
-    this.setState({ ...this.state, speaker: !this.state.speaker });
-  }
-
-  toggleMute() {
-    this.setState({ ...this.state, mute: !this.state.mute });
   }
 
   render() {

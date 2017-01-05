@@ -29,8 +29,8 @@ export default class ContactList extends Component {
 
   HistoryFromHash(data) {
     return Object.keys(data)
-      .map(id => { return { ...data[id], id }; })
-      .sort(c => c.timestamp);
+      .map(id => { return { ...data[id], id: parseInt(id) }; })
+      .sort(c => c.id);
   }
 
   render() {

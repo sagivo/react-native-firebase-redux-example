@@ -11,7 +11,6 @@ export const types = {
 
 
 export function onCall(data) {
-  // console.log('here', data);
   return {
     type: types.ON_CALL,
     payload: data,
@@ -77,11 +76,11 @@ export function syncCalls(userId) {
       }
     });
 
-    //test data
-    db.ref(`calls/sagiv`).remove().then(() => {
+    //TODO: REMOVE test data
+    //db.ref(`calls/sagiv`).remove().then(() => {
       db.ref(`calls/sagiv`).child(new Date().getTime()).set(call1)
       .catch(e => console.error(e));
-    })
+    // })
   }
 }
 
@@ -100,7 +99,7 @@ const call1 = {
 }
 
 const call2 = {
-  method: 'OUT',
+  method: 'IN',
   topic: 'I feel blue and need to talk with someone, can anyone listen?',
   duration: null,
   start: null,

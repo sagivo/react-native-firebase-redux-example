@@ -1,5 +1,4 @@
 import db from './../models/db';
-const postsDB = db.ref('posts');
 
 export const types = {
   CALL_PRESS: 'CALL_PRESS',
@@ -34,12 +33,26 @@ export function syncPosts() {
   return dispatch => {
     dispatch({ type: types.REFRESHING });
 
-    postsDB.on('value', (s) => {
+    db.ref(`posts/active`).orderByKey().limitToLast(20).on('value', (s) => {
+      console.log(s.val());
       const posts = [];
       s.forEach(v=> {
-        posts.push({...v.val(), id: v.key});
+        posts.push({...v.val(), id: parseInt(v.key)});
       });
-      dispatch(onData(posts));
+      dispatch(onData(posts.reverse()));
     });
   }
 }
+
+// TODO: REMOVE test data
+// db.ref(`posts/active`).remove().then(() => {
+//   db.ref(`posts/active`).set({
+//     1483653167902:{ text: 'i feel blue', online: true, review: 4.2 },
+//     1483653168902:{ text: 'so today was my last day at work. took me way too long to do it', online: false, review: 3.1 },
+//     1483653169902:{ text: 'so today was my last day at work. took me way too long to do it', online: false, review: 3.1 },
+//     1483653177902:{ text: 'what do woman want?', online: false, review: 4.4 },
+//     1483653187902:{ text: 'seams like all man in NYC are assholes', online: false, review: 3.1 },
+//     1483653267902:{ text: 'So what if you like kids?', online: false, review: 3.1 },
+//   })
+//   .catch(e => console.error(e));
+// })
