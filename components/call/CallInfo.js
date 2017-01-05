@@ -19,7 +19,6 @@ export default class CallInfo extends Component {
   }
 
   answer(startTime) {
-    // const startTime = new Date().getTime(); // Timestamp - Sun, 21 Apr 2013 13:00:00 GMT
     this.interval = setInterval(() => {
       const duration = moment.duration(new Date().getTime() - startTime);
       this.setState({
@@ -33,27 +32,30 @@ export default class CallInfo extends Component {
     clearInterval(this.interval);
   }
 
-  renderConnecting() {
+  renderFlashing() {
     return (
-      <View style={styles.caller}>
-        {this.props.user.pic && <View style={styles.pic}>
-          <Image source={{uri: this.props.user.pic}} style={styles.image} />
-        </View>}
-        <Text style={styles.callerName}>{this.state.text1}</Text>
-        {
-          this.state.timer ?
-          <Text style={styles.infoText}>{this.state.timer}</Text>
-          :
-          <Animatable.Text style={styles.infoText} iterationCount="infinite" duration={2000} animation="flash">
-            {this.state.callStatus}
-          </Animatable.Text>
-        }
-      </View>
+      <Animatable.Text style={styles.infoText} iterationCount="infinite" duration={2000} animation="flash">
+        {this.state.callStatus}
+      </Animatable.Text>
+    );
+  }
+
+  renderPic() {
+    return (
+      <Animatable.View animation="zoomIn" duration={500} style={styles.pic}>
+        <Image source={{uri: this.props.user.pic}} style={styles.image} />
+      </Animatable.View>
+    )
+  }
+
+  renderTimer() {
+    return (
+      <Text style={styles.infoText}>{this.state.timer}</Text>
     );
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
+    console.log('GOT',nextProps.status);
     //connecting
     if (nextProps.status === callStatus.CONNECTING) this.setState({
       ...this.state,
@@ -68,20 +70,17 @@ export default class CallInfo extends Component {
 
   render() {
     if (!this.props.status) return <View></View>;
+    let foo;
+    if (this.state.timer)
+      foo = this.renderTimer();
+    else if (this.props.status !== callStatus.END)
+      foo = this.renderFlashing();
+
     return (
       <View style={styles.caller}>
-        {this.props.user.pic && <View style={styles.pic}>
-          <Image source={{uri: this.props.user.pic}} style={styles.image} />
-        </View>}
+        {this.props.user.pic && this.renderPic()}
         <Text style={styles.callerName}>{this.state.text1}</Text>
-        {
-          this.state.timer ?
-          <Text style={styles.infoText}>{this.state.timer}</Text>
-          :
-          <Animatable.Text style={styles.infoText} iterationCount="infinite" duration={2000} animation="flash">
-            {this.state.callStatus}
-          </Animatable.Text>
-        }
+        {foo}
       </View>
     );
   }

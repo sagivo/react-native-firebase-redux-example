@@ -44,6 +44,18 @@ export function hang() {
   }
 }
 
+export function cancel() {
+  return (dispatch, getState) => {
+    const userId = getState().UserReducer.id;
+    const callId = getState().CallReducer.id;
+    const { method } = getState().CallReducer;
+    db.ref(`calls/${userId}`).child(callId).update({
+      status: callStatus.END,
+      method: (method === callMethod.IN ? callMethod.IN_MISSED : callMethod.OUT_MISSED),
+    });
+  }
+}
+
 export function missed(call) {
   return {
     type: types.MISSED,
@@ -60,7 +72,6 @@ export function syncCalls(userId) {
       if (newCall.key > startSyncTime){
         db.ref(`calls/${userId}`).child(newCall.key).on('value', s => {
           const call = { ...s.val(), id: s.key };
-          console.log('???');
           dispatch(onCall(call));
         });
       }

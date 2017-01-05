@@ -6,8 +6,9 @@ import Compose from '../components/compose/Compose';
 import * as callActions from '../actions/callActions';
 import { Text, View, StyleSheet, Image, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
-import CallButton from '../components/call/CallButton';
+import CallButtons from '../components/call/CallButtons';
 import CallInfo from '../components/call/CallInfo';
+import { buttonType } from '../models/call';
 
 function mapStateToProps(state) {
   return {
@@ -20,6 +21,7 @@ function matchDispatchToProps(dispatch) {
     syncCalls: callActions.syncCalls,
     answer: callActions.answer,
     hang: callActions.hang,
+    cancel: callActions.cancel,
   }, dispatch);
 }
 
@@ -36,6 +38,7 @@ class CallContainer extends Component {
 
     this.answer = this.answer.bind(this);
     this.hang = this.hang.bind(this);
+    this.cancel = this.cancel.bind(this);
     this.toggleSpeaker = this.toggleSpeaker.bind(this);
     this.toggleMute = this.toggleMute.bind(this);
   }
@@ -45,6 +48,10 @@ class CallContainer extends Component {
 
   hang() {
     this.props.hang();
+  }
+
+  cancel() {
+    this.props.cancel();
   }
 
   answer() {
@@ -63,10 +70,10 @@ class CallContainer extends Component {
     return (
       <View style={styles.container}>
         <CallInfo {...this.props.call} />
-        <View style={styles.actions}>
-          <CallButton type='hang' onPress={this.hang}/>
-          <CallButton type='answer' onPress={this.answer} />
-        </View>
+        <CallButtons {...this.props.call}
+          onCancel={this.cancel}
+          onHang={this.hang}
+          onAnswer={this.answer}/>
       </View>
     );
   }
@@ -78,44 +85,6 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
   },
-  actions: {
-    flex: 1,
-    paddingHorizontal: 10,
-    alignItems: 'center',
-    flexDirection: 'row',
-    // backgroundColor: 'red',
-  },
-  actionContainer:{
-    flex: 1,
-    alignItems: 'flex-start',
-  },
-  round: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'yellow',
-    padding: 15,
-    borderRadius: 30,
-  },
-  action: {
-    backgroundColor: 'transparent',
-    fontSize: 30,
-    color: 'white',
-  },
-  hang: {
-    backgroundColor: 'red',
-  },
-  answer: {
-    backgroundColor: 'green',
-  },
-  transparent: {
-    backgroundColor: 'transparent',
-    borderWidth: 1,
-  },
-  transparentIcon: {
-    color: 'black',
-  },
-  
 });
-
 
 export default connect(mapStateToProps, matchDispatchToProps)(CallContainer);
