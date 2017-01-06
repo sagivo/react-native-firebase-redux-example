@@ -11,7 +11,7 @@ const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !==
 
 function mapStateToProps(state) {
   return {
-    dataSource: dataSource.cloneWithRows(state.FeedReducer.posts),
+    posts: state.FeedReducer.posts,
     refreshing: state.FeedReducer.refreshing,
   };
 }
@@ -20,7 +20,7 @@ function matchDispatchToProps(dispatch) {
   return bindActionCreators({
     addPost: feedActions.addPost,
     syncPosts: feedActions.syncPosts,
-    onCallPress: feedActions.onCallPress,
+    callPost: feedActions.callPost,
   }, dispatch);
 }
 
@@ -28,21 +28,19 @@ class FeedContainer extends Component {
   constructor(props) {
     super(props);
 
-    this.btnPress = this.btnPress.bind(this);
     this.onCallPress = this.onCallPress.bind(this);
     this.onRefresh = this.onRefresh.bind(this);
+
+    this.props.syncPosts();
   }
 
   onRefresh() {
     this.props.syncPosts();
   }
 
-  btnPress() {
-    this.props.addPost({text: (new Date()).getTime()});
-  }
-
   onCallPress(postId) {
-    this.props.onCallPress(postId);
+    // const post = this.props.posts.find(p => p.id === postId);
+    this.props.callPost(postId);
   }
 
   render() {
@@ -50,13 +48,12 @@ class FeedContainer extends Component {
       <View>
         <View>
           <Feed
-            dataSource={this.props.dataSource}
+            dataSource={dataSource.cloneWithRows(this.props.posts)}
             onCallPress={this.onCallPress}
             onRefresh={this.onRefresh}
             refreshing={this.props.refreshing}
             />
         </View>
-        <View><Button onPress={this.btnPress} title="add post" accessibilityLabel="See an informative alert" >aaa</Button></View>
       </View>
     );
   }
