@@ -1,18 +1,23 @@
 'use strict';
 
 import React, {Component} from 'react';
-import { View, Button, ListView } from 'react-native'
+import { View, Button, ListView, RefreshControl } from 'react-native'
 import {bindActionCreators} from 'redux';
-import Feed from '../components/feed/Feed';
+import Post from '../components/feed/Post';
 import * as feedActions from '../actions/feedActions';
 import { connect } from 'react-redux';
 
-const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
+const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => {
+  console.log(r1.id, r2.id, r1 !== r2);
+  // return true;
+  return r1.id !== r2.id
+}});
 
 function mapStateToProps(state) {
   return {
     posts: state.FeedReducer.posts,
     refreshing: state.FeedReducer.refreshing,
+    dataSource: dataSource.cloneWithRows(state.FeedReducer.posts),
   };
 }
 
@@ -25,6 +30,7 @@ function matchDispatchToProps(dispatch) {
 }
 
 class FeedContainer extends Component {
+
   constructor(props) {
     super(props);
 
@@ -39,7 +45,6 @@ class FeedContainer extends Component {
   }
 
   onCallPress(postId) {
-    // const post = this.props.posts.find(p => p.id === postId);
     this.props.callPost(postId);
   }
 
@@ -47,12 +52,22 @@ class FeedContainer extends Component {
     return (
       <View>
         <View>
-          <Feed
-            dataSource={dataSource.cloneWithRows(this.props.posts)}
-            onCallPress={this.onCallPress}
-            onRefresh={this.onRefresh}
-            refreshing={this.props.refreshing}
-            />
+          <ListView
+            dataSource={this.props.dataSource}
+            renderRow={(data, rowId) => <Post {...data} onCallPress={() => this.onCallPress(data.id)} />}
+            enableEmptySections={true}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.props.refreshing}
+                onRefresh={this.props.onRefresh}
+                tintColor="#ff0000"
+                title="Loading..."
+                titleColor="#383838"
+                colors={['#ff0000', '#646464', '#CACACA']}
+                progressBackgroundColor="#474747"
+              />
+            }
+          />
         </View>
       </View>
     );

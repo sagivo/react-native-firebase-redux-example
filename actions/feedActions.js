@@ -1,22 +1,19 @@
 import db from './../models/db';
 import { callStatus, callMethod } from '../models/call';
 
-// TODO: REMOVE test data
-db.ref(`posts`).remove().then(() => {
-  db.ref(`posts/active`).set({
-    1483653167902:{ text: 'i feel blue', online: true, review: 4.2, userId: 'foo' },
-    1483653168902:{ text: 'so today was my last day at work. took me way too long to do it', online: false, review: 3.1, userId: 'foo' },
-    1483653169902:{ text: 'so today was my last day at work. took me way too long to do it', online: false, review: 3.1, userId: 'foo' },
-    1483653177902:{ text: 'what do woman want?', online: false, review: 4.4, userId: 'foo' },
-    1283653177902:{ text: 'what do woman want?', online: false, review: 4.4, userId: 'foo' },
-    1284553177902:{ text: 'what do woman want?', online: false, review: 4.4, userId: 'foo' },
-    1483653187902:{ text: 'seams like all man in NYC are assholes', online: false, review: 3.1, userId: 'foo' },
-    1183653187202:{ text: 'seams like all man in NYC are assholes', online: false, review: 3.1, userId: 'foo' },
-    1483653267902:{ text: 'So what if you like kids?', online: false, review: 3.1, userId: 'foo' },
-  })
-  .catch(e => console.error(e));
-});
-db.ref(`calls`).remove();
+// // TODO: REMOVE test data
+// db.ref(`posts`).remove().then(() => {
+//   db.ref(`posts/active`).set({
+//     11:{ text: 'i feel blue1', online: true, review: 4.2, userId: 'foo', color: '#FF8CC6' },
+//     22:{ text: 'i feel blue2', online: false, review: 3.1, userId: 'foo', color: '#6F5E76' },
+//     33:{ text: 'i feel blue3', online: false, review: 3.1, userId: 'foo', color: '#8AA39B' },
+//     44:{ text: 'i feel blue4', online: false, review: 4.4, userId: 'foo', color: '#95D9C3' },
+//     55:{ text: 'i feel blue5', online: false, review: 4.4, userId: 'foo', color: '#506C64' },
+//     66:{ text: 'i feel blue6', online: false, review: 4.4, userId: 'foo', color: '#EFD6D2' },
+//   })
+//   .catch(e => console.error(e));
+// });
+// db.ref(`calls`).remove();
 
 export const types = {
   CALL_PRESS: 'CALL_PRESS',
@@ -42,7 +39,6 @@ export function callPost(postId) {
       const postToMove = s.val();
       db.ref('posts/old').child(postId).set(postToMove)
       .then(() => db.ref('posts/active').child(postId).remove())
-      .then(() => console.log(postToMove.userId, userId) )
       //create call for the post owner
       .then(() => db.ref(`calls/${postToMove.userId}`).child(callTime).set({
         method: callMethod.IN,
@@ -68,14 +64,24 @@ export function syncPosts() {
   return dispatch => {
     dispatch({ type: types.REFRESHING });
 
-    db.ref(`posts/active`).orderByKey().limitToLast(20).on('value', (s) => {
+    function listFromHash(data) {
+      return Object.keys(data).map(id => { return { ...data[id], id: parseInt(id)  } }).reverse();
+    }
+
+    db.ref(`posts/active`).orderByKey().limitToLast(4).once('value', (s) => {
       if (!s.val()) return; //TODO: REMOVE THIS LINE
-      const posts = [];
-      s.forEach(v=> {
-        posts.push({...v.val(), id: parseInt(v.key)});
+      const data = { ...s.val() };
+      let counter = Object.keys(data).length;
+      s.forEach(p => {
+        p.ref.on('value', newPost => {
+          console.log(counter);
+          if (counter-- > 0) return; //skip if first load
+          if (!newPost.val()) delete data[p.key]; //if deleted
+          else data[p.key] = { ...data[p.key], ...newPost.val() }; //updated value
+          dispatch(onData(listFromHash(data)));
+        });
       });
-      dispatch(onData(posts.reverse()));
+      dispatch(onData(listFromHash(data)));
     });
   }
 }
-
