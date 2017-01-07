@@ -68,15 +68,15 @@ export function syncPosts() {
       return Object.keys(data).map(id => { return { ...data[id], id: parseInt(id)  } }).reverse();
     }
 
+    console.log('syncing');
     db.ref(`posts/active`).orderByKey().limitToLast(4).once('value', (s) => {
       if (!s.val()) return; //TODO: REMOVE THIS LINE
       const data = { ...s.val() };
       let counter = Object.keys(data).length;
       s.forEach(p => {
         p.ref.on('value', newPost => {
-          console.log(counter);
           if (counter-- > 0) return; //skip if first load
-          if (!newPost.val()) delete data[p.key]; //if deleted
+          if (!newPost.val()) data[p.key].busy = true; //if deleted
           else data[p.key] = { ...data[p.key], ...newPost.val() }; //updated value
           dispatch(onData(listFromHash(data)));
         });

@@ -59,7 +59,7 @@ class FeedContainer extends Component {
             refreshControl={
               <RefreshControl
                 refreshing={this.props.refreshing}
-                onRefresh={this.props.onRefresh}
+                onRefresh={this.onRefresh}
                 tintColor="#ff0000"
                 title="Loading..."
                 titleColor="#383838"

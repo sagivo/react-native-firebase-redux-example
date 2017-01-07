@@ -1,6 +1,7 @@
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import React, {Component} from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import time from '../../models/time';
 
 export default class Post extends Component {
@@ -12,7 +13,8 @@ export default class Post extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  busy() {
+    Alert.alert('Oops... to late, the person is already speaking with someone else.');
   }
 
   render() {
@@ -24,11 +26,15 @@ export default class Post extends Component {
         </View>
         <View style={styles.right}>
           <View style={styles.phone}>
-            <Icon name="phone" size={40} color="white" onPress={this.props.onCallPress} />
+          {
+            this.props.busy ?
+            <MaterialIcons name="perm-phone-msg" size={40} color="gray" onPress={this.busy} />
+            :
+            <MaterialIcons name="phone" size={40} color="white" onPress={this.props.onCallPress} />
+          }
           </View>
           <View style={styles.rating}>
-            <Text style={styles.score}>{this.props.review} </Text>
-            <Text><Icon name="star-o" size={10} color="white" /></Text>
+            <Text style={styles.score}><MaterialIcons name="star-border" color="white" />{this.props.review}</Text>
           </View>
         </View>
       </View>
@@ -38,12 +44,11 @@ export default class Post extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    //padding: 40,
     flexDirection: 'row',
-    height: 180,
+    paddingVertical: 50,
+    paddingHorizontal: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: bgColor,
   },
   mainText: {
     color: 'white',
@@ -56,25 +61,29 @@ const styles = StyleSheet.create({
     fontStyle : 'italic',
   },
   left: {
-    flex: 5,
-    padding:20,
+    flex:4,
+    justifyContent: 'flex-start',
   },
   right: {
-    paddingRight: 10,
     flex: 1,
-    justifyContent: 'space-between',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginLeft: 10,
   },
   phone: {
     alignItems: 'center',
-    padding: 10
+    borderWidth: 2,
+    borderRadius: 100,
+    padding: 10,
   },
   rating: {
+    marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
   score: {
-    fontSize: 10,
+    fontSize: 16,
     color: 'white',
   },
 });
@@ -91,7 +100,8 @@ function getRandomColor() {
     '#8AA39B',
     '#95D9C3',
     '#75B8C8',
-    '#506C64'
+    '#506C64',
+    '#AFF2AD'
   ]
   return colors[Math.floor(Math.random() * colors.length)];
 }
