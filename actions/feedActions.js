@@ -4,12 +4,12 @@ import { callStatus, callMethod } from '../models/call';
 // // TODO: REMOVE test data
 // db.ref(`posts`).remove().then(() => {
 //   db.ref(`posts/active`).set({
-//     11:{ text: 'i feel blue1', online: true, review: 4.2, userId: 'foo', color: '#FF8CC6' },
-//     22:{ text: 'i feel blue2', online: false, review: 3.1, userId: 'foo', color: '#6F5E76' },
-//     33:{ text: 'i feel blue3', online: false, review: 3.1, userId: 'foo', color: '#8AA39B' },
-//     44:{ text: 'i feel blue4', online: false, review: 4.4, userId: 'foo', color: '#95D9C3' },
-//     55:{ text: 'i feel blue5', online: false, review: 4.4, userId: 'foo', color: '#506C64' },
-//     66:{ text: 'i feel blue6', online: false, review: 4.4, userId: 'foo', color: '#EFD6D2' },
+//     11:{ text: 'L1orem ipsum dolor sit amet, consectetur adipiscing elit. Praesent placerat faucibus tortor ac volutpat. Aliquam cursus placerat turpis duis.', online: true, rating: 4.2, userId: 'foo', color: '#FF8CC6' },
+//     22:{ text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc non sollicitudin orci, quis venenatis lorem. Praesent convallis vitae posuere.', online: false, rating: 3.1, userId: 'foo', color: '#6F5E76' },
+//     33:{ text: 'i feel blue3', online: false, rating: 3.1, userId: 'foo', color: '#8AA39B' },
+//     44:{ text: 'i feel blue4', online: false, rating: 4.4, userId: 'foo', color: '#95D9C3' },
+//     55:{ text: 'L5orem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sit amet nibh porttitor, gravida purus tristique, congue nibh.', online: false, rating: 4.4, userId: 'foo', color: '#506C64', busy: true },
+//     66:{ text: 'L6orem ipsum dolor sit amet, consectetur adipiscing elit. ', online: false, rating: 4.4, userId: 'foo', color: '#EFD6D2' },
 //   })
 //   .catch(e => console.error(e));
 // });

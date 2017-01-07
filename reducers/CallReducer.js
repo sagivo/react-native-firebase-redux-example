@@ -14,6 +14,7 @@ const initialState = {
     name: null,
   },
   status: null,
+  postId: null,
 };
 
 export default function callReducer(state = initialState, action = {}) {

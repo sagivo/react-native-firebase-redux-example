@@ -34,7 +34,7 @@ export default class Post extends Component {
           }
           </View>
           <View style={styles.rating}>
-            <Text style={styles.score}><MaterialIcons name="star-border" color="white" />{this.props.review}</Text>
+            <Text style={styles.score}><MaterialIcons name="star-border" color="white" />{this.props.rating}</Text>
           </View>
         </View>
       </View>

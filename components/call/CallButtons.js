@@ -36,7 +36,7 @@ export default class CallButton extends Component {
             <MaterialIcons name="call-end" style={styles.action} />
           </TouchableHighlight>
         </View>
-        {this.props.method == callMethod.IN &&
+        {this.props.method === callMethod.IN &&
           <View style={styles.actionContainer}>
             <TouchableHighlight onPress={this.props.onAnswer} style={[styles.round, styles.answer]}>
               <MaterialIcons name="call" style={styles.action} />

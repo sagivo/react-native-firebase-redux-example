@@ -21,6 +21,7 @@ export function answer() {
   return (dispatch, getState) => {
     const userId = getState().UserReducer.id;
     const callId = getState().CallReducer.id;
+    //TODO: webrtc magic here and update other user's call
     db.ref(`calls/${userId}`).child(callId).update({
       status: callStatus.START,
       start: new Date().getTime(),
@@ -33,9 +34,16 @@ export function hang() {
     const userId = getState().UserReducer.id;
     const callId = getState().CallReducer.id;
     const startTime = getState().CallReducer.start;
+    const otherUserId =  getState().CallReducer.user.id;
     const endTime = new Date().getTime();
-
+    // update your call
     db.ref(`calls/${userId}`).child(callId).update({
+      status: callStatus.END,
+      end: endTime,
+      duration: endTime - startTime,
+    });
+    // update other user's call
+    db.ref(`calls/${otherUserId}`).child(callId).update({
       status: callStatus.END,
       end: endTime,
       duration: endTime - startTime,
@@ -47,10 +55,23 @@ export function cancel() {
   return (dispatch, getState) => {
     const userId = getState().UserReducer.id;
     const callId = getState().CallReducer.id;
-    const { method } = getState().CallReducer;
+    const otherUserId =  getState().CallReducer.user.id;
+    const { method, postId } = getState().CallReducer;
+    // update current user call
     db.ref(`calls/${userId}`).child(callId).update({
       status: callStatus.END,
       method: (method === callMethod.IN ? callMethod.IN_MISSED : callMethod.OUT_MISSED),
+    });
+    // update other user user call
+    db.ref(`calls/${otherUserId}`).child(callId).update({
+      status: callStatus.END,
+      method: (method === callMethod.IN ? callMethod.OUT_MISSED : callMethod.IN_MISSED),
+    });
+    // put post back in the feed
+    db.ref('posts/old').child(postId).once('value', s => {
+      const postToMove = s.val();
+      db.ref('posts/active').child(postId).set(postToMove)
+      .then(() => db.ref('posts/old').child(postId).remove())
     });
   }
 }
@@ -77,10 +98,13 @@ export function syncCalls(userId) {
     });
 
     //TODO: REMOVE test data
-    //db.ref(`calls/sagiv`).remove().then(() => {
-      db.ref(`calls/sagiv`).child(new Date().getTime()).set(call1)
+    db.ref(`calls`).remove().then(() => {
+      db.ref(`posts/active/101`).remove();
+      db.ref(`calls/sagiv`).child(new Date().getTime()).set(call2)
       .catch(e => console.error(e));
-    // })
+      db.ref(`posts/old/101`).set({ text: 'go back test.', online: true, rating: 4.2, userId: 'foo', color: '#FF8CC6' })
+      .catch(e => console.error(e));
+    })
   }
 }
 
@@ -95,11 +119,12 @@ const call1 = {
     pic: 'https://randomuser.me/api/portraits/men/6.jpg',
     name: 'Sagiv Ofek',
   },
+  postId: 101,
   status: 'CONNECTING',
 }
 
 const call2 = {
-  method: 'IN',
+  method: 'OUT',
   topic: 'I feel blue and need to talk with someone, can anyone listen?',
   duration: null,
   start: null,
@@ -107,5 +132,6 @@ const call2 = {
   user: {
     id: 'foo',
   },
+  postId: 101,
   status: 'CONNECTING',
 }
