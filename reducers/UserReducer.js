@@ -12,6 +12,7 @@ const initialState = {
   location: null,
   languages: null,
   refreshing: false,
+  screenStatus: null,
   loaction: { lat: null, lan: null },
   rating: null,
   contacts: 0,
