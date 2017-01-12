@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { Text, View, StyleSheet, Image, TouchableHighlight, TextInput } from 'react-native';
 import { connect } from 'react-redux';
-import CallButtons from '../components/call/CallButtons';
 
 import * as Animatable from 'react-native-animatable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
