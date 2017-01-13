@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     margin: 2,
   },
   name: {
-    width: 120,
+    width: imageSize,
     textAlign: 'center',
   },
   plus: {
