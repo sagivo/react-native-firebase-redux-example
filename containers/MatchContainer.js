@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
-import { Button, Text, View, StyleSheet, Image, TouchableHighlight, TextInput } from 'react-native';
+import { ScrollView, Text, View, StyleSheet, Image, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
 
 import * as matchActions from '../actions/matchActions';
@@ -82,6 +82,7 @@ class ReviewContainer extends Component {
   render() {
     return (
       (this.props.match.hasMatch) ?
+      <ScrollView>
       <View style={styles.container}>
         <Text style={styles.title}>New Contact!</Text>
         <Text style={styles.subtitle}>now you can be in touch anytime</Text>
@@ -95,6 +96,7 @@ class ReviewContainer extends Component {
           >Go to contacts</Text>
         </TouchableHighlight>
       </View>
+      </ScrollView>
       :
       <Text>Loading...</Text>
     );
