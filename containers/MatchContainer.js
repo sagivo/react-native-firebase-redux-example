@@ -41,7 +41,7 @@ class ReviewContainer extends Component {
   }
 
   doneMatch() {
-    this.props.doneMatch(this.props.match.id);
+    this.props.doneMatch();
   }
 
   imageAnimationEnded() {
