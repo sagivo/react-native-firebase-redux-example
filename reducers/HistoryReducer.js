@@ -4,7 +4,7 @@ const initialState = {
   refreshing: false,
 };
 
-export default function historyReducer(state = initialState, action = {}) {
+export default function HistoryReducer(state = initialState, action = {}) {
   switch (action.type) {
     case types.REFRESHING_HISTORY:
       return {

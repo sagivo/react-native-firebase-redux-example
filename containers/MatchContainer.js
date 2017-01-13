@@ -5,18 +5,20 @@ import { bindActionCreators } from 'redux';
 import { Button, Text, View, StyleSheet, Image, TouchableHighlight, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 
+import * as matchActions from '../actions/matchActions';
 import * as Animatable from 'react-native-animatable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 function mapStateToProps(state) {
   return {
-    // call: state.CallReducer,
+    match: state.MatchReducer,
   };
 }
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
-    // syncCalls: callActions.syncCalls,
+    syncMatches: matchActions.syncMatches,
+    doneMatch: matchActions.doneMatch,
   }, dispatch);
 }
 
@@ -28,51 +30,63 @@ class ReviewContainer extends Component {
       imageAnimationEnded: false,
     };
 
+    this.props.syncMatches();
+
     this.imageAnimationEnded = this.imageAnimationEnded.bind(this);
+    this.doneMatch = this.doneMatch.bind(this);
   }
 
   submit() {
     console.log('submited');
   }
 
-  goToContacts() {
+  doneMatch() {
+    this.props.doneMatch(this.props.match.id);
   }
 
   imageAnimationEnded() {
     this.setState({ ...this.state, imageAnimationEnded: true });
   }
 
+  renderMatch(user) {
+    console.log('here');
+    return (
+      <View style={styles.images} key={user.id}>
+        <Animatable.View style={styles.anim}
+          animation="slideInLeft"
+          easing="ease-in-quart"
+          delay={500}
+          duration={500}
+          onAnimationEnd={() => this.imageAnimationEnded()}>
+          <Image
+            source={{uri: 'https://randomuser.me/api/portraits/men/6.jpg'}} style={styles.image}/>
+          <Text>You</Text>
+        </Animatable.View>
+        { this.state.imageAnimationEnded &&
+        <Animatable.Text delay={1000} style={styles.plus} animation="bounce" >+</Animatable.Text>
+        }
+        <Animatable.View style={styles.anim}
+          animation="slideInRight"
+          easing="ease-in-quart"
+          delay={500}
+          duration={500}
+          onAnimationEnd={() => this.imageAnimationEnded()}>
+          <Image
+            source={{uri: user.pic}} style={styles.image}/>
+          <Text style={styles.name}>{user.name}</Text>
+        </Animatable.View>
+      </View>
+    )
+  }
+
   render() {
     return (
+      (this.props.match.hasMatch) ?
       <View style={styles.container}>
         <Text style={styles.title}>New Contact!</Text>
         <Text style={styles.subtitle}>now you can be in touch anytime</Text>
-        <View style={styles.images}>
-          <Animatable.View style={styles.anim}
-            animation="slideInLeft"
-            easing="ease-in-quart"
-            delay={500}
-            duration={500}
-            onAnimationEnd={() => this.imageAnimationEnded()}>
-            <Image
-              source={{uri: 'https://randomuser.me/api/portraits/men/6.jpg'}} style={styles.image}/>
-            <Text>You</Text>
-          </Animatable.View>
-          { this.state.imageAnimationEnded &&
-          <Animatable.Text delay={1000} style={styles.plus} animation="bounce" >+</Animatable.Text>
-          }
-          <Animatable.View style={styles.anim}
-            animation="slideInRight"
-            easing="ease-in-quart"
-            delay={500}
-            duration={500}
-            onAnimationEnd={() => this.imageAnimationEnded()}>
-            <Image
-              source={{uri: 'https://randomuser.me/api/portraits/men/26.jpg'}} style={styles.image}/>
-            <Text style={styles.name}>Richard Zilberman</Text>
-          </Animatable.View>
-        </View>
-        <TouchableHighlight style={styles.buttonContainer} onPress={this.goToContacts}>
+        {this.props.match.matches.map(u => this.renderMatch(u))}
+        <TouchableHighlight style={styles.buttonContainer} onPress={this.doneMatch}>
           <Text
             style={styles.button}
             title="Go to contacts"
@@ -81,6 +95,8 @@ class ReviewContainer extends Component {
           >Go to contacts</Text>
         </TouchableHighlight>
       </View>
+      :
+      <Text>Loading...</Text>
     );
   }
 }
@@ -99,9 +115,10 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 20,
+    marginBottom: 40,
   },
   images: {
-    marginTop: 50,
+    marginTop: 10,
     flexDirection: 'row',
     alignItems: 'flex-start',
   },
@@ -127,7 +144,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 70,
     backgroundColor: '#42f4c2',
-    padding: 10,
+    padding: 20,
   },
   button: {
     fontSize: 20,
