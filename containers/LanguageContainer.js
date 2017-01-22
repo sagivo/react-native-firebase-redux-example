@@ -8,7 +8,7 @@ import {
   View
 } from 'react-native';
 import * as userActions from '../actions/userActions';
-import {bindActionCreators} from 'redux';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import languages from "../models/languages";

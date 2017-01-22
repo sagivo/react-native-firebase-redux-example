@@ -19,7 +19,8 @@ export function updateUser(key, value) {
   return (dispatch, getState) => {
     const userId = getState().UserReducer.id;
 
-    db.ref(`users/${userId}`).child(key).set(value).catch(dbError);
+    if (getState().UserReducer[key] !== value)
+      db.ref(`users/${userId}`).child(key).set(value).catch(dbError);
   }
 }
 
@@ -32,6 +33,14 @@ export function syncUser() {
     db.ref(`users/${userId}`).on('value', (s) => {
       dispatch(onUserData(s.val()));
     });
+  }
+}
+
+export function unSyncUser() {
+  return (dispatch, getState) => {
+    const userId = getState().UserReducer.id;
+
+    db.ref(`users/${userId}`).off('value');
   }
 }
 

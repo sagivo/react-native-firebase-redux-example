@@ -38,7 +38,7 @@ class ReviewContainer extends Component {
   }
 
   submit() {
-    console.log('submited');
+    //TODO: ADD SUBMIT
   }
 
   onChangeText(text) {

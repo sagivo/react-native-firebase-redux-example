@@ -8,9 +8,7 @@ import * as feedActions from '../actions/feedActions';
 import { connect } from 'react-redux';
 
 const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => {
-  console.log(r1.id, r2.id, r1 !== r2);
-  // return true;
-  return r1.id !== r2.id
+  return r1.id !== r2.id;
 }});
 
 function mapStateToProps(state) {

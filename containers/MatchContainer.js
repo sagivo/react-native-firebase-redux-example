@@ -36,10 +36,6 @@ class ReviewContainer extends Component {
     this.doneMatch = this.doneMatch.bind(this);
   }
 
-  submit() {
-    console.log('submited');
-  }
-
   doneMatch() {
     this.props.doneMatch();
   }
@@ -49,7 +45,6 @@ class ReviewContainer extends Component {
   }
 
   renderMatch(user) {
-    console.log('here');
     return (
       <View style={styles.images} key={user.id}>
         <Animatable.View style={styles.anim}
@@ -84,7 +79,7 @@ class ReviewContainer extends Component {
       (this.props.match.hasMatch) ?
       <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.title}>New Contact!</Text>
+        <Text style={styles.title}>New Contact{this.props.match.matches.length > 1 ? 's' : ''}!</Text>
         <Text style={styles.subtitle}>now you can be in touch anytime</Text>
         {this.props.match.matches.map(u => this.renderMatch(u))}
         <TouchableHighlight style={styles.buttonContainer} onPress={this.doneMatch}>

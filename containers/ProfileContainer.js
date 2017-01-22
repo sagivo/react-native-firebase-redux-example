@@ -50,11 +50,11 @@ class ProfileContainer extends Component {
   }
 
   setLanguage() {
-    console.log('move to language page'); //TODO: MOVE
+    //TODO: MOVE to language page
   }
 
   async infoContacts() {
-    console.log('move to contact page'); //TODO: MOVE
+    //TODO: MOVE TO CONTACT PAGE
   }
 
   render() {

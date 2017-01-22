@@ -1,5 +1,5 @@
-import {types} from '../actions/userActions';
-import {AsyncStorage} from 'react-native';
+import { types, syncUser } from '../actions/userActions';
+import { AsyncStorage } from 'react-native';
 
 const USER_STORAGE_KEY = 'USER_STORAGE_KEY';
 
@@ -12,6 +12,7 @@ const initialState = {
   location: null,
   languages: null,
   refreshing: false,
+  pushToken: null,
   screenStatus: null,
   loaction: { lat: null, lan: null },
   rating: null,
@@ -32,7 +33,7 @@ export default function userReducer(state = initialState, action = {}) {
 }
 
 export async function ensureLogin(cb) {
-  // saveUserId('sagiv')
+  saveUserId('sagiv')
   if (initialState.id) cb(true);
   else {
     const localUserId = await AsyncStorage.getItem(USER_STORAGE_KEY)
@@ -41,6 +42,7 @@ export async function ensureLogin(cb) {
       return;
     }
     initialState.id  = localUserId;
+    syncUser();
     cb(true);
   }
 }
@@ -56,7 +58,6 @@ async function saveUserId(userId) {
 }
 
 export async function logout() {
-  console.log('loging out');
   await AsyncStorage.removeItem(USER_STORAGE_KEY);
 }
 

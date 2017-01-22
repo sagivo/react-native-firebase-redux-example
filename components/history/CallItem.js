@@ -9,8 +9,6 @@ import time from '../../models/time';
 export default class CallItem extends Component {
   constructor(props) {
     super(props);
-
-    console.log(props);
   }
 
   render() {

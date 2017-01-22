@@ -68,7 +68,6 @@ export function syncPosts() {
       return Object.keys(data).map(id => { return { ...data[id], id: parseInt(id)  } }).reverse();
     }
 
-    console.log('syncing');
     db.ref(`posts/active`).orderByKey().limitToLast(4).once('value', (s) => {
       if (!s.val()) return; //TODO: REMOVE THIS LINE
       const data = { ...s.val() };

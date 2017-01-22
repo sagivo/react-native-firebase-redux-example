@@ -55,7 +55,6 @@ export default class CallInfo extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('GOT',nextProps.status);
     //connecting
     if (nextProps.status === callStatus.CONNECTING) this.setState({
       ...this.state,

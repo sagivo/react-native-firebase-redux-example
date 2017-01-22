@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Provider } from 'react-redux';
-import Node from './MatchContainer';
+import Node from './MainContainer';
 import store from './../models/store'
 
 export default class App extends Component {
