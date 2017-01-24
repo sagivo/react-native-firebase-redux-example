@@ -8,6 +8,8 @@ import store from '../models/store'
 
 import FCM from 'react-native-fcm';
 
+import Notification from "../models/Notification";
+
 function mapStateToProps(state) {
   return {
     // languages: state.UserReducer.languages,
@@ -40,9 +42,12 @@ class Main extends Component {
   syncNotifications() {
     FCM.requestPermissions(); // for iOS
     FCM.getFCMToken().then(token => {
+      console.log(token);
       this.props.updateUser('pushToken', token);
     });
 
+    FCM.getInitialNotification().then(handleNotification);
+    FCM.removeAllDeliveredNotifications();
     this.notificationListener = FCM.on('notification', handleNotification);
 
     this.refreshTokenListener = FCM.on('refreshToken', (token) => {
@@ -53,8 +58,8 @@ class Main extends Component {
 
   unSyncNotifications() {
     console.log('unSyncNotifications');
-    this.notificationListener.remove();
-    this.refreshTokenListener.remove();
+    // this.notificationListener.remove();
+    // this.refreshTokenListener.remove();
   }
 
   render() {
@@ -67,11 +72,9 @@ class Main extends Component {
 export default connect(mapStateToProps, matchDispatchToProps)(Main);
 
 function handleNotification(notification) {
+  if (!notification || notification.profile === 0) return;
+
   console.log('notification ---> ', notification);
-  // there are two parts of notif. notif.notification contains the notification payload, notif.data contains data payload
-  if(notification.local_notification){
-    //this is a local notification
-  }
   if(notification.opened_from_tray){
     //app is open/resumed because user clicked banner
   }
