@@ -12,20 +12,14 @@ export default class CallButton extends Component {
     super(props);
 
     this.state = {
-      mute: false,
       speaker: false,
     }
 
     this.toggleSpeaker = this.toggleSpeaker.bind(this);
-    this.toggleMute = this.toggleMute.bind(this);
   }
 
   toggleSpeaker() {
     this.setState({ ...this.state, speaker: !this.state.speaker });
-  }
-
-  toggleMute() {
-    this.setState({ ...this.state, mute: !this.state.mute });
   }
 
   renderConnection() {
@@ -61,8 +55,8 @@ export default class CallButton extends Component {
           </TouchableHighlight>
         </View>
         <View style={styles.actionContainer}>
-          <TouchableHighlight onPress={this.toggleMute} style={[styles.round, this.state.mute ? styles.on : styles.transparent]}>
-            <MaterialIcons name={this.state.mute ? 'mic-off' : 'mic'} style={[styles.action, this.state.mute ? null : styles.transparentIcon]} />
+          <TouchableHighlight onPress={this.props.toggleMute} style={[styles.round, this.props.mute ? styles.on : styles.transparent]}>
+            <MaterialIcons name={this.props.mute ? 'mic-off' : 'mic'} style={[styles.action, this.props.mute ? null : styles.transparentIcon]} />
           </TouchableHighlight>
         </View>
       </Animatable.View>

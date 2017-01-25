@@ -25,6 +25,7 @@ function matchDispatchToProps(dispatch) {
     answer: callActions.answer,
     hang: callActions.hang,
     cancel: callActions.cancel,
+    toggleMute: callActions.toggleMute,
   }, dispatch);
 }
 
@@ -37,7 +38,6 @@ class CallContainer extends Component {
     }
 
     this.state = {
-      mute: false,
       speaker: false,
       webRTC: new WebRTC(webRTCEvents),
     };
@@ -47,18 +47,26 @@ class CallContainer extends Component {
     this.answer = this.answer.bind(this);
     this.hang = this.hang.bind(this);
     this.cancel = this.cancel.bind(this);
+    this.toggleMute = this.toggleMute.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('nextProps', nextProps);
     //call status changed
     const call = nextProps.call;
-    if (call.status === callStatus.CONNECTING) this.state.webRTC.call(this.props.userId, call.user.id);
-    // if (call.status === callStatus.START) this.answer(call.start);
-    // if (call.status === callStatus.END) this.hang();
+    //calling someone
+    if (call.status === callStatus.CONNECTING && call.method === callMethod.OUT)
+      this.state.webRTC.call(this.props.userId, call.user.id);
+  }
+
+  toggleMute() {
+    this.state.webRTC.toggleMute();
+    this.props.toggleMute();
   }
 
   hang() {
     this.props.hang();
+    this.state.webRTC.end();
   }
 
   cancel() {
@@ -67,6 +75,7 @@ class CallContainer extends Component {
 
   answer() {
     this.props.answer();
+    this.state.webRTC.answer(this.props.userId, this.props.call.user.id);
   }
 
   render() {
@@ -76,7 +85,9 @@ class CallContainer extends Component {
         <CallButtons {...this.props.call}
           onCancel={this.cancel}
           onHang={this.hang}
-          onAnswer={this.answer}/>
+          onAnswer={this.answer}
+          toggleMute={this.toggleMute}
+          />
       </View>
     );
   }

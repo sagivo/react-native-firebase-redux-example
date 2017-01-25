@@ -1,3 +1,4 @@
+//firebase permissions: read - websocket/otheruser read/write - websocket/userid
 import db from './db';
 
 import {
@@ -24,6 +25,8 @@ export default class WebRTC {
     this.otherUserId = otherUserId;
 
     this.getLocalMedia((localStream) => {
+      this.localStream = localStream;
+      console.log('getAudioTracks', localStream.getAudioTracks());
       // playLocalStream(localStream);
 
       this.pc = new RTCPeerConnection(configIce);
@@ -38,10 +41,10 @@ export default class WebRTC {
       }
 
       this.pc.oniceconnectionstatechange = () => {
+        if (!this.pc) return;
+
         if(this.pc.iceConnectionState == 'disconnected') {
           console.log('Disconnected!');
-          db.ref(`webrtc/${this.userId}`).remove();
-          db.ref(`webrtc/${this.otherUserId}`).remove();
           if (this.events.onDisconnected) this.events.onDisconnected();
         }
       }
@@ -63,11 +66,25 @@ export default class WebRTC {
   }
 
   call(userId, otherUserId) {
+    console.log('WEBRTC CALL');
     this.init(userId, otherUserId, () => this.pc.createOffer(this.gotDesc.bind(this), (e) => console.log(e)))
   }
 
-  answer() {
-    console.log('ansewr');
+  end() {
+    db.ref(`webrtc/${this.userId}`).remove();
+    db.ref(`webrtc/${this.otherUserId}`).remove();
+
+    this.localStream.getAudioTracks().forEach(track => track.stop());
+    this.remoteStream.getAudioTracks().forEach(track => track.stop());
+    this.localStream = this.remoteStream = null;
+
+    this.pc.close();
+    this.pc = null;
+  }
+
+  answer(userId, otherUserId) {
+    console.log('WEBRTC ANSWER');
+    this.init(userId, otherUserId);
   }
 
   getLocalMedia(cb) {
@@ -75,13 +92,18 @@ export default class WebRTC {
   }
 
   playRemoteStream(remoteStream) {
-    console.log('play remoteStream!', remoteStream.toURL());
+    this.remoteStream = remoteStream;
+    console.log('play remoteStream!', this.remoteStream.toURL());
   }
 
   gotDesc(desc) {
     this.pc.setLocalDescription(desc, () => {
       db.ref(`webrtc/${this.userId}/sdp`).push(JSON.stringify(desc)).catch(e=> console.error(e));
     }, (e) => console.log(e));
+  }
+
+  toggleMute() {
+    this.localStream.getAudioTracks().forEach(track => track.enabled = !track.enabled);
   }
 }
 

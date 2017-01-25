@@ -8,6 +8,7 @@ const initialState = {
   duration: null,
   start: null,
   end: null,
+  mute: false,
   user: {
     id: null,
     pic: null,
@@ -38,6 +39,8 @@ export default function callReducer(state = initialState, action = {}) {
       };
     case types.CONTACT_CALL_PRESS:
       return state;
+    case types.TOGGLE_MUTE:
+      return { ...state, mute: !state.mute };
     default:
       return state;
   }
