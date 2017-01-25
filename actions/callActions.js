@@ -22,7 +22,7 @@ export function answer() {
     const userId = getState().UserReducer.id;
     const callId = getState().CallReducer.id;
     //TODO: webrtc magic here and update other user's call
-    db.ref(`calls/${userId}`).child(callId).update({
+    db.ref(`calls/${userId}/${callId}`).update({
       status: callStatus.START,
       start: new Date().getTime(),
     });
@@ -37,13 +37,13 @@ export function hang() {
     const otherUserId =  getState().CallReducer.user.id;
     const endTime = new Date().getTime();
     // update your call
-    db.ref(`calls/${userId}`).child(callId).update({
+    db.ref(`calls/${userId}/${callId}`).update({
       status: callStatus.END,
       end: endTime,
       duration: endTime - startTime,
     });
     // update other user's call
-    db.ref(`calls/${otherUserId}`).child(callId).update({
+    db.ref(`calls/${otherUserId}/${callId}`).update({
       status: callStatus.END,
       end: endTime,
       duration: endTime - startTime,
@@ -58,12 +58,12 @@ export function cancel() {
     const otherUserId =  getState().CallReducer.user.id;
     const { method, postId } = getState().CallReducer;
     // update current user call
-    db.ref(`calls/${userId}`).child(callId).update({
+    db.ref(`calls/${userId}/${callId}`).update({
       status: callStatus.END,
       method: (method === callMethod.IN ? callMethod.IN_MISSED : callMethod.OUT_MISSED),
     });
     // update other user user call
-    db.ref(`calls/${otherUserId}`).child(callId).update({
+    db.ref(`calls/${otherUserId}/${callId}`).update({
       status: callStatus.END,
       method: (method === callMethod.IN ? callMethod.OUT_MISSED : callMethod.IN_MISSED),
     });
@@ -90,7 +90,7 @@ export function syncCalls(userId) {
     const userId = getState().UserReducer.id;
     db.ref(`calls/${userId}`).limitToLast(1).on('child_added', newCall => {
       if (newCall.key > startSyncTime){
-        db.ref(`calls/${userId}`).child(newCall.key).on('value', s => {
+        db.ref(`calls/${userId}/${newCall.key}`).on('value', s => {
           const call = { ...s.val(), id: s.key };
           dispatch(onCall(call));
         });
@@ -100,22 +100,23 @@ export function syncCalls(userId) {
     //TODO: REMOVE test data
     db.ref(`calls`).remove().then(() => {
       db.ref(`posts/active/101`).remove();
-      db.ref(`calls/sagiv`).child(new Date().getTime()).set(call2)
-      .catch(e => console.error(e));
+      callId = 1585316611836;//new Date().getTime(); //TODO GET FFOM PUSH
+      db.ref(`calls/sagiv/${callId}`).set(outCall).catch(e => console.error(e));
+      db.ref(`calls/foo/${callId}`).set(inCall).catch(e => console.error(e));
       db.ref(`posts/old/101`).set({ text: 'go back test.', online: true, rating: 4.2, userId: 'foo', color: '#FF8CC6' })
-      .catch(e => console.error(e));
+        .catch(e => console.error(e));
     })
   }
 }
 
-const call1 = {
+const inCall = {
   method: 'IN',
-  topic: null,
+  topic: 'I feel blue and need to talk with someone, can anyone listen?',
   duration: null,
   start: null,
   end: null,
   user: {
-    id: 'foo',
+    id: 'sagiv',
     pic: 'https://randomuser.me/api/portraits/men/6.jpg',
     name: 'Sagiv Ofek',
   },
@@ -123,7 +124,7 @@ const call1 = {
   status: 'CONNECTING',
 }
 
-const call2 = {
+const outCall = {
   method: 'OUT',
   topic: 'I feel blue and need to talk with someone, can anyone listen?',
   duration: null,

@@ -3,7 +3,7 @@ import { Provider, connect } from 'react-redux';
 import { AppState } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { syncUser, unSyncUser, updateUser } from '../actions/userActions';
-import Node from './MatchContainer';
+import Node from './CallContainer';
 import store from '../models/store'
 
 import FCM from 'react-native-fcm';
@@ -42,7 +42,7 @@ class Main extends Component {
   syncNotifications() {
     FCM.requestPermissions(); // for iOS
     FCM.getFCMToken().then(token => {
-      console.log(token);
+      console.log('token', token);
       this.props.updateUser('pushToken', token);
     });
 
@@ -51,15 +51,14 @@ class Main extends Component {
     this.notificationListener = FCM.on('notification', handleNotification);
 
     this.refreshTokenListener = FCM.on('refreshToken', (token) => {
-      console.log('refreshToken', token);
       this.props.updateUser('pushToken', token)
     });
   }
 
   unSyncNotifications() {
     console.log('unSyncNotifications');
+    this.refreshTokenListener.remove();
     // this.notificationListener.remove();
-    // this.refreshTokenListener.remove();
   }
 
   render() {

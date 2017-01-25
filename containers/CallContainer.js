@@ -9,10 +9,13 @@ import { connect } from 'react-redux';
 import CallButtons from '../components/call/CallButtons';
 import CallInfo from '../components/call/CallInfo';
 import { buttonType } from '../models/call';
+import WebRTC from '../models/WebRTC';
+import { callStatus, callMethod } from '../models/call';
 
 function mapStateToProps(state) {
   return {
     call: state.CallReducer,
+    userId: state.UserReducer.id,
   };
 }
 
@@ -29,9 +32,14 @@ class CallContainer extends Component {
   constructor(props) {
     super(props);
 
+    const webRTCEvents = {
+      onDisconnected: () => console.log('ok know its off'),
+    }
+
     this.state = {
       mute: false,
       speaker: false,
+      webRTC: new WebRTC(webRTCEvents),
     };
 
     this.props.syncCalls();
@@ -39,6 +47,14 @@ class CallContainer extends Component {
     this.answer = this.answer.bind(this);
     this.hang = this.hang.bind(this);
     this.cancel = this.cancel.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    //call status changed
+    const call = nextProps.call;
+    if (call.status === callStatus.CONNECTING) this.state.webRTC.call(this.props.userId, call.user.id);
+    // if (call.status === callStatus.START) this.answer(call.start);
+    // if (call.status === callStatus.END) this.hang();
   }
 
   hang() {
