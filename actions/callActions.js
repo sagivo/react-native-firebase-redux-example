@@ -11,6 +11,7 @@ export const types = {
   ANSWER: 'ANSWER',
   MISSED: 'MISSED',
   SPEAKER: 'SPEAKER',
+  REMOTE_END: 'REMOTE_END',
 };
 
 
@@ -34,6 +35,10 @@ export function answer() {
     db.ref(`calls/${userId}/${callId}`).update(newParams);
     db.ref(`calls/${otherUserId}/${callId}`).update(newParams);
   }
+}
+
+export function remoteEnd() {
+  return { type: REMOTE_END }
 }
 
 export function hang(cb) {

@@ -3,6 +3,7 @@ import { Provider, connect } from 'react-redux';
 import { AppState, Text } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { syncUser, unSyncUser, updateToken } from '../actions/userActions';
+import { remoteEnd } from '../actions/callActions';
 import Node from './FeedContainer';
 import store from '../models/store'
 import Notification from '../models/Notification'
@@ -20,6 +21,7 @@ function matchDispatchToProps(dispatch) {
   return {
     syncUser: bindActionCreators(syncUser, dispatch),
     updateToken: bindActionCreators(updateToken, dispatch),
+    remoteEnd: bindActionCreators(remoteEnd, dispatch),
     dispatch,
   }
 }
@@ -89,9 +91,8 @@ function handleNotification(notif) {
     case Notification.type.CALL_POST:
       return this.navigator.props.navigation.navigate('Call', { callId: notif.callId });
     case Notification.type.CALL_CANCEL:
-      console.log('?A??A?A?A?A?A?A');
-      return this.navigator.props.navigation.navigate('Feed');
     case Notification.type.CALL_END:
+      // this.props.remoteEnd();
       return this.navigator.props.navigation.navigate('Feed');
     default:
       null; //TODO: ADD ERROR OR SOMETHING

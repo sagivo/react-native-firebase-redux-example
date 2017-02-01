@@ -42,7 +42,7 @@ class CallContainer extends Component {
     super(props);
 
     const webRTCEvents = {
-      onDisconnected: () => console.log('ok know its off'),
+      onDisconnected: () => this.state.webRTC.end(),
     }
 
     this.state = {
@@ -63,7 +63,6 @@ class CallContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('--->', nextProps);
     const call = nextProps.call;
     //calling someone
     if (call.status === callStatus.CONNECTING && call.method === callMethod.OUT)

@@ -45,6 +45,7 @@ export default function callReducer(state = initialState, action = {}) {
     case types.TOGGLE_SPEAKER:
       return { ...state, speaker: !state.speaker };
     case types.CANCEL_CALL:
+    case types.REMOTE_END:
       return { ...state, ...initialState };
     default:
       return state;
