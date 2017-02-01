@@ -42,7 +42,7 @@ class CallContainer extends Component {
     super(props);
 
     const webRTCEvents = {
-      onDisconnected: () => this.state.webRTC.end(),
+      // onDisconnected: () => this.state.webRTC.end(),
     }
 
     this.state = {

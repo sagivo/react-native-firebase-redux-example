@@ -75,7 +75,6 @@ class ReviewContainer extends Component {
   }
 
   render() {
-    console.log('ready',this.calculateReadyTosubmit())
     return (
       <View style={styles.container}>
         <View style={styles.starsContainer}>

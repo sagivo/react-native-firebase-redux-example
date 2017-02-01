@@ -21,7 +21,6 @@ function matchDispatchToProps(dispatch) {
 class FeedContainer extends Component {
   static navigationOptions = {
     title: (navigation, childRouter) => {
-      console.log(navigation, childRouter);
       return navigation.state.params.name + "'s Profile!";
     },
   };

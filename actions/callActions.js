@@ -38,7 +38,7 @@ export function answer() {
 }
 
 export function remoteEnd() {
-  return { type: REMOTE_END }
+  return { type: types.REMOTE_END }
 }
 
 export function hang(cb) {

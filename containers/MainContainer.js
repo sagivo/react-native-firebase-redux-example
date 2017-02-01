@@ -86,13 +86,12 @@ export default connect(mapStateToProps, matchDispatchToProps)(Main);
 function handleNotification(notif) {
   console.log('notif ---> ', notif);
   if (!notif || notif.profile === 0) return;
-
   switch (notif.type) {
     case Notification.type.CALL_POST:
       return this.navigator.props.navigation.navigate('Call', { callId: notif.callId });
     case Notification.type.CALL_CANCEL:
     case Notification.type.CALL_END:
-      // this.props.remoteEnd();
+      this.props.remoteEnd();
       return this.navigator.props.navigation.navigate('Feed');
     default:
       null; //TODO: ADD ERROR OR SOMETHING

@@ -82,6 +82,6 @@ export default class Notification {
 
     fetch(API_URL, { method: "POST", headers, body })
     .then(response => console.log("response", response))
-    .catch(error => console.log("Error sending " + type, error));
+    .catch(error => console.error("Error sending " + type, error));
   }
 }

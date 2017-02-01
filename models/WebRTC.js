@@ -50,6 +50,7 @@ export default class WebRTC {
 
         if(this.pc.iceConnectionState == 'disconnected') {
           console.log('Disconnected!');
+          this.end();
           if (this.events.onDisconnected) this.events.onDisconnected();
         }
       }
@@ -129,7 +130,7 @@ export default class WebRTC {
 
     this.pc.setLocalDescription(desc, () => {
       db.ref(`webrtc/${this.userId}/sdp`).push(JSON.stringify(desc)).catch(e=> console.error(e));
-    }, (e) => console.log(e));
+    }, (err) => console.error(err));
   }
 
   toggleMute() {
