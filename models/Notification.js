@@ -19,8 +19,8 @@ export default class Notification {
       const body = {
         to: token.val(),
         notification: {
-          title: "Call about",
-          sound: "default",
+          title: 'Incoming call',
+          sound: 'default',
         },
         data: {
           type: this.type.CALL_POST,
@@ -40,6 +40,7 @@ export default class Notification {
         to: token.val(),
         notification: {
           title: 'Call Ended',
+          sound: 'default',
         },
         data: {
           type: this.type.CALL_CANCEL,
@@ -58,6 +59,7 @@ export default class Notification {
         to: token.val(),
         notification: {
           title: 'Call Ended',
+          sound: 'default',
         },
         data: {
           type: this.type.CALL_END,

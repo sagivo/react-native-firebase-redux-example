@@ -41,9 +41,9 @@ export default class WebRTC {
         if (event.candidate) db.ref(`webrtc/${this.userId}/ice`).push(JSON.stringify(event.candidate));
       }
 
-      this.pc.onaddstream = (event) => {
-        this.playRemoteStream(event.stream);
-      }
+      // this.pc.onaddstream = (event) => {
+      //   this.playRemoteStream(event.stream);
+      // }
 
       this.pc.oniceconnectionstatechange = () => {
         if (!this.pc) return;
@@ -78,17 +78,20 @@ export default class WebRTC {
   }
 
   end() {
+    console.log('ENDING WEBRTC');
     if (!this.active) return;
 
     db.ref(`webrtc/${this.userId}`).remove();
     db.ref(`webrtc/${this.otherUserId}`).remove();
+    db.ref(`webrtc/${this.otherUserId}/sdp`).off('child_added');
+    db.ref(`webrtc/${this.otherUserId}/ice`).off('child_added');
 
     if (this.localStream) this.localStream.getAudioTracks().forEach(track => track.stop());
-    if (this.remoteStream) this.remoteStream.getAudioTracks().forEach(track => track.stop());
+    // if (this.remoteStream) this.remoteStream.getAudioTracks().forEach(track => track.stop());
     this.localStream = null;
-    this.remoteStream = null;
+    // this.remoteStream = null;
 
-    this.pc.close();
+    if (this.pc) this.pc.close();
     this.pc = null;
     InCallManager.stop();
   }
@@ -117,8 +120,8 @@ export default class WebRTC {
   playRemoteStream(remoteStream) {
     if (!this.active) return;
 
-    this.remoteStream = remoteStream;
-    console.log('play remoteStream!', this.remoteStream.toURL());
+    // this.remoteStream = remoteStream;
+    // console.log('play remoteStream!', this.remoteStream.toURL());
   }
 
   gotDesc(desc) {

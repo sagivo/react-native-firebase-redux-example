@@ -89,6 +89,8 @@ function handleNotification(notif) {
     case Notification.type.CALL_POST:
       return this.navigator.props.navigation.navigate('Call', { callId: notif.callId });
     case Notification.type.CALL_CANCEL:
+      console.log('?A??A?A?A?A?A?A');
+      return this.navigator.props.navigation.navigate('Feed');
     case Notification.type.CALL_END:
       return this.navigator.props.navigation.navigate('Feed');
     default:

@@ -63,6 +63,7 @@ class CallContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('--->', nextProps);
     const call = nextProps.call;
     //calling someone
     if (call.status === callStatus.CONNECTING && call.method === callMethod.OUT)

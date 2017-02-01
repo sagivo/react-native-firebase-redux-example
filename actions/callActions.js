@@ -51,9 +51,10 @@ export function hang(cb) {
 
     db.ref(`calls/${userId}/${callId}`).update(newParams)
       .then(() => db.ref(`calls/${otherUserId}/${callId}`).update(newParams))
-      .then(() => cb())
       //notify the other user the call has canceled.
       .then(Notification.sendCallEnd(otherUserId, callId))
+      .then(() => cb())
+      .then(() => dispatch({ type: types.HANG }))
   }
 }
 
@@ -78,16 +79,15 @@ export function cancel(cb) {
     .then(() => {
       // put post back in the feed
       db.ref(`posts/old/${postId}`).once('value', s => {
-        const postToMove = s.val();
-        db.ref(`posts/active/${postId}`).set(postToMove)
-          .then(() => db.ref('posts/old').child(postId).remove())
-          .then(() => dispatch({ type: types.CANCEL_CALL }))
-          .then(() => cb())
-          .catch((err) => console.error(err));
+        db.ref(`posts/active/${postId}`).set(s.val())
       })
     })
-    //notify the other user the call has canceled.
+    .then(() => db.ref('posts/old').child(postId).remove())
+    .then(() => console.log('sending'))
     .then(Notification.sendCallCancel(otherUserId, callId))
+    .then(() => dispatch({ type: types.CANCEL_CALL }))
+    .then(() => cb())
+    .catch((err) => console.error(err));
   }
 }
 
