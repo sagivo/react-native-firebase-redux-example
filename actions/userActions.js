@@ -24,6 +24,15 @@ export function updateUser(key, value) {
   }
 }
 
+export function updateToken(token) {
+  return (dispatch, getState) => {
+    const userId = getState().UserReducer.id;
+
+    // TODEO: RESTORE
+    // db.ref(`tokens/${userId}`).set(token).catch(dbError);
+  }
+}
+
 export function syncUser() {
   return (dispatch, getState) => {
     const userId = getState().UserReducer.id;

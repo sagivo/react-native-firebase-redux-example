@@ -21,15 +21,23 @@ function mapStateToProps(state) {
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
-    syncCalls: callActions.syncCalls,
+    loadCall: callActions.loadCall,
     answer: callActions.answer,
     hang: callActions.hang,
     cancel: callActions.cancel,
     toggleMute: callActions.toggleMute,
+    toggleSpeaker: callActions.toggleSpeaker,
+    // callPost: callActions.callPost, //TODO: REMOVE
   }, dispatch);
 }
 
 class CallContainer extends Component {
+  static navigationOptions = {
+    header: {
+      visible: false,
+    },
+  };
+
   constructor(props) {
     super(props);
 
@@ -38,25 +46,30 @@ class CallContainer extends Component {
     }
 
     this.state = {
-      speaker: false,
       webRTC: new WebRTC(webRTCEvents),
+      callId: this.props.navigation.state.params.callId,
     };
 
-    this.props.syncCalls();
 
     this.answer = this.answer.bind(this);
     this.hang = this.hang.bind(this);
     this.cancel = this.cancel.bind(this);
     this.toggleMute = this.toggleMute.bind(this);
+    this.toggleSpeaker = this.toggleSpeaker.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.loadCall(this.state.callId);
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('nextProps', nextProps);
-    //call status changed
     const call = nextProps.call;
     //calling someone
     if (call.status === callStatus.CONNECTING && call.method === callMethod.OUT)
       this.state.webRTC.call(this.props.userId, call.user.id);
+    //user toggle speaker
+    if (this.props.call.speaker !== nextProps.call.speaker)
+      this.state.webRTC.setSpeaker(nextProps.call.speaker);
   }
 
   toggleMute() {
@@ -64,13 +77,20 @@ class CallContainer extends Component {
     this.props.toggleMute();
   }
 
+  toggleSpeaker() {
+    this.props.toggleSpeaker();
+  }
+
   hang() {
-    this.props.hang();
+    console.log('hang');
     this.state.webRTC.end();
+    this.props.hang(() => this.props.navigation.navigate('Feed'));
   }
 
   cancel() {
-    this.props.cancel();
+    console.log('cancel');
+    this.state.webRTC.end();
+    this.props.cancel(() => this.props.navigation.navigate('Feed'));
   }
 
   answer() {
@@ -87,6 +107,7 @@ class CallContainer extends Component {
           onHang={this.hang}
           onAnswer={this.answer}
           toggleMute={this.toggleMute}
+          toggleSpeaker={this.toggleSpeaker}
           />
       </View>
     );

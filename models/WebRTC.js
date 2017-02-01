@@ -1,5 +1,6 @@
 //firebase permissions: read - websocket/otheruser read/write - websocket/userid
 import db from './db';
+import InCallManager from 'react-native-incall-manager';
 
 import {
   RTCPeerConnection,
@@ -18,15 +19,19 @@ const configIce = {iceServers: [
 export default class WebRTC {
   constructor(events = {}) {
     this.events = events;
+    this.speaker = false;
+
+    this.active = true;
   }
 
   init(userId, otherUserId, cb) {
+    if (!this.active) return;
+
     this.userId = userId;
     this.otherUserId = otherUserId;
 
     this.getLocalMedia((localStream) => {
       this.localStream = localStream;
-      console.log('getAudioTracks', localStream.getAudioTracks());
       // playLocalStream(localStream);
 
       this.pc = new RTCPeerConnection(configIce);
@@ -66,43 +71,67 @@ export default class WebRTC {
   }
 
   call(userId, otherUserId) {
+    if (!this.active) return;
+
     console.log('WEBRTC CALL');
     this.init(userId, otherUserId, () => this.pc.createOffer(this.gotDesc.bind(this), (e) => console.log(e)))
   }
 
   end() {
+    if (!this.active) return;
+
     db.ref(`webrtc/${this.userId}`).remove();
     db.ref(`webrtc/${this.otherUserId}`).remove();
 
-    this.localStream.getAudioTracks().forEach(track => track.stop());
-    this.remoteStream.getAudioTracks().forEach(track => track.stop());
-    this.localStream = this.remoteStream = null;
+    if (this.localStream) this.localStream.getAudioTracks().forEach(track => track.stop());
+    if (this.remoteStream) this.remoteStream.getAudioTracks().forEach(track => track.stop());
+    this.localStream = null;
+    this.remoteStream = null;
 
     this.pc.close();
     this.pc = null;
+    InCallManager.stop();
   }
 
   answer(userId, otherUserId) {
+    if (!this.active) return;
+
     console.log('WEBRTC ANSWER');
-    this.init(userId, otherUserId);
+    this.init(userId, otherUserId, () => {
+      InCallManager.start({media: 'audio'}); // audio/video, default: audio
+    });
+  }
+
+  setSpeaker(on) {
+    if (!this.active) return;
+
+    InCallManager.setForceSpeakerphoneOn(on);
   }
 
   getLocalMedia(cb) {
+    if (!this.active) return;
+
     getUserMedia({ audio: true, video: false }, cb, (err) => console.error(err))
   }
 
   playRemoteStream(remoteStream) {
+    if (!this.active) return;
+
     this.remoteStream = remoteStream;
     console.log('play remoteStream!', this.remoteStream.toURL());
   }
 
   gotDesc(desc) {
+    if (!this.active) return;
+
     this.pc.setLocalDescription(desc, () => {
       db.ref(`webrtc/${this.userId}/sdp`).push(JSON.stringify(desc)).catch(e=> console.error(e));
     }, (e) => console.log(e));
   }
 
   toggleMute() {
+    if (!this.active) return;
+
     this.localStream.getAudioTracks().forEach(track => track.enabled = !track.enabled);
   }
 }

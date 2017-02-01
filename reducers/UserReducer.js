@@ -33,7 +33,7 @@ export default function userReducer(state = initialState, action = {}) {
 }
 
 export async function ensureLogin(cb) {
-  // saveUserId('sagiv')
+  // saveUserId('foo')
   if (initialState.id) cb(true);
   else {
     const localUserId = await AsyncStorage.getItem(USER_STORAGE_KEY)

@@ -10,16 +10,6 @@ export default class CallButton extends Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      speaker: false,
-    }
-
-    this.toggleSpeaker = this.toggleSpeaker.bind(this);
-  }
-
-  toggleSpeaker() {
-    this.setState({ ...this.state, speaker: !this.state.speaker });
   }
 
   renderConnection() {
@@ -45,8 +35,8 @@ export default class CallButton extends Component {
     return (
       <Animatable.View animation="zoomIn" style={styles.actions}>
         <View style={styles.actionContainer}>
-          <TouchableHighlight onPress={this.toggleSpeaker} style={[styles.round, this.state.speaker ? styles.on : styles.transparent]}>
-            <MaterialIcons name='volume-up' style={[styles.action, this.state.speaker ? null : styles.transparentIcon]} />
+          <TouchableHighlight onPress={this.props.toggleSpeaker} style={[styles.round, this.props.speaker ? styles.on : styles.transparent]}>
+            <MaterialIcons name='volume-up' style={[styles.action, this.props.speaker ? null : styles.transparentIcon]} />
           </TouchableHighlight>
         </View>
         <View style={styles.actionContainer}>

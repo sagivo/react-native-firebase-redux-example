@@ -1,35 +1,37 @@
 import React, {Component} from 'react';
 import { Provider, connect } from 'react-redux';
-import { AppState } from 'react-native';
+import { AppState, Text } from 'react-native';
 import { bindActionCreators } from 'redux';
-import { syncUser, unSyncUser, updateUser } from '../actions/userActions';
-import Node from './CallContainer';
+import { syncUser, unSyncUser, updateToken } from '../actions/userActions';
+import Node from './FeedContainer';
 import store from '../models/store'
-
+import Notification from '../models/Notification'
+import MainNavigator from '../components/navigation/MainNavigator';
 import FCM from 'react-native-fcm';
-
-import Notification from "../models/Notification";
+import { addNavigationHelpers } from 'react-navigation';
 
 function mapStateToProps(state) {
   return {
-    // languages: state.UserReducer.languages,
+    nav: state.NavigationReducer,
   };
 }
 
 function matchDispatchToProps(dispatch) {
-  return bindActionCreators({
-    syncUser,
-    updateUser,
-  }, dispatch);
+  return {
+    syncUser: bindActionCreators(syncUser, dispatch),
+    updateToken: bindActionCreators(updateToken, dispatch),
+    dispatch,
+  }
 }
 
 class Main extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   componentWillMount() {
     this.props.syncUser();
     this.syncNotifications();
-    // AppState.addEventListener('change', state =>
-    //   console.log('AppState changed to', state)
-    // )
   }
 
   componentWillUnmount() {
@@ -38,20 +40,23 @@ class Main extends Component {
     this.unSyncNotifications();
   }
 
+  componentDidMount() {
+  }
+
   //NOTIFICATIONS
   syncNotifications() {
     FCM.requestPermissions(); // for iOS
     FCM.getFCMToken().then(token => {
       console.log('token', token);
-      this.props.updateUser('pushToken', token);
+      this.props.updateToken(token);
     });
 
-    FCM.getInitialNotification().then(handleNotification);
+    FCM.getInitialNotification().then(handleNotification.bind(this));
     FCM.removeAllDeliveredNotifications();
-    this.notificationListener = FCM.on('notification', handleNotification);
+    this.notificationListener = FCM.on('notification', handleNotification.bind(this));
 
     this.refreshTokenListener = FCM.on('refreshToken', (token) => {
-      this.props.updateUser('pushToken', token)
+      this.props.updateToken(token)
     });
   }
 
@@ -63,18 +68,30 @@ class Main extends Component {
 
   render() {
     return (
-      <Node />
+      <MainNavigator
+        ref={nav => { this.navigator = nav; }}
+        navigation={addNavigationHelpers({
+          dispatch: this.props.dispatch,
+          state: this.props.nav,
+        })}
+      />
     );
   }
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(Main);
 
-function handleNotification(notification) {
-  if (!notification || notification.profile === 0) return;
+function handleNotification(notif) {
+  console.log('notif ---> ', notif);
+  if (!notif || notif.profile === 0) return;
 
-  console.log('notification ---> ', notification);
-  if(notification.opened_from_tray){
-    //app is open/resumed because user clicked banner
+  switch (notif.type) {
+    case Notification.type.CALL_POST:
+      return this.navigator.props.navigation.navigate('Call', { callId: notif.callId });
+    case Notification.type.CALL_CANCEL:
+    case Notification.type.CALL_END:
+      return this.navigator.props.navigation.navigate('Feed');
+    default:
+      null; //TODO: ADD ERROR OR SOMETHING
   }
 }

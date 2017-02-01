@@ -7,6 +7,8 @@ import authMiddleware from './authMiddleware';
 
 // export default applyMiddleware(thunk)(createStore)(reducers);
 
+// export default compose(applyMiddleware(authMiddleware, thunk))(createStore)(reducers);
+
 export default store = createStore(
   reducers,
   {},

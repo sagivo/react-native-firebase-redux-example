@@ -9,6 +9,7 @@ const initialState = {
   start: null,
   end: null,
   mute: false,
+  speaker: false,
   user: {
     id: null,
     pic: null,
@@ -41,6 +42,10 @@ export default function callReducer(state = initialState, action = {}) {
       return state;
     case types.TOGGLE_MUTE:
       return { ...state, mute: !state.mute };
+    case types.TOGGLE_SPEAKER:
+      return { ...state, speaker: !state.speaker };
+    case types.CANCEL_CALL:
+      return { ...state, ...initialState };
     default:
       return state;
   }

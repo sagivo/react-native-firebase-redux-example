@@ -6,6 +6,7 @@ import {bindActionCreators} from 'redux';
 import Post from '../components/feed/Post';
 import * as feedActions from '../actions/feedActions';
 import { connect } from 'react-redux';
+import * as navigationActions from  '../actions/navigationActions';
 
 const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => {
   return r1.id !== r2.id;
@@ -24,26 +25,38 @@ function matchDispatchToProps(dispatch) {
     addPost: feedActions.addPost,
     syncPosts: feedActions.syncPosts,
     callPost: feedActions.callPost,
+    setNav: navigationActions.setNav,
   }, dispatch);
 }
 
 class FeedContainer extends Component {
+  static navigationOptions = {
+    header: {
+      visible: false,
+    },
+  };
 
   constructor(props) {
     super(props);
 
     this.onCallPress = this.onCallPress.bind(this);
     this.onRefresh = this.onRefresh.bind(this);
+  }
 
+  componentWillMount() {
     this.props.syncPosts();
+  }
+
+  componentDidMount() {
+    this.props.setNav(this.props.navigation);
   }
 
   onRefresh() {
     this.props.syncPosts();
   }
 
-  onCallPress(postId) {
-    this.props.callPost(postId);
+  onCallPress(postId, postText) {
+    this.props.callPost(postId, postText, (callId) => this.props.navigation.navigate('Call', { callId }));
   }
 
   render() {
@@ -52,7 +65,7 @@ class FeedContainer extends Component {
         <View>
           <ListView
             dataSource={this.props.dataSource}
-            renderRow={(data, rowId) => <Post {...data} onCallPress={() => this.onCallPress(data.id)} />}
+            renderRow={(data) => <Post {...data} onCallPress={() => this.onCallPress(data.id, data.text)} />}
             enableEmptySections={true}
             refreshControl={
               <RefreshControl

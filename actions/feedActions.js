@@ -1,19 +1,7 @@
 import db from './../models/db';
-import { callStatus, callMethod } from '../models/call';
+import Notification from './../models/Notification';
 
-// // TODO: REMOVE test data
-// db.ref(`posts`).remove().then(() => {
-//   db.ref(`posts/active`).set({
-//     11:{ text: 'L1orem ipsum dolor sit amet, consectetur adipiscing elit. Praesent placerat faucibus tortor ac volutpat. Aliquam cursus placerat turpis duis.', online: true, rating: 4.2, userId: 'foo', color: '#FF8CC6' },
-//     22:{ text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc non sollicitudin orci, quis venenatis lorem. Praesent convallis vitae posuere.', online: false, rating: 3.1, userId: 'foo', color: '#6F5E76' },
-//     33:{ text: 'i feel blue3', online: false, rating: 3.1, userId: 'foo', color: '#8AA39B' },
-//     44:{ text: 'i feel blue4', online: false, rating: 4.4, userId: 'foo', color: '#95D9C3' },
-//     55:{ text: 'L5orem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sit amet nibh porttitor, gravida purus tristique, congue nibh.', online: false, rating: 4.4, userId: 'foo', color: '#506C64', busy: true },
-//     66:{ text: 'L6orem ipsum dolor sit amet, consectetur adipiscing elit. ', online: false, rating: 4.4, userId: 'foo', color: '#EFD6D2' },
-//   })
-//   .catch(e => console.error(e));
-// });
-// db.ref(`calls`).remove();
+import { callStatus, callMethod } from '../models/call';
 
 export const types = {
   CALL_PRESS: 'CALL_PRESS',
@@ -30,31 +18,36 @@ export function onData(data) {
   };
 }
 
-export function callPost(postId) {
+export function callPost(postId, postText, cb) {
   return (dispatch, getState) => {
     const userId = getState().UserReducer.id;
-    const callTime = new Date().getTime();
+    const callId = new Date().getTime();
     //update post to old call queue
-    db.ref('posts/active').child(postId).once('value', s => {
+    db.ref(`posts/active/${postId}`).once('value', s => {
       const postToMove = s.val();
-      db.ref('posts/old').child(postId).set(postToMove)
-      .then(() => db.ref('posts/active').child(postId).remove())
+      const otherUserId = postToMove.userId;
+
+      db.ref(`posts/old/${postId}`).set(postToMove)
+      .then(() => db.ref(`posts/active/${postId}`).remove())
       //create call for the post owner
-      .then(() => db.ref(`calls/${postToMove.userId}`).child(callTime).set({
+      .then(() => db.ref(`calls/${otherUserId}/${callId}`).set({
         method: callMethod.IN,
         status: callStatus.CONNECTING,
         topic: postToMove.text,
         user: { id: userId },
         postId,
       }))
+      //send notification for post owner about new call
+      .then(Notification.sendPostCallReq(otherUserId, callId, postText))
       //create a call for the user
-      .then(() => db.ref(`calls/${userId}`).child(callTime).set({
+      .then(() => db.ref(`calls/${userId}/${callId}`).set({
         method: callMethod.OUT,
         status: callStatus.CONNECTING,
         topic: postToMove.text,
-        user: { id: postToMove.userId },
+        user: { id: otherUserId },
         postId,
       }))
+      .then(() => cb(callId))
       .catch(e => console.error(e));
     });
   }
