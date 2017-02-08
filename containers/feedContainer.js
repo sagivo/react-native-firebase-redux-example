@@ -7,7 +7,6 @@ import Post from '../components/feed/Post';
 import * as feedActions from '../actions/feedActions';
 import { connect } from 'react-redux';
 import * as navigationActions from  '../actions/navigationActions';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => {
   return r1.id !== r2.id;
@@ -31,17 +30,6 @@ function matchDispatchToProps(dispatch) {
 }
 
 class FeedContainer extends Component {
-  static navigationOptions = {
-    header: () => ({
-      visible: false
-    }),
-    tabBar: {
-      icon: ({ tintColor }) => (
-        <MaterialIcons name="home" size={30} color={tintColor} />
-      ),
-    },
-  }
-
   constructor(props) {
     super(props);
 
