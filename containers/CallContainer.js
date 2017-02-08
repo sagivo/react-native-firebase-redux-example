@@ -84,13 +84,13 @@ class CallContainer extends Component {
   hang() {
     console.log('hang');
     this.state.webRTC.end();
-    this.props.hang(() => this.props.navigation.navigate('Feed'));
+    this.props.hang(() => this.props.navigation.navigate('Home'));
   }
 
   cancel() {
     console.log('cancel');
     this.state.webRTC.end();
-    this.props.cancel(() => this.props.navigation.navigate('Feed'));
+    this.props.cancel(() => this.props.navigation.navigate('Home'));
   }
 
   answer() {

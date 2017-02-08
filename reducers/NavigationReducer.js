@@ -4,7 +4,7 @@ import MainNavigator from '../components/navigation/MainNavigator';
 const initialState = {
   index: 0,
   routes: [
-    { key: 'Foo', routeName: 'Feed' },
+    { key: 'Home', routeName: 'Home' },
   ],
 };
 

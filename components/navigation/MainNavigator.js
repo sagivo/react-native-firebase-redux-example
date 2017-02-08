@@ -1,19 +1,27 @@
 import { StackNavigator } from 'react-navigation';
+import React, { Component } from 'react';
 
-import MainContainer from '../../containers/MainContainer';
 import ComposeContainer from '../../containers/ComposeContainer';
-import FeedContainer from '../../containers/FeedContainer';
-import HistoryContainer from '../../containers/HistoryContainer';
 import CallContainer from '../../containers/CallContainer';
+import TabNavigator from './TabNavigator';
 
+class Home extends Component {
+  render() {
+    return (
+      <TabNavigator />
+    );
+  }
+}
 
 const nav = StackNavigator({
-  Feed: { screen: FeedContainer },
+  Home: { screen: Home },
   Compose: { screen: ComposeContainer },
-  History: { screen: HistoryContainer },
   Call: { screen: CallContainer },
 }, {
-  headerMode: 'screen',
+  // headerMode: 'none',
+  // header: {
+  //   visible: false,
+  // },
 });
 
 export default nav;

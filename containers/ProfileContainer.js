@@ -9,6 +9,7 @@ import languages from "../models/languages";
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 function mapStateToProps(state) {
   return {
@@ -25,10 +26,21 @@ function matchDispatchToProps(dispatch) {
 }
 
 class ProfileContainer extends Component {
+  static navigationOptions = {
+    tabBar: {
+      icon: ({ tintColor }) => (
+        <MaterialIcons name="person" size={30} color={tintColor} />
+      ),
+    },
+  }
+
   constructor(props) {
     super(props);
 
     this.logoutPress = this.logoutPress.bind(this);
+  }
+
+  componentWillMount() {
     this.props.syncUser();
   }
 

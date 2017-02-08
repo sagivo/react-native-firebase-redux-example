@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
-import {persistStore, autoRehydrate} from 'redux-persist';
-import { asyncSessionStorage } from 'redux-persist/storages';
+// import {persistStore, autoRehydrate} from 'redux-persist';
+// import { asyncSessionStorage } from 'redux-persist/storages';
 import thunk from 'redux-thunk';
 import reducers from '../reducers/index';
 import authMiddleware from './authMiddleware';

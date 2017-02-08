@@ -45,7 +45,7 @@ export default class Post extends Component {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    paddingVertical: 50,
+    // paddingVertical: 50,
     paddingHorizontal: 10,
     alignItems: 'center',
     justifyContent: 'center',

@@ -7,6 +7,7 @@ import ContactList from '../components/contact/ContactList';
 import Loading from '../components/shared/Loading';
 import * as contactActions from '../actions/contactActions';
 import { connect } from 'react-redux';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
 
@@ -26,11 +27,22 @@ function matchDispatchToProps(dispatch) {
 }
 
 class FeedContainer extends Component {
+  static navigationOptions = {
+    tabBar: {
+      icon: ({ tintColor }) => (
+        <MaterialIcons name="people" size={30} color={tintColor} />
+      ),
+    },
+  }
+
   constructor(props) {
     super(props);
-    this.props.syncContacts('sagiv'); //TODO: LOAD USER ID HERE
 
     this.onCall = this.onCall.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.syncContacts();
   }
 
   onCall(userId) {

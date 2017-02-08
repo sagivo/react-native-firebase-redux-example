@@ -17,18 +17,11 @@ export default class ContactList extends Component {
     super(props);
 
     this.HistoryFromHash = this.HistoryFromHash.bind(this);
-    this.state = { dataSource: dataSource.cloneWithRows(this.HistoryFromHash(this.props.calls)) };
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      ...this.state,
-      dataSource: dataSource.cloneWithRows(this.HistoryFromHash(nextProps.calls)),
-    });
-  }
-
-  HistoryFromHash(data) {
-    return Object.keys(data)
+  HistoryFromHash() {
+    if (!this.props.calls) return [];
+    return Object.keys(this.props.calls)
       .map(id => { return { ...data[id], id: parseInt(id) }; })
       .sort(c => c.id);
   }
@@ -36,10 +29,10 @@ export default class ContactList extends Component {
   render() {
     return (
       <View style={styles.container}>
-        { (Object.keys(this.props.calls).length > 0) ?
+        { this.props.calls && (Object.keys(this.props.calls).length > 0) ?
         <ListView
           style={styles.container}
-          dataSource={this.state.dataSource}
+          dataSource={dataSource.cloneWithRows(this.HistoryFromHash())}
           renderRow={(data, rowId) => <CallItem {...data} removeHistory={this.props.removeHistory} />}
           renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
           enableEmptySections={true}

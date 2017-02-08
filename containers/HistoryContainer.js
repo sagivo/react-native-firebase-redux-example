@@ -7,6 +7,7 @@ import HistoryList from '../components/history/HistoryList';
 import Loading from '../components/shared/Loading';
 import * as historyActions from '../actions/historyActions';
 import { connect } from 'react-redux';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 function mapStateToProps(state) {
   return {
@@ -23,8 +24,19 @@ function matchDispatchToProps(dispatch) {
 }
 
 class FeedContainer extends Component {
+  static navigationOptions = {
+    tabBar: {
+      icon: ({ tintColor }) => (
+        <MaterialIcons name="history" size={30} color={tintColor} />
+      ),
+    },
+  }
+
   constructor(props) {
     super(props);
+  }
+
+  componentWillMount() {
     this.props.syncHistory();
   }
 
