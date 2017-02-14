@@ -1,4 +1,4 @@
-import { TabNavigator,  } from 'react-navigation';
+import { TabNavigator } from 'react-navigation';
 import React, {Component} from 'react';
 import { View, Button, ListView, Text } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -21,18 +21,19 @@ const tab = TabNavigator(
           return <MaterialIcons name="home" size={30} color={tintColor} />
         },
         label: 'Feed',
-      })
+      }),
+      header: { visible: false }
     },
   },
   Compose: {
     screen: ComposeContainer,
     navigationOptions: {
-      tabBar: navigation => ({
+      tabBar: {
         icon: ({ tintColor, focused }) => {
           return <MaterialIcons name="add" size={30} color={tintColor} />
         },
         label: 'New Call',
-      })
+      },
     },
   },
   Contact: {
@@ -43,7 +44,7 @@ const tab = TabNavigator(
           return <MaterialIcons name="people" size={30} color={tintColor} />
         },
         label: 'Contacts',
-      })
+      }),
     },
   },
   History: {
@@ -65,26 +66,24 @@ const tab = TabNavigator(
           return <MaterialIcons name="person" size={30} color={tintColor} />
         },
         label: 'Profile',
-      })
+      }),
+      header: { visible: false },
     },
   },
 }, {
   tabBarOptions: {
     labelStyle: {
       fontSize: 12,
-      // color: 'white',
     },
     style: {
-      // backgroundColor: '#4c559c',
-      // height: 50,
     },
-    showLabel: false,
+    showLabel: true,
     showIcon: true,
   },
-  // lazyLoad: true,
   tabBarPosition: 'bottom',
-  swipeEnabled: true,
-  // tabBarComponent: TabView.TabBarTop
+  // swipeEnabled: true,
+  // headerMode: 'float',
+  // lazyLoad: true,
 });
 
 export default tab;

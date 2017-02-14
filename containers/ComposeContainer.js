@@ -18,7 +18,14 @@ function matchDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-class FeedContainer extends Component {
+class ComposeContainer extends Component {
+  static navigationOptions = {
+    title: 'Compose',
+    header: {
+      right: <Button title='Post' onPress={() => {}} />,
+    },
+  }
+
   constructor(props) {
     super(props);
   }
@@ -30,5 +37,4 @@ class FeedContainer extends Component {
   }
 }
 
-
-export default connect(mapStateToProps, matchDispatchToProps)(FeedContainer);
+export default connect(mapStateToProps, matchDispatchToProps)(ComposeContainer);

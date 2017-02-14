@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import { TextInput, View, StyleSheet } from 'react-native'
 import Tags from './Tags';
 
-export default class Feed extends Component {
+export default class Compose extends Component {
   constructor(props) {
     super(props);
   }

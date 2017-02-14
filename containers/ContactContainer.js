@@ -25,7 +25,11 @@ function matchDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-class FeedContainer extends Component {
+class ContactContainer extends Component {
+  static navigationOptions = {
+    title: 'aaabb',
+  }
+
   constructor(props) {
     super(props);
 
@@ -53,4 +57,4 @@ class FeedContainer extends Component {
   }
 }
 
-export default connect(mapStateToProps, matchDispatchToProps)(FeedContainer);
+export default connect(mapStateToProps, matchDispatchToProps)(ContactContainer);

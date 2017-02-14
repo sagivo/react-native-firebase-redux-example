@@ -25,7 +25,7 @@ function matchDispatchToProps(dispatch) {
     addPost: feedActions.addPost,
     syncPosts: feedActions.syncPosts,
     callPost: feedActions.callPost,
-    setNav: navigationActions.setNav,
+    // setNav: navigationActions.setNav,
   }, dispatch);
 }
 
@@ -41,16 +41,12 @@ class FeedContainer extends Component {
     this.props.syncPosts();
   }
 
-  componentDidMount() {
-    this.props.setNav(this.props.navigation);
-  }
-
   onRefresh() {
     this.props.syncPosts();
   }
 
   onCallPress(postId, postText) {
-    this.props.callPost(postId, postText, (callId) => this.props.navigation.navigate('Call', { callId }));
+    // this.props.callPost(postId, postText, (callId) => this.props.navigation.navigate('Call', { callId }));
   }
 
   render() {
@@ -78,6 +74,5 @@ class FeedContainer extends Component {
     );
   }
 }
-
 
 export default connect(mapStateToProps, matchDispatchToProps)(FeedContainer);

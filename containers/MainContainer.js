@@ -13,7 +13,7 @@ import { addNavigationHelpers } from 'react-navigation';
 
 function mapStateToProps(state) {
   return {
-    nav: state.NavigationReducer,
+    // navState: state.NavigationReducer,
   };
 }
 
@@ -22,7 +22,7 @@ function matchDispatchToProps(dispatch) {
     syncUser: bindActionCreators(syncUser, dispatch),
     updateToken: bindActionCreators(updateToken, dispatch),
     remoteEnd: bindActionCreators(remoteEnd, dispatch),
-    dispatch,
+    // dispatch,
   }
 }
 
@@ -34,6 +34,10 @@ class Main extends Component {
   componentWillMount() {
     this.props.syncUser();
     this.syncNotifications();
+
+    setTimeout(() => {
+      // this.navigator.dispatch({ type: 'Navigation/NAVIGATE', routeName: 'Compose2' });
+    }, 2000)
   }
 
   componentWillUnmount() {
@@ -68,11 +72,11 @@ class Main extends Component {
   render() {
     return (
       <MainNavigator
-        ref={nav => { this.navigator = nav; }}
-        navigation={addNavigationHelpers({
-          dispatch: this.props.dispatch,
-          state: this.props.nav,
-        })}
+        ref={navigator => { this.navigator = navigator; }}
+        // navigation={addNavigationHelpers({
+        //   dispatch: this.props.dispatch,
+        //   state: this.props.navState,
+        // })}
       />
     );
   }

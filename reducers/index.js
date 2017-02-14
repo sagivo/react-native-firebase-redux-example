@@ -5,10 +5,10 @@ import HistoryReducer from './HistoryReducer';
 import UserReducer from './UserReducer';
 import CallReducer from './CallReducer';
 import MatchReducer from './MatchReducer';
-import NavigationReducer from './NavigationReducer';
+// import NavigationReducer from './NavigationReducer';
 
 export default combineReducers({
-  NavigationReducer,
+  // NavigationReducer,
   FeedReducer,
   ContactReducer,
   HistoryReducer,

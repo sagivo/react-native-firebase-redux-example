@@ -5,23 +5,16 @@ import ComposeContainer from '../../containers/ComposeContainer';
 import CallContainer from '../../containers/CallContainer';
 import TabNavigator from './TabNavigator';
 
-class Home extends Component {
-  render() {
-    return (
-      <TabNavigator />
-    );
-  }
-}
-
-const nav = StackNavigator({
-  Home: { screen: Home },
-  Compose: { screen: ComposeContainer },
-  Call: { screen: CallContainer },
+export default StackNavigator({
+  Tabs: {
+    screen: TabNavigator,
+  },
+  Call: {
+    screen: CallContainer,
+    navigationOptions: {
+      title: 'compose2',
+    },
+  },
 }, {
-  // headerMode: 'none',
-  // header: {
-  //   visible: false,
-  // },
+  headerMode: 'screen',
 });
-
-export default nav;
