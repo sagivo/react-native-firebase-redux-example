@@ -25,17 +25,6 @@ const tab = TabNavigator(
       header: { visible: false }
     },
   },
-  Compose: {
-    screen: ComposeContainer,
-    navigationOptions: {
-      tabBar: {
-        icon: ({ tintColor, focused }) => {
-          return <MaterialIcons name="add" size={30} color={tintColor} />
-        },
-        label: 'New Call',
-      },
-    },
-  },
   Contact: {
     screen: ContactContainer,
     navigationOptions: {
@@ -45,6 +34,17 @@ const tab = TabNavigator(
         },
         label: 'Contacts',
       }),
+    },
+  },
+  Compose: {
+    screen: ComposeContainer,
+    navigationOptions: {
+      tabBar: {
+        icon: ({ tintColor, focused }) => {
+          return <MaterialIcons name="add" size={30} color={tintColor} />
+        },
+        label: 'New Call',
+      },
     },
   },
   History: {
@@ -77,13 +77,14 @@ const tab = TabNavigator(
     },
     style: {
     },
-    showLabel: true,
     showIcon: true,
+    showLabel: false,
   },
   tabBarPosition: 'bottom',
   // swipeEnabled: true,
   // headerMode: 'float',
   // lazyLoad: true,
+  initialRouteName: 'Compose',
 });
 
 export default tab;

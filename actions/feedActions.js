@@ -4,16 +4,34 @@ import Notification from './../models/Notification';
 import { callStatus, callMethod } from '../models/call';
 
 export const types = {
+  POST_ADDED: 'POST_ADDED',
   CALL_PRESS: 'CALL_PRESS',
+  TOGGLE_TAG: 'TOGGLE_TAG',
   REFRESHING: 'REFRESHING',
   ON_FEED_DATA: 'ON_FEED_DATA',
   ADD_POST: 'ADD_POST',
+  SET_COMPOSE_TEXT: 'SET_COMPOSE_TEXT',
+  SET_COMPOSE_COLOR: 'SET_COMPOSE_COLOR',
 };
 
 
 export function onData(data) {
   return {
     type: types.ON_FEED_DATA,
+    payload: data,
+  };
+}
+
+export function setComposeText(data) {
+  return {
+    type: types.SET_COMPOSE_TEXT,
+    payload: data,
+  };
+}
+
+export function setComposeColor(data) {
+  return {
+    type: types.SET_COMPOSE_COLOR,
     payload: data,
   };
 }
@@ -50,6 +68,34 @@ export function callPost(postId, postText, cb) {
       .then(() => cb(callId))
       .catch(e => console.error(e));
     });
+  }
+}
+
+export function toggleTag(data) {
+  return {
+    type: types.TOGGLE_TAG,
+    payload: data,
+  };
+}
+
+export function addPost(cb) {
+  return (dispatch, getState) => {
+    const postId = new Date().getTime();
+    const post = {
+      userId: getState().UserReducer.id,
+      color: getState().FeedReducer.newPostColor,
+      text: getState().FeedReducer.newPostText,
+      tags: [...getState().FeedReducer.newPostTags],
+      location: getState().UserReducer.location,
+      rating: getState().UserReducer.rating,
+    }
+    db.ref(`posts/active/${postId}`)
+      .set(post)
+      .then(dispatch({ type: types.POST_ADDED, payload: post }))
+      .then(() =>{
+        if (cb) cb(true);
+      })
+      .catch(err => console.error(err));
   }
 }
 

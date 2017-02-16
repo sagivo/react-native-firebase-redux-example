@@ -1,16 +1,15 @@
 import { StackNavigator } from 'react-navigation';
-import MainNavigator from '../components/navigation/MainNavigator';
+import {types} from '../actions/navigationActions';
 
 const initialState = {
-  index: 0,
-  routes: [
-    { Tabs: 'aaa', routeName: 'Tabs' },
-  ],
+  mainNav: null,
 };
 
 export default function NavigationReducer(state = initialState, action = {}) {
   switch (action.type) {
+    case types.SET_MAIN_NAV:
+      return { ...state, mainNav: action.payload }
     default:
-      return MainNavigator.router.getStateForAction(action, state);
+      return state;
   }
 }

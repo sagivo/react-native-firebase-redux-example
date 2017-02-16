@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import {bindActionCreators} from 'redux';
-import Compose from '../components/compose/Compose';
 import * as callActions from '../actions/callActions';
 import { Text, View, StyleSheet, Image, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';

@@ -3,6 +3,7 @@ import { Provider, connect } from 'react-redux';
 import { AppState, Text } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { syncUser, unSyncUser, updateToken } from '../actions/userActions';
+import { setMainNav } from '../actions/navigationActions';
 import { remoteEnd } from '../actions/callActions';
 import Node from './FeedContainer';
 import store from '../models/store'
@@ -18,12 +19,12 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch) {
-  return {
-    syncUser: bindActionCreators(syncUser, dispatch),
-    updateToken: bindActionCreators(updateToken, dispatch),
-    remoteEnd: bindActionCreators(remoteEnd, dispatch),
-    // dispatch,
-  }
+  return bindActionCreators({
+    syncUser: syncUser,
+    updateToken: updateToken,
+    remoteEnd: remoteEnd,
+    setMainNav: setMainNav,
+  }, dispatch);
 }
 
 class Main extends Component {
@@ -40,6 +41,10 @@ class Main extends Component {
     }, 2000)
   }
 
+  componentDidMount() {
+    this.props.setMainNav(this.navigator);
+  }
+
   componentWillUnmount() {
     console.log('componentWillUnmount');
     this.props.unSyncUser();
@@ -50,7 +55,7 @@ class Main extends Component {
   syncNotifications() {
     FCM.requestPermissions(); // for iOS
     FCM.getFCMToken().then(token => {
-      console.log('token', token);
+      // console.log('token', token);
       this.props.updateToken(token);
     });
 
@@ -72,7 +77,7 @@ class Main extends Component {
   render() {
     return (
       <MainNavigator
-        ref={navigator => { this.navigator = navigator; }}
+        ref={nav => { this.navigator = nav; }}
         // navigation={addNavigationHelpers({
         //   dispatch: this.props.dispatch,
         //   state: this.props.navState,

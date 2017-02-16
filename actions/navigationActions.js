@@ -1,15 +1,15 @@
 import db from './../models/db';
 
 export const types = {
-  SET_NAV: 'SET_NAV',
+  SET_MAIN_NAV: 'SET_MAIN_NAV',
 };
 
 export function gotoCompose(data) {
   return { type: 'Navigate', routeName: 'Compose' };
 }
 
-export function setNav(data) {
-  return { type: types.SET_NAV, payload: data };
+export function setMainNav(data) {
+  return { type: types.SET_MAIN_NAV, payload: data };
 }
 
 export function doneaMatch() {
