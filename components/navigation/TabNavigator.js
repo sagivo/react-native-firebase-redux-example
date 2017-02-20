@@ -111,5 +111,5 @@ export default TabNavigator(
   // swipeEnabled: true,
   // headerMode: 'float',
   lazyLoad: true,
-  initialRouteName: 'Contact',
+  initialRouteName: 'Profile',
 });

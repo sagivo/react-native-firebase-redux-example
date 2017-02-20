@@ -34,15 +34,16 @@ class LanguageContainer extends Component {
     super(props)
 
     this.state = {
-      dataSource: dataSource.cloneWithRows([]),
       filter: '',
     };
-
-    this.props.syncUser();
 
     this.onSearch = this.onSearch.bind(this);
     this.onLanguageSelected = this.onLanguageSelected.bind(this);
     this.filterLanguage = this.filterLanguage.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.syncUser();
   }
 
   filterLanguage() {
@@ -55,14 +56,11 @@ class LanguageContainer extends Component {
           selected: this.props.languages && !!this.props.languages[i],
         });
     }
-    return result;
+    return dataSource.cloneWithRows(result);
   }
 
   onSearch(filter) {
-    this.setState({
-      ...this.state,
-      filter,
-    });
+    this.setState({ ...this.state, filter });
   }
 
   onLanguageSelected(languageCode) {
@@ -82,11 +80,11 @@ class LanguageContainer extends Component {
             style={styles.input}
             placeholder="Search language..."
             underlineColorAndroid="transparent"
-            onChangeText={(aa) => this.onSearch(aa)}
+            onChangeText={(text) => this.onSearch(text)}
           />
         </View>
         <ListView
-          dataSource={this.state.dataSource.cloneWithRows(this.filterLanguage())}
+          dataSource={this.filterLanguage()}
           renderRow={(data) => {return (
             <TouchableHighlight onPress={() => this.onLanguageSelected(data.code)} style={[styles.item, data.selected ? styles.selected : null]}>
               <Text>{data.name}</Text>

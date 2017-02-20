@@ -13,6 +13,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 function mapStateToProps(state) {
   return {
     user: state.UserReducer,
+    mainNav: state.NavigationReducer.mainNav,
   };
 }
 
@@ -29,6 +30,9 @@ class ProfileContainer extends Component {
     super(props);
 
     this.logoutPress = this.logoutPress.bind(this);
+    this.updateEmail = this.updateEmail.bind(this);
+    this.setLanguage = this.setLanguage.bind(this);
+    this.infoContacts = this.infoContacts.bind(this);
   }
 
   componentWillMount() {
@@ -38,6 +42,11 @@ class ProfileContainer extends Component {
   get laguagesText() {
     if (!this.props.user.languages) return;
     return Object.keys(this.props.user.languages).map(code => languages[code].name).join(', ');
+  }
+
+  updateEmail() {
+    const newEmail = this.refs.emailInput._lastNativeText;
+    if (newEmail != this.props.email) this.props.updateUser('email', newEmail);
   }
 
   logoutPress() {
@@ -53,11 +62,11 @@ class ProfileContainer extends Component {
   }
 
   setLanguage() {
-    //TODO: MOVE to language page
+    this.props.mainNav._navigation.navigate('Language');
   }
 
-  async infoContacts() {
-    //TODO: MOVE TO CONTACT PAGE
+  infoContacts() {
+    this.props.navigation.navigate('Contact');
   }
 
   render() {
@@ -90,7 +99,10 @@ class ProfileContainer extends Component {
 
           <View style={styles.row}>
             <Icon name="envelope-o" style={styles.rowIcon} />
-            <TextInput value={this.props.user.email} style={styles.rowInput} placeholder={'email'} underlineColorAndroid={'transparent'} />
+            <TextInput ref="emailInput"
+              onBlur={() => this.updateEmail()}
+              defaultValue={this.props.user.email} style={styles.rowInput} placeholder={'email'}
+              underlineColorAndroid={'transparent'} />
           </View>
           <View style={styles.hr} />
 
