@@ -45,6 +45,14 @@ export default function FeedReducer(state = initialState, action = {}) {
         newPostColor: null,
         activePost: action.payload,
       }
+    case types.POST_CANCELED:
+      return {
+        ...state,
+        newPostTags: new Set(),
+        newPostText: null,
+        newPostColor: null,
+        activePost: null,
+      }
     case types.CALL_PRESS:
       return state;
     case types.TOGGLE_TAG:

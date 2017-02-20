@@ -2,11 +2,11 @@
 
 import React, { Component } from 'react';
 import {bindActionCreators} from 'redux';
-import ComposeButton from './buttons/ComposeButton';
 import * as feedActions from '../actions/feedActions';
 import { connect } from 'react-redux';
 import { Button, TextInput, View, StyleSheet, TouchableHighlight, ScrollView } from 'react-native'
 import Tags from '../components/compose/Tags';
+import Connecting from '../components/compose/Connecting';
 
 const colors = ['red', '#6ca024', 'green', '#6d9a9c'];
 
@@ -14,6 +14,7 @@ function mapStateToProps(state) {
   return {
     newPostColor: state.FeedReducer.newPostColor,
     newPostTags: state.FeedReducer.newPostTags,
+    activePost: state.FeedReducer.activePost,
   };
 }
 
@@ -27,13 +28,6 @@ function matchDispatchToProps(dispatch) {
 }
 
 class ComposeContainer extends Component {
-  static navigationOptions = {
-    title: 'Compose',
-    header: {
-      right: <ComposeButton />,
-    },
-  }
-
   constructor(props) {
     super(props);
 
@@ -62,6 +56,8 @@ class ComposeContainer extends Component {
   }
 
   render() {
+    if (this.props.activePost)
+      return <Connecting  {...this.props.activePost} />
     return (
       <ScrollView style={styles.container}>
         <View style={styles.upper}>

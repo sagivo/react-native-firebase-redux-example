@@ -2,16 +2,19 @@ import { TabNavigator } from 'react-navigation';
 import React, {Component} from 'react';
 import { View, Button, ListView, Text } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import * as Animatable from 'react-native-animatable';
 
 import MainContainer from '../../containers/MainContainer';
 import ComposeContainer from '../../containers/ComposeContainer';
+import ComposeButton from '../../containers/buttons/ComposeButton';
+import CancelPostButton from '../../containers/buttons/CancelPostButton';
 import FeedContainer from '../../containers/FeedContainer';
 import HistoryContainer from '../../containers/HistoryContainer';
 import CallContainer from '../../containers/CallContainer';
 import ContactContainer from '../../containers/ContactContainer';
 import ProfileContainer from '../../containers/ProfileContainer';
 
-const tab = TabNavigator(
+export default TabNavigator(
 {
   Feed: {
     screen: FeedContainer,
@@ -39,12 +42,31 @@ const tab = TabNavigator(
   Compose: {
     screen: ComposeContainer,
     navigationOptions: {
-      tabBar: {
-        icon: ({ tintColor, focused }) => {
-          return <MaterialIcons name="add" size={30} color={tintColor} />
-        },
-        label: 'New Call',
+      tabBar: navigation => {
+        if (navigation.state.params && navigation.state.params.connecting) return {
+          icon: ({ tintColor, focused }) => {
+            return (<Animatable.View animation="tada" duration={3000} iterationCount="infinite">
+              <MaterialIcons name="settings-phone" size={30} color={tintColor} />
+            </Animatable.View>);
+          },
+        }
+        return {
+          icon: ({ tintColor, focused }) => {
+            return <MaterialIcons name="add" size={30} color={tintColor} />
+          },
+        }
       },
+      header: (navigation) => { 
+        console.log('state', navigation);
+        if (navigation.state.params && navigation.state.params.connecting) return {
+          title: 'Connecting',
+          left: <CancelPostButton />
+        }
+        return {
+          title: 'Compose',
+          right: <ComposeButton />,
+        }
+      }
     },
   },
   History: {
@@ -86,5 +108,3 @@ const tab = TabNavigator(
   // lazyLoad: true,
   initialRouteName: 'Compose',
 });
-
-export default tab;

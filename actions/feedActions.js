@@ -5,6 +5,7 @@ import { callStatus, callMethod } from '../models/call';
 
 export const types = {
   POST_ADDED: 'POST_ADDED',
+  POST_CANCELED: 'POST_CANCELED',
   CALL_PRESS: 'CALL_PRESS',
   TOGGLE_TAG: 'TOGGLE_TAG',
   REFRESHING: 'REFRESHING',
@@ -78,6 +79,19 @@ export function toggleTag(data) {
   };
 }
 
+export function cancelPost(cb) {
+  console.log('cancel');
+  return (dispatch, getState) => {
+    const { postId, ...postToMove } = getState().FeedReducer.activePost;
+    //move from active to canceled
+    db.ref(`posts/canceled/${postId}`).set(postToMove)
+    .then(() => db.ref(`posts/active/${postId}`).remove())
+    .then(dispatch({ type: types.POST_CANCELED, payload: { postToMove } }))
+    .catch(err => console.error(err));
+    if (cb) cb();
+  }
+}
+
 export function addPost(cb) {
   return (dispatch, getState) => {
     const postId = new Date().getTime();
@@ -91,7 +105,7 @@ export function addPost(cb) {
     }
     db.ref(`posts/active/${postId}`)
       .set(post)
-      .then(dispatch({ type: types.POST_ADDED, payload: post }))
+      .then(dispatch({ type: types.POST_ADDED, payload: { ...post, postId } }))
       .then(() =>{
         if (cb) cb(true);
       })

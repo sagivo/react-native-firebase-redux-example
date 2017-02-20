@@ -7,14 +7,13 @@ import * as feedActions from '../../actions/feedActions';
 
 function mapStateToProps(state) {
   return {
-    newPostText: state.FeedReducer.newPostText,
     mainNav: state.NavigationReducer.mainNav,
   };
 }
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
-    addPost: feedActions.addPost,
+    cancelPost: feedActions.cancelPost,
   }, dispatch);
 }
 
@@ -27,17 +26,16 @@ class ComposeBtn extends Component {
   }
 
   onPress() {
-    this.props.addPost(() => {
-      // this.props.mainNav.dispatch({ type: 'Navigation/NAVIGATE', routeName: 'Feed' });
+    this.props.cancelPost(() => {
       return this.props.mainNav.dispatch({
-        type: 'Navigation/SET_PARAMS', params: {connecting: true}, key: 'Compose',
+        type: 'Navigation/SET_PARAMS', params: {connecting: null}, key: 'Compose',
       });
     });
   }
 
   render() {
     return (
-      <Button title='Post' disabled={!this.props.newPostText} onPress={this.onPress} />
+      <Button title='Cancel' onPress={this.onPress} />
     );
   }
 };

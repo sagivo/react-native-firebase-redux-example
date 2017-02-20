@@ -36,9 +36,6 @@ class Main extends Component {
     this.props.syncUser();
     this.syncNotifications();
 
-    setTimeout(() => {
-      // this.navigator.dispatch({ type: 'Navigation/NAVIGATE', routeName: 'Compose2' });
-    }, 2000)
   }
 
   componentDidMount() {
