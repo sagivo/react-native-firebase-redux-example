@@ -14,6 +14,7 @@ function mapStateToProps(state) {
   return {
     refreshing: state.ContactReducer.refreshing,
     contacts: state.ContactReducer.contacts,
+    selectedContacts: state.ContactReducer.selectedContacts,
   };
 }
 
@@ -22,22 +23,24 @@ function matchDispatchToProps(dispatch) {
     // onData: contactActions.onData,
     syncContacts: contactActions.syncContacts,
     onCall: contactActions.onContactCallPress,
+    toggleSelectedContacts: contactActions.toggleSelectedContacts,
   }, dispatch);
 }
 
 class ContactContainer extends Component {
-  static navigationOptions = {
-    title: 'aaabb',
-  }
-
   constructor(props) {
     super(props);
 
     this.onCall = this.onCall.bind(this);
+    this.onLongPress = this.onLongPress.bind(this);
   }
 
   componentWillMount() {
     this.props.syncContacts();
+  }
+
+  onLongPress(id) {
+    this.props.toggleSelectedContacts(id);
   }
 
   onCall(userId) {
@@ -50,6 +53,8 @@ class ContactContainer extends Component {
       <ContactList
         contacts={this.props.contacts}
         onCall={this.onCall}
+        onLongPress={this.onLongPress}
+        selectedContacts={this.props.selectedContacts}
         />
       :
       <Loading />

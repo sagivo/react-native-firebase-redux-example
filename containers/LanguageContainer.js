@@ -105,7 +105,6 @@ export default connect(mapStateToProps, matchDispatchToProps)(LanguageContainer)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 20,
   },
   separator: {
     flex: 1,

@@ -16,29 +16,24 @@ const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !==
 export default class ContactList extends Component {
 
   constructor(props) {
-    super(props)
+    super(props);
 
-    this.state = {
-      dataSource: dataSource.cloneWithRows(this.props.contacts),
-    };
+    this.state = { filter: '' };
 
     this.contactsFromHash = this.contactsFromHash.bind(this);
+    this.onSearch = this.onSearch.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.contactsFromHash('', nextProps.contacts);
+  contactsFromHash(data = this.props.contacts) {
+    const filterData = data
+    .filter(c => c.name.toLowerCase()
+    .includes(this.state.filter.toLowerCase()))
+
+    return dataSource.cloneWithRows(filterData);
   }
 
-  contactsFromHash(filter, data = this.props.contacts) {
-    const filterData = Object.keys(data)
-      .map(key => {return {...data[key], id: key}; })
-      .filter(c => c.name.toLowerCase().includes(filter.toLowerCase()))
-      .sort(c => c.name);
-
-    this.setState({
-      ...this.state,
-      dataSource: dataSource.cloneWithRows(filterData),
-    });
+  onSearch(filter) {
+    this.setState({ ...this.state, filter });
   }
 
   render() {
@@ -47,9 +42,12 @@ export default class ContactList extends Component {
         { (Object.keys(this.props.contacts).length > 0) ?
         <ListView
           style={styles.container}
-          dataSource={this.state.dataSource}
-          renderHeader={() => <SearchContact onSearch={this.contactsFromHash} />}
-          renderRow={(data) => <Contact {...data} onCall={this.props.onCall} />}
+          dataSource={this.contactsFromHash(this.props.contacts)}
+          renderHeader={() => <SearchContact onSearch={this.onSearch} />}
+          renderRow={(data) => <Contact {...data}
+            onLongPress={this.props.onLongPress}
+            selected={this.props.selectedContacts.has(data.id)}
+            onCall={this.props.onCall} />}
           renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
           enableEmptySections={true}
         />
@@ -64,10 +62,8 @@ export default class ContactList extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 20,
   },
   separator: {
-    flex: 1,
     height: StyleSheet.hairlineWidth,
     backgroundColor: '#8E8E8E',
   },

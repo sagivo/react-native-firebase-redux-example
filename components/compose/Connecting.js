@@ -9,7 +9,7 @@ export default class Tags extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>I know that I should talk on something, but sometimes I just need a listiner...</Text>
+        <Text style={styles.text}>{this.props.text}</Text>
         <Animatable.Text iterationCount="infinite" duration={4000} animation="flash" style={styles.info}>Finding you a match, stay tuned...</Animatable.Text>
       </View>
     );

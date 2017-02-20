@@ -2,6 +2,7 @@ import {types} from '../actions/contactActions';
 const initialState = {
   contacts: {},
   refreshing: false,
+  selectedContacts: new Set(),
 };
 
 export default function feedReducer(state = initialState, action = {}) {
@@ -22,6 +23,15 @@ export default function feedReducer(state = initialState, action = {}) {
         ...state,
         contacts: [...state.contacts, action.payload],
       }
+    case types.CONTACTS_DELETED:
+      return { ...state, selectedContacts: new Set() }
+    case types.TOGGLE_SELECTED_CONTACTS:
+      const selectedContacts = new Set(state.selectedContacts);
+      const id = action.payload;
+
+      if (selectedContacts.has(id)) selectedContacts.delete(id);
+      else selectedContacts.add(id);
+      return { ...state, selectedContacts }
     case types.CONTACT_CALL_PRESS:
       return state;
     default:

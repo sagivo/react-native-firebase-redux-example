@@ -103,8 +103,7 @@ export function addPost(cb) {
       location: getState().UserReducer.location,
       rating: getState().UserReducer.rating,
     }
-    db.ref(`posts/active/${postId}`)
-      .set(post)
+    db.ref(`posts/active/${postId}`).set(post)
       .then(dispatch({ type: types.POST_ADDED, payload: { ...post, postId } }))
       .then(() =>{
         if (cb) cb(true);

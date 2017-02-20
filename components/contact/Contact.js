@@ -1,20 +1,21 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import * as Animatable from 'react-native-animatable';
 
 const Contact = (props) => (
-  <View style={styles.container}>
+  <TouchableOpacity style={[styles.container, props.selected ? styles.selected : null ]} onLongPress={() => props.onLongPress(props.id)}>
     <View style={styles.left}>
-      <Image source={{ uri: props.pic}} style={styles.photo} />
+      {props.selected ?
+        <Animatable.View animation="flipInY" duration={400}><Icon name="check-circle" size={40} color="#66a01e" /></Animatable.View> :
+        <Image source={{ uri: props.pic}} style={styles.photo} />}
       <Text style={styles.text}>{props.name}</Text>
     </View>
     <View style={styles.right}>
-      { props.online ?
-      <Icon name="phone" size={30} color="#ADD67E" onPress={() => props.onCall(props.id)} /> :
-      <Icon name="phone" size={30} color="#6C6B59" />
-      }
+      { props.online && !props.selected &&
+        <Icon name="phone" size={30} color="#ADD67E" onPress={() => props.onCall(props.id)} />}
     </View>
-  </View>
+  </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({
@@ -28,6 +29,9 @@ const styles = StyleSheet.create({
     flex: 10,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  selected: {
+    backgroundColor: '#61fdd0',
   },
   right: {
     flex: 1,

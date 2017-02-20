@@ -7,6 +7,7 @@ import * as Animatable from 'react-native-animatable';
 import MainContainer from '../../containers/MainContainer';
 import ComposeContainer from '../../containers/ComposeContainer';
 import ComposeButton from '../../containers/buttons/ComposeButton';
+import DeleteContactsButton from '../../containers/buttons/DeleteContactsButton';
 import CancelPostButton from '../../containers/buttons/CancelPostButton';
 import FeedContainer from '../../containers/FeedContainer';
 import HistoryContainer from '../../containers/HistoryContainer';
@@ -37,6 +38,10 @@ export default TabNavigator(
         },
         label: 'Contacts',
       }),
+      header: { 
+        title: 'Contacts',
+        right: <DeleteContactsButton />
+      }
     },
   },
   Compose: {
@@ -105,6 +110,6 @@ export default TabNavigator(
   tabBarPosition: 'bottom',
   // swipeEnabled: true,
   // headerMode: 'float',
-  // lazyLoad: true,
-  initialRouteName: 'Compose',
+  lazyLoad: true,
+  initialRouteName: 'Contact',
 });
