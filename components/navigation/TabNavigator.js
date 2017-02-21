@@ -38,7 +38,7 @@ export default TabNavigator(
         },
         label: 'Contacts',
       }),
-      header: { 
+      header: {
         title: 'Contacts',
         right: <DeleteContactsButton />
       }
@@ -61,8 +61,7 @@ export default TabNavigator(
           },
         }
       },
-      header: (navigation) => { 
-        console.log('state', navigation);
+      header: (navigation) => {
         if (navigation.state.params && navigation.state.params.connecting) return {
           title: 'Connecting',
           left: <CancelPostButton />
