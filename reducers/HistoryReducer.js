@@ -1,7 +1,8 @@
 import {types} from '../actions/historyActions';
 const initialState = {
-  calls: {},
+  calls: [],
   refreshing: false,
+  selectedHistory: new Set(),
 };
 
 export default function HistoryReducer(state = initialState, action = {}) {
@@ -22,6 +23,13 @@ export default function HistoryReducer(state = initialState, action = {}) {
         ...state,
         calls: [...state.contacts, action.payload],
       }
+    case types.TOGGLE_SELECTED_HISTORY:
+      const selectedHistory = new Set(state.selectedHistory);
+      const id = action.payload;
+
+      if (selectedHistory.has(id)) selectedHistory.delete(id);
+      else selectedHistory.add(id);
+      return { ...state, selectedHistory }
     default:
       return state;
   }

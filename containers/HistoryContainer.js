@@ -12,6 +12,7 @@ function mapStateToProps(state) {
   return {
     refreshing: state.HistoryReducer.refreshing,
     calls: state.HistoryReducer.calls,
+    selectedHistory: state.HistoryReducer.selectedHistory,
   };
 }
 
@@ -19,16 +20,23 @@ function matchDispatchToProps(dispatch) {
   return bindActionCreators({
     syncHistory: historyActions.syncHistory,
     removeHistory: historyActions.removeHistory,
+    toggleSelectedHistory: historyActions.toggleSelectedHistory,
   }, dispatch);
 }
 
 class FeedContainer extends Component {
   constructor(props) {
     super(props);
+
+    this.onLongPress = this.onLongPress.bind(this);
   }
 
   componentWillMount() {
     this.props.syncHistory();
+  }
+
+  onLongPress(id) {
+    this.props.toggleSelectedHistory(id);
   }
 
   render() {
@@ -36,7 +44,9 @@ class FeedContainer extends Component {
       (!this.props.refreshing) ?
       <HistoryList
         calls={this.props.calls}
-        removeHistory={this.props.removeHistory}
+        onCall={this.onCall}
+        onLongPress={this.onLongPress}
+        selectedHistory={this.props.selectedHistory}
         />
       :
       <Loading />

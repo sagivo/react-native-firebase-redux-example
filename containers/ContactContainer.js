@@ -8,8 +8,6 @@ import Loading from '../components/shared/Loading';
 import * as contactActions from '../actions/contactActions';
 import { connect } from 'react-redux';
 
-const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
-
 function mapStateToProps(state) {
   return {
     refreshing: state.ContactReducer.refreshing,

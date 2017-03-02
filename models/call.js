@@ -5,10 +5,10 @@ export const callStatus = {
 }
 
 export const callMethod = {
-  IN: 'IN',
-  OUT: 'OUT',
-  IN_MISSED: 'IN_MISSED',
-  OUT_MISSED: 'OUT_MISSED',
+  IN: 'in',
+  OUT: 'out',
+  IN_MISSED: 'in_missed',
+  OUT_MISSED: 'out_missed',
 }
 
 export const buttonType = {

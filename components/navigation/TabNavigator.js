@@ -7,6 +7,7 @@ import * as Animatable from 'react-native-animatable';
 import MainContainer from '../../containers/MainContainer';
 import ComposeContainer from '../../containers/ComposeContainer';
 import ComposeButton from '../../containers/buttons/ComposeButton';
+import DeleteHistoryButton from '../../containers/buttons/DeleteHistoryButton';
 import DeleteContactsButton from '../../containers/buttons/DeleteContactsButton';
 import CancelPostButton from '../../containers/buttons/CancelPostButton';
 import FeedContainer from '../../containers/FeedContainer';
@@ -81,7 +82,11 @@ export default TabNavigator(
           return <MaterialIcons name="history" size={30} color={tintColor} />
         },
         label: 'History',
-      })
+      }),
+      header: {
+        title: 'History',
+        right: <DeleteHistoryButton />,
+      },
     },
   },
   Profile: {
@@ -110,5 +115,5 @@ export default TabNavigator(
   // swipeEnabled: true,
   // headerMode: 'float',
   lazyLoad: true,
-  initialRouteName: 'Profile',
+  initialRouteName: 'History',
 });

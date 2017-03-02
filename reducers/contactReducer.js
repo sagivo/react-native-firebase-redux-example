@@ -1,6 +1,6 @@
 import {types} from '../actions/contactActions';
 const initialState = {
-  contacts: {},
+  contacts: [],
   refreshing: false,
   selectedContacts: new Set(),
 };
