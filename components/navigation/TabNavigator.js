@@ -115,5 +115,5 @@ export default TabNavigator(
   // swipeEnabled: true,
   // headerMode: 'float',
   lazyLoad: true,
-  initialRouteName: 'History',
+  initialRouteName: 'Feed',
 });

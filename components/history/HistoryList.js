@@ -15,7 +15,7 @@ export default class ContactList extends Component {
   render() {
     return (
       <View style={styles.container}>
-        { this.props.calls.length ?
+        { this.props.calls && this.props.calls.length ?
         <ListView
           style={styles.container}
           dataSource={dataSource.cloneWithRows(this.props.calls)}

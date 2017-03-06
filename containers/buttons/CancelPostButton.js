@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
-import { Button } from 'react-native'
+import { Button, Alert } from 'react-native'
 
 import * as feedActions from '../../actions/feedActions';
 
@@ -26,11 +26,22 @@ class ComposeBtn extends Component {
   }
 
   onPress() {
-    this.props.cancelPost(() => {
-      return this.props.mainNav.dispatch({
-        type: 'Navigation/SET_PARAMS', params: {connecting: null}, key: 'Compose',
-      });
-    });
+    Alert.alert(
+      'Cancel Post?',
+      'Your post will be permanently removed.',
+      [
+        {text: 'Cancel', style: 'cancel'},
+        {
+          text: 'OK',
+          onPress: () => this.props.cancelPost(() => {
+          return this.props.mainNav.dispatch({
+            type: 'Navigation/SET_PARAMS', params: {connecting: null}, key: 'Compose',
+          });
+          }),
+        },
+      ],
+      { cancelable: false }
+    )
   }
 
   render() {
