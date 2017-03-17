@@ -5,14 +5,6 @@ import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import time from '../../models/time';
 
 export default class Post extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      bgColor: getRandomColor(),
-    }
-  }
-
   busy() {
     Alert.alert('Oops... to late, the person is already speaking with someone else.');
   }
@@ -22,7 +14,10 @@ export default class Post extends Component {
       <View style={[styles.container, {backgroundColor: this.props.color}]}>
         <View style={styles.left}>
           <Text style={styles.mainText}>{this.props.text}</Text>
-          <Text style={styles.time}>{time(this.props.id).fromNow()}</Text>
+          <Text style={styles.info}>
+            <MaterialIcons name="access-time" />{time(this.props.id).fromNow() + '  '} 
+            <MaterialIcons name="star-border" />{this.props.rating}
+          </Text>
         </View>
         <View style={styles.right}>
           <View style={styles.phone}>
@@ -32,9 +27,6 @@ export default class Post extends Component {
             :
             <MaterialIcons name="phone" size={40} color="white" onPress={this.props.onCallPress} />
           }
-          </View>
-          <View style={styles.rating}>
-            <Text style={styles.score}><MaterialIcons name="star-border" color="white" />{this.props.rating}</Text>
           </View>
         </View>
       </View>
@@ -48,43 +40,29 @@ const styles = StyleSheet.create({
     paddingVertical: 50,
     paddingHorizontal: 10,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
   mainText: {
     color: 'white',
     fontSize: 20,
   },
-  time: {
+  info: {
     marginTop: 10,
-    fontSize: 10,
+    fontSize: 12,
     color: 'white',
-    fontStyle : 'italic',
+    justifyContent: 'center',
   },
   left: {
-    flex:4,
-    justifyContent: 'flex-start',
+    width: 300,
+    justifyContent: 'center',
   },
   right: {
-    flex: 1,
-    flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 10,
   },
   phone: {
-    alignItems: 'center',
-    borderWidth: 2,
-    borderRadius: 100,
-    padding: 10,
-  },
-  rating: {
-    marginTop: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  score: {
-    fontSize: 16,
-    color: 'white',
+    padding: 5,
   },
 });
 
