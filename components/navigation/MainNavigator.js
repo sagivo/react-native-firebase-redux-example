@@ -2,6 +2,7 @@ import { StackNavigator } from 'react-navigation';
 import React, { Component } from 'react';
 
 import CallContainer from '../../containers/CallContainer';
+import LoginContainer from '../../containers/LoginContainer';
 import LanguageContainer from '../../containers/LanguageContainer';
 import TabNavigator from './TabNavigator';
 
@@ -20,7 +21,14 @@ export default StackNavigator({
     navigationOptions: {
       title: 'Select Language',
     },
+  },
+  Login: {
+    screen: LoginContainer,
+    navigationOptions: {
+      // header: { visible: false },
+    },
   }
 }, {
   headerMode: 'screen',
+  initialRouteName: 'Login',
 });
