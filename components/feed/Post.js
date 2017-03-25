@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: 'white',
     justifyContent: 'center',
+    alignItems: 'center',
   },
   left: {
     width: 300,

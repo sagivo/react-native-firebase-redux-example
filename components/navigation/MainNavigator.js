@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 
 import CallContainer from '../../containers/CallContainer';
 import LoginContainer from '../../containers/LoginContainer';
+import SplashContainer from '../../containers/SplashContainer';
 import LanguageContainer from '../../containers/LanguageContainer';
 import TabNavigator from './TabNavigator';
 
@@ -27,8 +28,14 @@ export default StackNavigator({
     navigationOptions: {
       // header: { visible: false },
     },
-  }
+  },
+  Splash: {
+    screen: SplashContainer,
+    navigationOptions: {
+      // header: { visible: false },
+    },
+  },
 }, {
   headerMode: 'screen',
-  initialRouteName: 'Login',
+  initialRouteName: 'Splash',
 });

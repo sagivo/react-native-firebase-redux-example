@@ -3,7 +3,7 @@ import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 // import { asyncSessionStorage } from 'redux-persist/storages';
 import thunk from 'redux-thunk';
 import reducers from '../reducers/index';
-import authMiddleware from './authMiddleware';
+// import authMiddleware from './authMiddleware';
 
 // export default applyMiddleware(thunk)(createStore)(reducers);
 
@@ -12,7 +12,7 @@ import authMiddleware from './authMiddleware';
 export default store = createStore(
   reducers,
   {},
-  applyMiddleware(authMiddleware, thunk),
+  applyMiddleware(thunk), // applyMiddleware(authMiddleware, thunk),
 )
 
 async function getCache(key) {

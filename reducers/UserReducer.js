@@ -1,4 +1,4 @@
-import { types, syncUser } from '../actions/userActions';
+import { types } from '../actions/userActions';
 import { AsyncStorage } from 'react-native';
 
 const USER_STORAGE_KEY = 'USER_STORAGE_KEY';
@@ -33,7 +33,6 @@ export default function userReducer(state = initialState, action = {}) {
 }
 
 export async function ensureLogin(cb) {
-  // saveUserId('sagiv')
   if (initialState.id) cb(true);
   else {
     const localUserId = await AsyncStorage.getItem(USER_STORAGE_KEY)

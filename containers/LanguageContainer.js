@@ -24,7 +24,6 @@ function mapStateToProps(state) {
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
     updateUser: userActions.updateUser,
-    syncUser: userActions.syncUser,
   }, dispatch);
 }
 
@@ -40,10 +39,6 @@ class LanguageContainer extends Component {
     this.onSearch = this.onSearch.bind(this);
     this.onLanguageSelected = this.onLanguageSelected.bind(this);
     this.filterLanguage = this.filterLanguage.bind(this);
-  }
-
-  componentWillMount() {
-    this.props.syncUser();
   }
 
   filterLanguage() {
@@ -64,7 +59,7 @@ class LanguageContainer extends Component {
   }
 
   onLanguageSelected(languageCode) {
-    const newLanguages = {...this.props.languages};
+    const newLanguages = { ...this.props.languages };
     if (newLanguages[languageCode]) delete newLanguages[languageCode];
     else newLanguages[languageCode] = true;
 

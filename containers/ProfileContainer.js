@@ -5,6 +5,7 @@ import { Alert, StyleSheet, View, Text, Image, TextInput, ScrollView, TouchableH
 import {bindActionCreators} from 'redux';
 import * as userActions from '../actions/userActions';
 import { connect } from 'react-redux';
+import { signOut } from '../models/auth';
 import languages from "../models/languages";
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -19,7 +20,6 @@ function mapStateToProps(state) {
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
-    syncUser: userActions.syncUser,
     updateUser: userActions.updateUser,
     logout: userActions.logout,
   }, dispatch);
@@ -35,10 +35,6 @@ class ProfileContainer extends Component {
     this.infoContacts = this.infoContacts.bind(this);
   }
 
-  componentWillMount() {
-    this.props.syncUser();
-  }
-
   get laguagesText() {
     if (!this.props.user.languages) return;
     return Object.keys(this.props.user.languages).map(code => languages[code].name).join(', ');
@@ -50,7 +46,7 @@ class ProfileContainer extends Component {
   }
 
   logoutPress() {
-    this.props.logout();
+    signOut();
   }
 
   setGender(gender) {

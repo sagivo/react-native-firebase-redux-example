@@ -1,12 +1,29 @@
 import db from './../models/db';
 
 export const types = {
+  CREATE_USER: 'CREATE_USER',
   ON_USER_DATA: 'ON_USER_DATA',
   REFRESHING_USER: 'REFRESHING_USER',
   UPDATE_USER: 'UPDATE_USER',
   LOGOUT: 'LOGOUT',
 };
 
+export function createUser(userId, userData, cb) {
+  return dispatch => {
+    db.ref(`users/${userId}`).set(userData).then(cb)
+    .catch(e => console.error(e));
+  }
+}
+
+export function syncUser(userId) {
+  return (dispatch, getState) => {
+    dispatch({ type: types.REFRESHING_USER });
+
+    db.ref(`users/${userId}`).on('value', (s) => {
+      dispatch(onUserData(s.val()));
+    });
+  }
+}
 
 export function onUserData(data) {
   return {
@@ -30,18 +47,6 @@ export function updateToken(token) {
 
     // TODEO: RESTORE
     // db.ref(`tokens/${userId}`).set(token).catch(dbError);
-  }
-}
-
-export function syncUser() {
-  return (dispatch, getState) => {
-    const userId = getState().UserReducer.id;
-
-    dispatch({ type: types.REFRESHING_USER });
-
-    db.ref(`users/${userId}`).on('value', (s) => {
-      dispatch(onUserData(s.val()));
-    });
   }
 }
 
