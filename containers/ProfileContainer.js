@@ -42,7 +42,7 @@ class ProfileContainer extends Component {
 
   updateEmail() {
     const newEmail = this.refs.emailInput._lastNativeText;
-    if (newEmail != this.props.email) this.props.updateUser('email', newEmail);
+    if (newEmail != this.props.email) this.props.updateUser('newEmail', newEmail);
   }
 
   logoutPress() {
@@ -78,7 +78,7 @@ class ProfileContainer extends Component {
               <Text style={styles.statsFont}>{this.props.user.rating || '?'}</Text>
             </View>
             <View style={styles.pic}>
-              <Image source={{uri: 'https://randomuser.me/api/portraits/men/6.jpg'}} style={styles.image} />
+              <Image source={{uri: this.props.user.pic}} style={styles.image} />
             </View>
             <View style={styles.rating}>
               <TouchableHighlight onPress={this.infoContacts}><Icon name="user-o" style={styles.statsIcon} /></TouchableHighlight>
@@ -97,7 +97,7 @@ class ProfileContainer extends Component {
             <Icon name="envelope-o" style={styles.rowIcon} />
             <TextInput ref="emailInput"
               onBlur={() => this.updateEmail()}
-              defaultValue={this.props.user.email} style={styles.rowInput} placeholder={'email'}
+              defaultValue={this.props.user.newEmail || this.props.user.email} style={styles.rowInput} placeholder={'email'}
               underlineColorAndroid={'transparent'} />
           </View>
           <View style={styles.hr} />

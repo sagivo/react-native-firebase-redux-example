@@ -10,7 +10,7 @@ export const types = {
 
 export function createUser(userId, userData, cb) {
   return dispatch => {
-    db.ref(`users/${userId}`).set(userData).then(cb)
+    db.ref(`users/${userId}`).update(userData).then(cb)
     .catch(e => console.error(e));
   }
 }

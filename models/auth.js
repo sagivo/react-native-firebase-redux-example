@@ -22,7 +22,7 @@ function fbLogIn() {
       name: user.displayName,
       email: user.email,
       emailVerified: user.emailVerified,
-      pic: user.photoURL,
+      pic: `https://graph.facebook.com/${fbData.id}/picture?width=200`,
       id: user.uid,
       fb: fbData,
     }
