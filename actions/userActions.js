@@ -15,6 +15,13 @@ export function createUser(userId, userData, cb) {
   }
 }
 
+export function updateFbData(userId, fbData, cb) {
+  return dispatch => {
+    db.ref(`facebook/${userId}`).set(fbData).then(cb)
+    .catch(e => console.error(e));
+  }
+}
+
 export function syncUser(userId) {
   return (dispatch, getState) => {
     dispatch({ type: types.REFRESHING_USER });
