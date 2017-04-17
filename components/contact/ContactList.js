@@ -10,6 +10,7 @@ import {
 import Contact from './Contact'
 import SearchContact from './SearchContact'
 import NoContacts from './NoContacts'
+import { COLORS } from '../../config';
 
 const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
 
@@ -65,6 +66,6 @@ const styles = StyleSheet.create({
   },
   separator: {
     height: StyleSheet.hairlineWidth,
-    backgroundColor: '#8E8E8E',
+    backgroundColor: COLORS.c1,
   },
 });

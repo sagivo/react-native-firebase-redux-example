@@ -7,6 +7,7 @@ import * as userActions from '../actions/userActions';
 import { connect } from 'react-redux';
 import { signOut } from '../models/auth';
 import languages from "../models/languages";
+import { COLORS } from '../config';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -33,11 +34,12 @@ class ProfileContainer extends Component {
     this.updateEmail = this.updateEmail.bind(this);
     this.setLanguage = this.setLanguage.bind(this);
     this.infoContacts = this.infoContacts.bind(this);
+    this.getPic = this.getPic.bind(this);
   }
 
   get laguagesText() {
     if (!this.props.user.languages) return;
-    return Object.keys(this.props.user.languages).map(code => languages[code].name).join(', ');
+    return Object.values(this.props.user.languages).join(', ');
   }
 
   updateEmail() {
@@ -46,7 +48,7 @@ class ProfileContainer extends Component {
   }
 
   logoutPress() {
-    signOut();
+    signOut().then(() => this.props.navigation.navigate('Splash'));
   }
 
   setGender(gender) {
@@ -58,11 +60,17 @@ class ProfileContainer extends Component {
   }
 
   setLanguage() {
-    this.props.mainNav._navigation.navigate('Language');
+    this.props.navigation.navigate('Language');
+    //this.props.mainNav._navigation.navigate('Language');
   }
 
   infoContacts() {
     this.props.navigation.navigate('Contact');
+  }
+
+  getPic() {
+    const { fbId } = this.props.user;
+    return (fbId) ? `https://graph.facebook.com/${fbId}/picture?width=200` : `require('../images/bunny.jpg')`;
   }
 
   render() {
@@ -78,7 +86,7 @@ class ProfileContainer extends Component {
               <Text style={styles.statsFont}>{this.props.user.rating || '?'}</Text>
             </View>
             <View style={styles.pic}>
-              <Image source={{uri: this.props.user.pic}} style={styles.image} />
+              <Image source={{uri: this.getPic()}} style={styles.image} defaultSource={require('../images/bunny.jpg')} />
             </View>
             <View style={styles.rating}>
               <TouchableHighlight onPress={this.infoContacts}><Icon name="user-o" style={styles.statsIcon} /></TouchableHighlight>
@@ -105,7 +113,7 @@ class ProfileContainer extends Component {
           <TouchableHighlight onPress={this.setLanguage}>
             <View style={styles.row}>
               <Icon name="flag" style={styles.rowIcon} />
-              <Text style={styles.rowInput} placeholder={'language'} underlineColorAndroid={'transparent'}>{this.laguagesText}</Text>
+              <Text style={styles.rowInput} placeholder={'languages'} underlineColorAndroid={'transparent'}>{this.laguagesText}</Text>
             </View>
           </TouchableHighlight>
           <View style={styles.hr} />
@@ -131,7 +139,7 @@ const styles = StyleSheet.create({
   },
   top: {
     height: 220,
-    backgroundColor: '#DFDEB8',
+    backgroundColor: COLORS.c2,
   },
   name: {
     alignItems: 'center',
@@ -139,7 +147,7 @@ const styles = StyleSheet.create({
   },
   nameText: {
     fontSize: 18,
-    color: '#97977D',
+    color: COLORS.c1,
   },
   stats: {
     flexDirection: 'row',
@@ -147,7 +155,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     paddingBottom: 20,
-    borderColor: '#97977D',
+    borderColor: COLORS.c1,
     borderBottomWidth: 1,
 
   },
@@ -157,12 +165,12 @@ const styles = StyleSheet.create({
   },
   statsIcon: {
     fontSize: 30,
-    color: '#97977D',
+    color: COLORS.c1,
   },
   statsFont: {
     marginTop: 5,
     fontSize: 12,
-    color: '#97977D',
+    color: COLORS.c1,
   },
   pic: {
     paddingHorizontal: 20,
@@ -171,7 +179,7 @@ const styles = StyleSheet.create({
     width: 140,
     height: 140,
     borderRadius: 70,
-    borderColor: '#97977D',
+    borderColor: COLORS.c1,
     borderWidth: 1,
   },
   details: {
@@ -184,13 +192,13 @@ const styles = StyleSheet.create({
   },
   tipText: {
     fontSize: 12,
-    color: '#97977D',
+    color: COLORS.c1,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderColor: '#97977D',
+    borderColor: COLORS.c1,
     padding: 20,
   },
   rowInput: {
@@ -200,17 +208,17 @@ const styles = StyleSheet.create({
   },
   rowIcon: {
     fontSize: 20,
-    color: '#97977D',
+    color: COLORS.c1,
   },
   hr: {
     height: 1,
-    backgroundColor: '#97977D',
+    backgroundColor: COLORS.c1,
   },
   gender: {
     fontSize: 30,
     paddingHorizontal: 20,
   },
   selected: {
-    color: 'blue',
+    color: COLORS.c2,
   }
 });

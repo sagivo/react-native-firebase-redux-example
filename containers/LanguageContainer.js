@@ -17,7 +17,7 @@ const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2
 
 function mapStateToProps(state) {
   return {
-    languages: state.UserReducer.languages,
+    languages: new Set(state.UserReducer.languages),
   };
 }
 
@@ -30,7 +30,7 @@ function matchDispatchToProps(dispatch) {
 
 class LanguageContainer extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       filter: '',
@@ -48,7 +48,7 @@ class LanguageContainer extends Component {
         result.push({
           name: `${languages[i].name} (${languages[i].nativeName})`,
           code: i,
-          selected: this.props.languages && !!this.props.languages[i],
+          selected: this.props.languages.has(i),
         });
     }
     return dataSource.cloneWithRows(result);
@@ -59,11 +59,11 @@ class LanguageContainer extends Component {
   }
 
   onLanguageSelected(languageCode) {
-    const newLanguages = { ...this.props.languages };
-    if (newLanguages[languageCode]) delete newLanguages[languageCode];
-    else newLanguages[languageCode] = true;
+    const newLanguages = new Set(this.props.languages);
+    if (newLanguages.has(languageCode)) newLanguages.delete(languageCode);
+    else newLanguages.add(languageCode);
 
-    if (Object.keys(newLanguages).length) this.props.updateUser('languages', newLanguages);
+    if (newLanguages.size) this.props.updateUser('languages', Array.from(newLanguages));
     else alert('must select at least one language');
   }
 

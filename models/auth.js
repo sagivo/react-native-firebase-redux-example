@@ -2,23 +2,21 @@ import { AccessToken, LoginManager, GraphRequest, GraphRequestManager } from 're
 import firebase from './firebase';
 
 function fbLogIn() {
-  let fbData;
+  let fbData, cred, userToDelete;
 
-  return LoginManager.logInWithReadPermissions(['public_profile', 'user_birthday', 'user_likes'])
+  return LoginManager.logInWithReadPermissions(['public_profile', 'email', 'user_birthday', 'user_likes'])
   .then(result => {
     if (result.isCancelled) throw 'Login canceled';
     return AccessToken.getCurrentAccessToken();
   })
-  //fb token
   .then(fb => {
     fbData = { token: fb.accessToken, expirationTime: fb.expirationTime, id: fb.userID,
         permissions: fb.permissions };
   })
-  //get extra data
   .then(() => {
     return new Promise((resolve, reject) => {
       const infoRequest = new GraphRequest(
-        '/me?fields=birthday,languages,gender,locale,timezone,age_range,likes',
+        '/me?fields=birthday,languages,gender,locale,timezone,age_range,likes,name',
         null,
         (err, extraFbData) => {
           if (err) return reject(err);
@@ -29,23 +27,35 @@ function fbLogIn() {
       new GraphRequestManager().addRequest(infoRequest).start();
     });
   })
-  //firebase auth with fb token
   .then(() => {
-    const cred = firebase.auth.FacebookAuthProvider.credential(fbData.token);
+    cred = firebase.auth.FacebookAuthProvider.credential(fbData.token);
+    return firebase.auth().currentUser.link(cred);
+  })
+  .catch(err => {
+    // console.log(err);
+    if (err.code !== 'auth/credential-already-in-use') throw err;
+    userToDelete = firebase.auth().currentUser;
     return firebase.auth().signInWithCredential(cred);
   })
-  //collect user
-  .then(user => ({
-    name: user.displayName,
-    email: user.email,
-    emailVerified: user.emailVerified,
-    pic: `https://graph.facebook.com/${fbData.id}/picture?width=200`,
-    id: user.uid,
-    fb: fbData,
-  }));
+  .then(user => {
+    if (userToDelete) userToDelete.delete();
+    const userObj = {};
+    ['birthday', 'gender', 'email', 'name'].forEach(field => {
+      if (fbData[field]) userObj[field] = fbData[field];
+    });
+    if (fbData.languages) userObj.languages = fbData.languages.map(lang => lang.name);
+    if (!userObj.email && user.email) userObj.email = user.email;
+
+    return {
+      id: user.uid,
+      user: { ...userObj, fbId: fbData.id },
+      fbData,
+    }
+  });
 }
 
 function signOut() {
+  LoginManager.logOut();
   return firebase.auth().signOut();
 }
 

@@ -10,7 +10,7 @@ const initialState = {
   gender: null,
   fb: null,
   location: null,
-  languages: {'en': true},
+  languages: null,
   refreshing: false,
   pushToken: null,
   screenStatus: null,

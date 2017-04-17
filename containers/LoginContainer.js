@@ -19,6 +19,7 @@ function mapStateToProps(state) {
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
     createUser: userActions.createUser,
+    updateFbData: userActions.updateFbData,
   }, dispatch);
 }
 
@@ -31,14 +32,15 @@ class LoginContainer extends Component {
 
   login() {
     fbLogIn().then(userData => {
-      const { id, ...user } = userData
+      const { id, fbData, user } = userData
       console.log('returned: ', user);
       this.props.createUser(id, user, () => {
         this.props.navigation.dispatch({
           type: 'Navigation/RESET', index: 0,
-          actions: [{ type: 'Navigation/NAVIGATE', routeName: 'Tabs'}],
+          actions: [{ type: 'Navigation/NAVIGATE', routeName: 'Splash'}],
         });
       });
+      this.props.updateFbData(id, fbData);
     });
   }
 

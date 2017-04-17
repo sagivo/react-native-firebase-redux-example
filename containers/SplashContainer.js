@@ -24,24 +24,25 @@ function matchDispatchToProps(dispatch) {
 }
 
 class LoginContainer extends Component {
-  constructor(props) {
-    super(props);
-
-    this.loginWithFirebase();
-  }
-
-  loginWithFirebase() {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        console.log('we got a user', user); //firebase.auth().currentUser
-        this.props.onUserData({ id: user.uid })
-        this.props.syncUser(user.uid);
-        this.redirectWithNewStateTo('Tabs');
+  componentWillMount() {
+    this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      if (user && !user.isAnonymous) {
+          console.log('we got a user', user); //firebase.auth().currentUser
+          this.props.onUserData({ id: user.uid })
+          this.props.syncUser(user.uid);
+          this.redirectWithNewStateTo('Tabs');
       } else {
         console.log('user is out');
-        this.redirectWithNewStateTo('Login');
+        if (user && user.isAnonymous) this.redirectWithNewStateTo('Login');
+        else firebase.auth().signInAnonymously()
+          .then(this.redirectWithNewStateTo('Login'))
+          .catch(err => console.error(err));
       }
     });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
   logout() {
@@ -59,7 +60,6 @@ class LoginContainer extends Component {
     return (
       <View>
         <Text>SPLASH SCREEN</Text>
-        <Button onPress={this.logout} title="logout" />
       </View>
     );
   }
