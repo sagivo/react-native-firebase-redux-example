@@ -5,22 +5,25 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import * as Animatable from 'react-native-animatable';
 import { callMethod } from '../../models/call';
 import time from '../../models/time';
+import { COLORS, FONTS } from '../../styles';
 
 const CallItem = (props) => (
   <TouchableOpacity style={[styles.container, props.selected ? styles.selected : null ]} onLongPress={() => props.onLongPress(props.id)}>
     <View style={styles.left}>
       {props.selected &&
-        <Animatable.View animation="flipInY" duration={400}><Icon name="check-circle" size={40} color="#66a01e" /></Animatable.View>}
-    </View>
-    <View style={styles.right}>
-      { props.online && !props.selected &&
-        <Icon name="phone" size={30} color="#ADD67E" onPress={() => props.onCall(props.id)} />}
-      <View style={styles.info}>
+      <Animatable.View animation="flipInY" duration={400} style={styles.check}><Icon name="check-circle" size={40} color={COLORS.C1
+      } /></Animatable.View>}
+      <View style={styles.innerLeft}>
         <Text style={styles.name}>{props.name}</Text>
         <Text style={styles.post}>{props.post}</Text>
-        <Text style={styles.timestamp}>{callStatusIcon(props)} {time(props.id).fromNow()}</Text>
+        <Text style={styles.info}>{callStatusIcon(props)} {time(props.id).fromNow()}</Text>
       </View>
     </View>
+    { props.name && !props.selected &&
+    <View style={styles.right}>
+      <Icon name="phone" size={30} color={COLORS.C1
+      } onPress={() => props.onCall(props.id)} />
+    </View>}
   </TouchableOpacity>
 );
 
@@ -34,24 +37,42 @@ function callStatusIcon(props) {
 }
 
 const styles = StyleSheet.create({
-  info: {
-    flex: 1,
-    marginLeft: 10,
-  },
-  name: {
-    fontWeight: 'bold',
-  },
   container: {
-    flex: 1,
-    padding: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    // margin: 10,
+    justifyContent: 'space-between',
+  },
+  left: {
+    padding: 10,
+    width: 320,
     flexDirection: 'row',
     alignItems: 'center',
   },
-  selected: {
-    backgroundColor: '#61fdd0',
+  innerLeft: {
   },
   right: {
-    flex: 1,
+    padding: 10,
+  },
+  post: {
+    ...FONTS.P1,
+    marginTop: 10,
+  },
+  name: {
+    ...FONTS.H3,
+    fontWeight: 'bold',
+  },
+  info: {
+    marginTop: 10,
+    ...FONTS.P3,
+    // fontStyle: 'italic',
+  },
+  selected: {
+    backgroundColor: COLORS.C4
+      ,
+  },
+  check: {
+    marginRight: 5,
   },
 });
 

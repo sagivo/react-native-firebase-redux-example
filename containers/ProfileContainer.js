@@ -7,7 +7,7 @@ import * as userActions from '../actions/userActions';
 import { connect } from 'react-redux';
 import { signOut } from '../models/auth';
 import languages from "../models/languages";
-import { COLORS } from '../config';
+import { COLORS } from '../styles';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -119,11 +119,11 @@ class ProfileContainer extends Component {
           <View style={styles.hr} />
 
           <View style={styles.row}>
-            <Icon name="male" style={[styles.rowIcon, styles.gender, this.props.user.gender === 'm' ? styles.selected : null]} onPress={() => this.setGender('m')} />
-            <Icon name="female" style={[styles.rowIcon, styles.gender, , this.props.user.gender === 'f' ? styles.selected : null]} onPress={() => this.setGender('f')} />
+            <Icon name="male" style={[styles.rowIcon, styles.gender, this.props.user.gender === 'm' ? styles.selected : styles.unselected]} onPress={() => this.setGender('m')} />
+            <Icon name="female" style={[styles.rowIcon, styles.gender, , this.props.user.gender === 'f' ? styles.selected : styles.unselected]} onPress={() => this.setGender('f')} />
           </View>
           <View style={styles.row}>
-            <TouchableHighlight onPress={this.logoutPress}><Text>Logout</Text></TouchableHighlight >
+            <TouchableHighlight onPress={this.logoutPress}><Text style={{color: COLORS.C1}}>Logout</Text></TouchableHighlight >
           </View>
         </View>
       </ScrollView>
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   },
   top: {
     height: 220,
-    backgroundColor: COLORS.c2,
+    backgroundColor: COLORS.C2,
   },
   name: {
     alignItems: 'center',
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   },
   nameText: {
     fontSize: 18,
-    color: COLORS.c1,
+    color: COLORS.C1
   },
   stats: {
     flexDirection: 'row',
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     paddingBottom: 20,
-    borderColor: COLORS.c1,
+    borderColor: COLORS.C1,
     borderBottomWidth: 1,
 
   },
@@ -165,12 +165,12 @@ const styles = StyleSheet.create({
   },
   statsIcon: {
     fontSize: 30,
-    color: COLORS.c1,
+    color: COLORS.C1,
   },
   statsFont: {
     marginTop: 5,
     fontSize: 12,
-    color: COLORS.c1,
+    color: COLORS.C1,
   },
   pic: {
     paddingHorizontal: 20,
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     width: 140,
     height: 140,
     borderRadius: 70,
-    borderColor: COLORS.c1,
+    borderColor: COLORS.C1,
     borderWidth: 1,
   },
   details: {
@@ -192,33 +192,37 @@ const styles = StyleSheet.create({
   },
   tipText: {
     fontSize: 12,
-    color: COLORS.c1,
+    color: COLORS.C1,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderColor: COLORS.c1,
+    borderColor: COLORS.C1,
     padding: 20,
   },
   rowInput: {
     fontSize: 16,
     flex: 1,
     marginLeft: 10,
+    color: COLORS.C1,
   },
   rowIcon: {
     fontSize: 20,
-    color: COLORS.c1,
+    color: COLORS.C1,
   },
   hr: {
     height: 1,
-    backgroundColor: COLORS.c1,
+    backgroundColor: COLORS.C1,
   },
   gender: {
     fontSize: 30,
     paddingHorizontal: 20,
   },
   selected: {
-    color: COLORS.c2,
-  }
+    color: COLORS.C1,
+  },
+  unselected: {
+    color: COLORS.C2,
+  },
 });

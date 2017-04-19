@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as Animatable from 'react-native-animatable';
-import { COLORS } from '../../config';
+import { COLORS } from '../../styles';
 
 const Contact = (props) => (
   <TouchableOpacity style={[styles.container, props.selected ? styles.selected : null ]} onLongPress={() => props.onLongPress(props.id)}>

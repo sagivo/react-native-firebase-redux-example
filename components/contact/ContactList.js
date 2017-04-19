@@ -10,7 +10,7 @@ import {
 import Contact from './Contact'
 import SearchContact from './SearchContact'
 import NoContacts from './NoContacts'
-import { COLORS } from '../../config';
+import { COLORS } from '../../styles';
 
 const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
 
@@ -42,7 +42,6 @@ export default class ContactList extends Component {
       <View style={styles.container}>
         { (Object.keys(this.props.contacts).length > 0) ?
         <ListView
-          style={styles.container}
           dataSource={this.contactsFromHash(this.props.contacts)}
           renderHeader={() => <SearchContact onSearch={this.onSearch} />}
           renderRow={(data) => <Contact {...data}
@@ -66,6 +65,6 @@ const styles = StyleSheet.create({
   },
   separator: {
     height: StyleSheet.hairlineWidth,
-    backgroundColor: COLORS.c1,
+    backgroundColor: COLORS.C1,
   },
 });

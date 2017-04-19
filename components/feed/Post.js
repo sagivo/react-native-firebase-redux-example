@@ -3,6 +3,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import React, {Component} from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import time from '../../models/time';
+import { COLORS, FONTS } from '../../styles';
 
 export default class Post extends Component {
   busy() {
@@ -23,9 +24,9 @@ export default class Post extends Component {
           <View style={styles.phone}>
           {
             this.props.busy ?
-            <MaterialIcons name="perm-phone-msg" size={40} color="gray" onPress={this.busy} />
+            <MaterialIcons name="perm-phone-msg" size={30} color={COLORS.C4} onPress={this.busy} />
             :
-            <MaterialIcons name="phone" size={40} color="white" onPress={this.props.onCallPress} />
+            <MaterialIcons name="phone" size={30} color="white" onPress={this.props.onCallPress} />
           }
           </View>
         </View>
@@ -37,20 +38,19 @@ export default class Post extends Component {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    paddingVertical: 50,
+    paddingVertical: 40,
     paddingHorizontal: 10,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   mainText: {
+    ...FONTS.H3,
     color: 'white',
-    fontSize: 20,
   },
   info: {
-    marginTop: 10,
-    fontSize: 12,
+    ...FONTS.P2,
+    marginTop: 20,
     color: 'white',
-    // justifyContent: 'center',
     alignItems: 'center',
   },
   left: {
@@ -60,10 +60,10 @@ const styles = StyleSheet.create({
   right: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 10,
+    // padding: 10,
   },
   phone: {
-    padding: 5,
+    padding: 10,
   },
 });
 

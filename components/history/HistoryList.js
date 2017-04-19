@@ -6,8 +6,9 @@ import {
   View
 } from 'react-native';
 
-import HistoryItem from './HistoryItem'
-import NoHistory from './NoHistory'
+import HistoryItem from './HistoryItem';
+import NoHistory from './NoHistory';
+import { COLORS } from '../../styles';
 
 const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
 
@@ -17,7 +18,6 @@ export default class ContactList extends Component {
       <View style={styles.container}>
         { this.props.calls && this.props.calls.length ?
         <ListView
-          style={styles.container}
           dataSource={dataSource.cloneWithRows(this.props.calls)}
           renderRow={(data, rowId) => <HistoryItem
             selected={this.props.selectedHistory.has(data.id)}
@@ -41,6 +41,6 @@ const styles = StyleSheet.create({
   },
   separator: {
     height: StyleSheet.hairlineWidth,
-    backgroundColor: '#8E8E8E',
+    backgroundColor: COLORS.C1,
   },
 });
