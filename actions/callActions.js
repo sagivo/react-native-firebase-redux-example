@@ -183,6 +183,7 @@ db.ref(`calls`).remove();
 db.ref('webrtc').remove();
 db.ref(`posts/old`).remove();
 db.ref(`posts/active`).set({
+  231:{ text: 'im a newibie', online: true, userId: writerId, color: '#FF8CC6' },
   11:{ text: 'L1orem ipsum dolor sit amet, consectetur adipiscing elit. Praesent placerat faucibus tortor ac volutpat. Aliquam cursus placerat turpis duis.', online: true, rating: 4.2, userId: writerId, color: '#FF8CC6' },
   22:{ text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc non sollicitudin orci, quis venenatis lorem. Praesent convallis vitae posuere.', online: false, rating: 3.1, userId: writerId, color: '#6F5E76' },
   33:{ text: 'i feel blue3', online: false, rating: 3.1, userId: writerId, color: '#8AA39B' },

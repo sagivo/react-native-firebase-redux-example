@@ -2,12 +2,41 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import React, {Component} from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 import time from '../../models/time';
 import { COLORS, FONTS } from '../../styles';
 
 export default class Post extends Component {
+  constructor(props) {
+    super(props);
+
+    this.showScore = this.showScore.bind(this);
+    this.showPhone = this.showPhone.bind(this);
+  }
+
   busy() {
     Alert.alert('Oops... to late, the person is already speaking with someone else.');
+  }
+
+  showScore(props) {
+    if (props.rating) return (
+      [<MaterialIcons name="star-border" key={props.id} />, props.rating]
+    );
+  }
+
+  showPhone() {
+    console.log(this.props.currentUserId, this.props.userId);
+    if (this.props.currentUserId === this.props.userId) return (
+      <Animatable.View animation="tada" duration={3000} iterationCount="infinite">
+        <MaterialIcons name="settings-phone" size={30} color="white" />
+      </Animatable.View>
+    );
+    if (this.props.busy) return (
+      <MaterialIcons name="perm-phone-msg" size={30} color={COLORS.C4} onPress={this.busy} />
+    )
+    else return (
+      <MaterialIcons name="phone" size={30} color="white" onPress={this.props.onCallPress} />
+    );
   }
 
   render() {
@@ -16,18 +45,13 @@ export default class Post extends Component {
         <View style={styles.left}>
           <Text style={styles.mainText}>{this.props.text}</Text>
           <Text style={styles.info}>
-            <MaterialIcons name="access-time" />{time(this.props.id).fromNow() + '  '} 
-            <MaterialIcons name="star-border" />{this.props.rating}
+            {time(this.props.id).fromNow() + '  '}
+            { this.showScore(this.props) }
           </Text>
         </View>
         <View style={styles.right}>
           <View style={styles.phone}>
-          {
-            this.props.busy ?
-            <MaterialIcons name="perm-phone-msg" size={30} color={COLORS.C4} onPress={this.busy} />
-            :
-            <MaterialIcons name="phone" size={30} color="white" onPress={this.props.onCallPress} />
-          }
+          { this.showPhone() }
           </View>
         </View>
       </View>

@@ -20,86 +20,64 @@ export default TabNavigator(
 {
   Feed: {
     screen: FeedContainer,
-    navigationOptions: {
-      tabBar: navigation => ({
-        icon: ({ tintColor, focused }) => {
-          return <MaterialIcons name="home" size={30} color={tintColor} />
-        },
-        label: 'Feed',
-      }),
-      header: { visible: false }
-    },
+    navigationOptions: navigation => ({
+      tabBarIcon: ({ tintColor, focused }) => {
+        return <MaterialIcons name="home" size={30} color={tintColor} />
+      },
+      tabBarLabel: 'Feed',
+    }),
+    header: { visible: false }
   },
   Contact: {
     screen: ContactContainer,
-    navigationOptions: {
-      tabBar: navigation => ({
-        icon: ({ tintColor, focused }) => {
-          return <MaterialIcons name="people" size={30} color={tintColor} />
-        },
-        label: 'Contacts',
-      }),
-      header: {
-        title: 'Contacts',
-        right: <DeleteContactsButton />
-      }
+    navigationOptions: navigation => ({
+      tabBarIcon: ({ tintColor, focused }) => {
+        return <MaterialIcons name="home" size={30} color={tintColor} />
+      },
+      tabBarLabel: 'Contacts',
+    }),
+    header: {
+      title: 'Contacts',
+      right: <DeleteContactsButton />
     },
   },
   Compose: {
     screen: ComposeContainer,
-    navigationOptions: {
-      tabBar: navigation => {
-        if (navigation.state.params && navigation.state.params.connecting) return {
-          icon: ({ tintColor, focused }) => {
-            return (<Animatable.View animation="tada" duration={3000} iterationCount="infinite">
+    navigationOptions: navigation => {
+      const isConnecting = (navigation.state && navigation.state.params && navigation.state.params.connecting);
+      return {
+        tabBarIcon: ({ tintColor, focused }) => {
+          if (isConnecting) return (
+            <Animatable.View animation="tada" duration={3000} iterationCount="infinite">
               <MaterialIcons name="settings-phone" size={30} color={tintColor} />
             </Animatable.View>);
-          },
-        }
-        return {
-          icon: ({ tintColor, focused }) => {
-            return <MaterialIcons name="add" size={30} color={tintColor} />
-          },
-        }
-      },
-      header: (navigation) => {
-        if (navigation.state.params && navigation.state.params.connecting) return {
-          title: 'Connecting',
-          left: <CancelPostButton />
-        }
-        return {
-          title: 'Compose',
-          right: <ComposeButton />,
-        }
-      }
+          return <MaterialIcons name="add" size={30} color={tintColor} />
+        },
+        headerTitle: (isConnecting) ? 'Connecting' : 'Compose',
+        headerRight: (isConnecting) ? <CancelPostButton /> : <CancelPostButton />,
+      };
     },
   },
   History: {
     screen: HistoryContainer,
-    navigationOptions: {
-      tabBar: navigation => ({
-        icon: ({ tintColor, focused }) => {
-          return <MaterialIcons name="history" size={30} color={tintColor} />
-        },
-        label: 'History',
-      }),
-      header: {
-        title: 'History',
-        right: <DeleteHistoryButton />,
+    navigationOptions: navigation => ({
+      tabBarIcon: ({ tintColor, focused }) => {
+        return <MaterialIcons name="history" size={30} color={tintColor} />
       },
-    },
+      tabBarLabel: 'History',
+      headerTitle: 'History',
+      headerRight: <DeleteHistoryButton />,
+    }),
   },
   Profile: {
     screen: ProfileContainer,
-    navigationOptions: {
-      tabBar: navigation => ({
-        icon: ({ tintColor, focused }) => {
-          return <MaterialIcons name="person" size={30} color={tintColor} />
-        },
-        label: 'Profile',
-      }),
-      header: { visible: false },
-    },
+    navigationOptions: navigation => ({
+      tabBarIcon: ({ tintColor, focused }) => {
+        return <MaterialIcons name="person" size={30} color={tintColor} />
+      },
+      tabBarLabel: 'Profile',
+      headerVisible: false,
+    }),
   },
 }, {
   tabBarOptions: {
@@ -115,5 +93,5 @@ export default TabNavigator(
   // swipeEnabled: true,
   // headerMode: 'float',
   lazyLoad: true,
-  initialRouteName: 'Profile',
+  initialRouteName: 'Feed',
 });

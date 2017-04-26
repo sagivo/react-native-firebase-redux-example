@@ -17,6 +17,7 @@ function mapStateToProps(state) {
     posts: state.FeedReducer.posts,
     refreshing: state.FeedReducer.refreshing,
     dataSource: dataSource.cloneWithRows(state.FeedReducer.posts),
+    userId: state.UserReducer.id,
   };
 }
 
@@ -46,6 +47,7 @@ class FeedContainer extends Component {
   }
 
   onCallPress(postId, postText) {
+    console.log('press');
     // this.props.callPost(postId, postText, (callId) => this.props.navigation.navigate('Call', { callId }));
   }
 
@@ -55,7 +57,7 @@ class FeedContainer extends Component {
         <View>
           <ListView
             dataSource={this.props.dataSource}
-            renderRow={(data) => <Post {...data} onCallPress={() => this.onCallPress(data.id, data.text)} />}
+            renderRow={(data) => <Post {...data} currentUserId={this.props.userId} onCallPress={() => this.onCallPress(data.id, data.text)} />}
             enableEmptySections={true}
             refreshControl={
               <RefreshControl
