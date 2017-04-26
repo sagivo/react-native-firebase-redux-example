@@ -25,8 +25,8 @@ export default TabNavigator(
         return <MaterialIcons name="home" size={30} color={tintColor} />
       },
       tabBarLabel: 'Feed',
+      headerVisible: false,
     }),
-    header: { visible: false }
   },
   Contact: {
     screen: ContactContainer,
@@ -35,11 +35,9 @@ export default TabNavigator(
         return <MaterialIcons name="home" size={30} color={tintColor} />
       },
       tabBarLabel: 'Contacts',
+      headerTitle: 'Contacts',
+      headerRight: <DeleteContactsButton />
     }),
-    header: {
-      title: 'Contacts',
-      right: <DeleteContactsButton />
-    },
   },
   Compose: {
     screen: ComposeContainer,
@@ -54,7 +52,7 @@ export default TabNavigator(
           return <MaterialIcons name="add" size={30} color={tintColor} />
         },
         headerTitle: (isConnecting) ? 'Connecting' : 'Compose',
-        headerRight: (isConnecting) ? <CancelPostButton /> : <CancelPostButton />,
+        headerRight: (isConnecting) ? <CancelPostButton /> : <ComposeButton />,
       };
     },
   },
